@@ -1,0 +1,13 @@
+{
+  "family": {
+    "debian": {
+      "libselinux-python": ""
+    },
+    "gentoo": {
+      "libselinux-python": "sys-libs/libselinux"
+    },
+    "suse": {
+      "libselinux-python": ""
+    }
+  }
+}
