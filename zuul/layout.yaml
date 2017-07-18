@@ -5,17 +5,14 @@ includes:
 pipelines:
   - name: check
     description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
-    failure-message: "Build failed.  To recheck use 'myvendor: recheck'.  For 3rd party ci contact info: https://wiki.openstack.org/wiki/ThirdPartySystems"
+    failure-message: "Build failed.  To recheck use 'cisco: recheck'.  For 3rd party ci contact info: https://wiki.openstack.org/wiki/ThirdPartySystems"
     manager: IndependentPipelineManager
     trigger:
       gerrit:
         - event: patchset-created
         - event: change-restored
-        # TODO: Change "myvendor" below to your vendor's name to add a custom
-        # recheck trigger that runs the check pipeline jobs when someone
-        # adds a comment to a review that says "myvendor: recheck".
         - event: comment-added
-          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*myvendor:\s*recheck\s*$
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*cisco:\s*recheck\s*$
     success:
       gerrit:
         verified: 1
@@ -38,7 +35,7 @@ pipelines:
         - event: patchset-created
         - event: change-restored
         - event: comment-added
-          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*myvendor:\s*recheck\s*$
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*cisco:\s*recheck\s*$
     success:
       smtp:
         #TODO: Update these to real e-mail addresses
