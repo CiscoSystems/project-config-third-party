@@ -79,6 +79,7 @@ diskimages:
       DIB_DISABLE_APT_CLEANUP: '1'
       DIB_GRUB_TIMEOUT: '0'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
+      GIT_BASE: https://git.openstack.org
   - name: centos-7
     elements:
       - centos-minimal
@@ -97,3 +98,4 @@ diskimages:
       QEMU_IMG_OPTIONS: compat=0.10
       DIB_GRUB_TIMEOUT: '0'
       DIB_EPEL_DISABLED: '1'
+      GIT_BASE: https://git.openstack.org
