@@ -80,7 +80,7 @@ diskimages:
       DIB_GRUB_TIMEOUT: '0'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
       GIT_BASE: https://git.openstack.org
-      DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/nodepool/projects.yaml
+      DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/project-config/nodepool/projects.yaml
   - name: centos-7
     elements:
       - centos-minimal
@@ -100,4 +100,4 @@ diskimages:
       DIB_GRUB_TIMEOUT: '0'
       DIB_EPEL_DISABLED: '1'
       GIT_BASE: https://git.openstack.org
-      DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/nodepool/projects.yaml
+      DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/project-config/nodepool/projects.yaml
