@@ -99,3 +99,4 @@ diskimages:
       DIB_GRUB_TIMEOUT: '0'
       DIB_EPEL_DISABLED: '1'
       GIT_BASE: https://git.openstack.org
+      DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/nodepool/projects.yaml
