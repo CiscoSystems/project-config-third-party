@@ -6,7 +6,8 @@
 
     jobs:
         - noop-check-communication
+            node: 'ubuntu-xenial'
         - dsvm-tempest-full:
-            node: 'devstack_slave || devstack-precise-check || d-p-c'
+            node: 'ubuntu-xenial'
         - dsvm-tempest-my-cinder-driver:
-            node: 'd-p-c'
+            node: 'ubuntu-xenial'
