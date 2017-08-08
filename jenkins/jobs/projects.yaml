@@ -5,7 +5,7 @@
     vendor: cisco
 
     jobs:
-        - noop-check-communication
+        - noop-check-communication:
             node: 'ubuntu-xenial'
         - dsvm-tempest-full:
             node: 'ubuntu-xenial'
