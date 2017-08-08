@@ -50,6 +50,8 @@ pipelines:
 jobs:
   - name: ^dsvm-tempest.*$
     parameter-function: single_use_node
+  - name: noop-check-communication
+    parameter-function: single_use_node
 
 projects:
   - name: openstack-dev/ci-sandbox
