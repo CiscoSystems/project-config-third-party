@@ -81,6 +81,7 @@ diskimages:
       DIB_DEBIAN_COMPONENTS: 'main,universe'
       GIT_BASE: https://git.openstack.org
       DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/project-config/nodepool/projects.yaml
+      NODEPOOL_SCRIPTDIR: /etc/nodepool/scripts
   - name: centos-7
     elements:
       - centos-minimal
@@ -101,3 +102,4 @@ diskimages:
       DIB_EPEL_DISABLED: '1'
       GIT_BASE: https://git.openstack.org
       DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/project-config/nodepool/projects.yaml
+      NODEPOOL_SCRIPTDIR: /etc/nodepool/scripts
