@@ -50,8 +50,6 @@ pipelines:
 jobs:
   - name: ^dsvm-tempest.*$
     parameter-function: set_node_options
-  - name: noop-check-communication
-    parameter-function: set_node_options
 
 projects:
   - name: openstack-dev/ci-sandbox
