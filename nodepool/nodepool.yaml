@@ -44,7 +44,6 @@ providers:
         private-key: /home/nodepool/.ssh/id_rsa
         name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
       - name: centos-7
         min-ram: 8192
         diskimage: centos-7
@@ -52,7 +51,6 @@ providers:
         private-key: /home/nodepool/.ssh/id_rsa
         name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
 
 targets:
   - name: jenkins1
