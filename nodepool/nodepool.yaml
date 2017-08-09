@@ -58,7 +58,7 @@ targets:
 diskimages:
   - name: ubuntu-xenial
     elements:
-      - ubuntu-minimal
+      - ubuntu
       - vm
       - simple-init
       - openstack-repos
