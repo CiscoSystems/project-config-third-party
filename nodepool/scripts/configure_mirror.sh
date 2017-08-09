@@ -49,4 +49,5 @@ done
 if [ "$LSBDISTID" == "Debian" ] || [ "$LSBDISTID" == "Ubuntu" ]; then
     # Make sure our indexes are up to date.
     sudo apt-get update
+    sudo apt-get install default-jdk
 fi
