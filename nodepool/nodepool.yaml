@@ -55,7 +55,7 @@ providers:
         key-name: infra-root-keys
 
 targets:
-  - name: zuul
+  - name: jenkins1
     assign-via-gearman: True
 
 diskimages:
