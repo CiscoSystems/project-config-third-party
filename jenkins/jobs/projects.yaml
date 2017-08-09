@@ -1,7 +1,7 @@
 - project:
     name: sandbox
     github-org: openstack-dev
-    node: master
+    node: ubuntu-xenial
     vendor: cisco
 
     jobs:
