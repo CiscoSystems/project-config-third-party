@@ -56,7 +56,6 @@ providers:
 
 targets:
   - name: jenkins1
-    assign-via-gearman: True
 
 diskimages:
   - name: ubuntu-xenial
