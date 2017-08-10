@@ -155,3 +155,8 @@
     - tripleo
   description: The TripleO incubator where unformed things are experimented with.
   acl-config: /home/gerrit2/acls/openstack/tripleo.config
+- project: openstack-infra/project-config
+  use-storyboard: true
+  groups:
+    - openstack-ci
+  description: Configuration files for project CI systems
