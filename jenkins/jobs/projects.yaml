@@ -7,4 +7,3 @@
     jobs:
         - noop-check-communication
         - dsvm-tempest-full
-        - dsvm-tempest-my-cinder-driver
