@@ -7,3 +7,12 @@
     jobs:
         - noop-check-communication
         - dsvm-tempest-full
+
+- project:
+    name: networking-cisco
+    github-org: openstack
+    node: ubuntu-xenial
+    vendor: cisco
+
+    jobs:
+        - dsvm-tempest-full

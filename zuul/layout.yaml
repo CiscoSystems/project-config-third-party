@@ -5,7 +5,7 @@ includes:
 pipelines:
   - name: check
     description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
-    failure-message: "Build failed.  To recheck use 'cisco: recheck'.  For 3rd party ci contact info: https://wiki.openstack.org/wiki/ThirdPartySystems"
+    failure-message: "Build failed.  To recheck use 'recheck'."
     manager: IndependentPipelineManager
     trigger:
       gerrit:
@@ -48,18 +48,14 @@ pipelines:
 
 
 jobs:
-  - name: ^dsvm-tempest.*$
-    parameter-function: set_node_options
-  - name: noop-check-communication
+  - name: ^.*$
     parameter-function: set_node_options
 
 projects:
   - name: openstack-dev/ci-sandbox
     check:
-      # Remove this after successfully verifying communication with upstream
-      # and seeing a posted successful review.
       - noop-check-communication
-    silent:
-      # Uncomment this job when you have a jenkins slave running and want to
-      # test a full Tempest run within devstack.
+      - dsvm-tempest-full
+  - name: openstack/networking-cisco
+    check:
       - dsvm-tempest-full
