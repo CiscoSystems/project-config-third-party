@@ -14,7 +14,7 @@
 
 
 - job-template:
-    name: 'dsvm-tempest-full'
+    name: 'gate-{name}-dsvm-tempest-full'
     node: '{node}'
 
     wrappers:

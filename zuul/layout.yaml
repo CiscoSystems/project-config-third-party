@@ -55,7 +55,7 @@ projects:
   - name: openstack-dev/ci-sandbox
     check:
       - noop-check-communication
-      - dsvm-tempest-full
+      - gate-sandbox-dsvm-tempest-full
   - name: openstack/networking-cisco
     check:
-      - dsvm-tempest-full
+      - gate-networking-cisco-dsvm-tempest-full

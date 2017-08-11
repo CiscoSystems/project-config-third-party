@@ -6,7 +6,7 @@
 
     jobs:
         - noop-check-communication
-        - dsvm-tempest-full
+        - 'gate-{name}-dsvm-tempest-full'
 
 - project:
     name: networking-cisco
@@ -15,4 +15,4 @@
     vendor: cisco
 
     jobs:
-        - dsvm-tempest-full
+        - 'gate-{name}-dsvm-tempest-full'
