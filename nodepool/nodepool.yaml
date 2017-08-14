@@ -74,6 +74,7 @@ diskimages:
       - growroot
       - infra-package-needs
       - jenkins-slave
+      - openjdk
     release: xenial
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -98,6 +99,7 @@ diskimages:
       - infra-package-needs
       - epel
       - jenkins-slave
+      - openjdk
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
