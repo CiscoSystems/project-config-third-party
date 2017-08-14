@@ -14,7 +14,8 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=180
+          # 180 minutes in milliseconds
+          export BUILD_TIMEOUT=10800000
           export DEVSTACK_GATE_TEMPEST=1
 
           export PROJECTS="openstack/networking-cisco $PROJECTS"
