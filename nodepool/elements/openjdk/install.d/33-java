@@ -11,7 +11,8 @@ echo "Installing OpenJDK"
 default_jdk_version_for_distro () {
     case "$DISTRO_NAME" in
         centos | rhel )
-            echo "7"
+            # echo "7"
+            echo "8"
         ;;
         fedora )
             if [ $(lsb_release -rs) -ge '21' ]; then
