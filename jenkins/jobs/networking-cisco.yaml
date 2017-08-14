@@ -1,20 +1,5 @@
 - job-template:
-    name: 'noop-check-communication-{node}'
-    node: '{node}'
-
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          echo "Hello world, this is the {vendor} Testing System"
-      - link-logs
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
-    name: 'gate-{name}-dsvm-tempest-full-{node}'
+    name: 'gate-{name}-dsvm-tempest-full-nexus-{node}'
     node: '{node}'
 
     wrappers:
@@ -31,6 +16,10 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=180
           export DEVSTACK_GATE_TEMPEST=1
+
+          export PROJECTS="networking-cisco $PROJECTS"
+
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh

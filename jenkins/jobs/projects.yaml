@@ -20,3 +20,4 @@
 
     jobs:
         - 'gate-{name}-dsvm-tempest-full-{node}'
+        - 'gate-{name}-dsvm-tempest-full-nexus-{node}'
