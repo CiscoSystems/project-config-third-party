@@ -2,8 +2,8 @@
     name: sandbox
     github-org: openstack-dev
     node:
-      ubuntu-xenial
-      centos-7
+      - ubuntu-xenial
+      - centos-7
     vendor: cisco
 
     jobs:
@@ -14,8 +14,8 @@
     name: networking-cisco
     github-org: openstack
     node:
-      ubuntu-xenial
-      centos-7
+      - ubuntu-xenial
+      - centos-7
     vendor: cisco
 
     jobs:
