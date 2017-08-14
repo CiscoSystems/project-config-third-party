@@ -14,7 +14,7 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          # 180 minutes in milliseconds
+          # 180 minutes in milliseconds
           export BUILD_TIMEOUT=10800000
           export DEVSTACK_GATE_TEMPEST=1
 
