@@ -1,5 +1,5 @@
 - job-template:
-    name: 'noop-check-communication'
+    name: 'noop-check-communication-{node}'
     node: '{node}'
 
     builders:
@@ -14,7 +14,7 @@
 
 
 - job-template:
-    name: 'gate-{name}-dsvm-tempest-full'
+    name: 'gate-{name}-dsvm-tempest-full-{node}'
     node: '{node}'
 
     wrappers:

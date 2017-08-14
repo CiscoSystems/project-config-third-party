@@ -18,7 +18,13 @@ labels:
   - name: ubuntu-xenial
     image: ubuntu-xenial
     ready-script: configure_mirror.sh
-    min-ready: 10
+    min-ready: 5
+    providers:
+      - name: devstack-rocket-man
+  - name: centos-7
+    image: centos-7
+    ready-script: configure_mirror.sh
+    min-ready: 5
     providers:
       - name: devstack-rocket-man
 

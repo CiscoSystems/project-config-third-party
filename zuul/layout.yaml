@@ -54,8 +54,10 @@ jobs:
 projects:
   - name: openstack-dev/ci-sandbox
     check:
-      - noop-check-communication
-      - gate-sandbox-dsvm-tempest-full
+      - noop-check-communication-ubuntu-xenial
+      - noop-check-communication-centos-7
+#      - gate-sandbox-dsvm-tempest-full-centos-7
+#      - gate-sandbox-dsvm-tempest-full-ubuntu-xenial
   - name: openstack/networking-cisco
     check:
-      - gate-networking-cisco-dsvm-tempest-full
+      - gate-networking-cisco-dsvm-tempest-full-centos-7
