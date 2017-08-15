@@ -29,7 +29,8 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=180
+          # 180 minutes in milliseconds
+          export BUILD_TIMEOUT=10800000
           export DEVSTACK_GATE_TEMPEST=1
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
