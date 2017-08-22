@@ -43,8 +43,8 @@
           function post_test_hook {{
             local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
             tapid="tap${{tapid}}"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev 65119-1"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev 65119-2"
+            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
+            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
           }}
           export -f post_test_hook
 
