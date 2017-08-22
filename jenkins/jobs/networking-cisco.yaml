@@ -18,6 +18,36 @@
           export BUILD_TIMEOUT=10800000
           export DEVSTACK_GATE_TEMPEST=1
 
+          #export DEVSTACK_GATE_TOPOLOGY="multinode"
+
+          function pre_test_hook {
+            local private_ip=$(cat /etc/nodepool/primary_node_private)
+            local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
+            tapid="tap${tapid}"
+            ssh root@10.0.0.15 "ip link add ${tapid}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
+            ssh root@10.0.0.15 "ip link add ${tapid}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
+            ssh root@10.0.0.15 "ip link set dev ${tapid}-1 up"
+            ssh root@10.0.0.15 "ip link set dev ${tapid}-2 up"
+            ssh root@10.0.0.15 "brctl addif nexusint1 ${tapid}-1"
+            ssh root@10.0.0.15 "brctl addif nexusint2 ${tapid}-2"
+            sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
+            sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
+          }
+          export -f pre_test_hook
+
+          function gate_hook {
+            exit 0
+          }
+          export -f gate_hook
+
+          function post_test_hook {
+            local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
+            tapid="tap${tapid}"
+            ssh root@10.0.0.15 "ip link del dev 65119-1"
+            ssh root@10.0.0.15 "ip link del dev 65119-2"
+          }
+          export -f post_test_hook
+
           export PROJECTS="openstack/networking-cisco $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
