@@ -21,6 +21,7 @@
           #export DEVSTACK_GATE_TOPOLOGY="multinode"
 
           function pre_test_hook {{
+            # Setup the virtual L2 path to the nexus
             local private_ip=$(cat /etc/nodepool/primary_node_private)
             local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
             tapid="tap${{tapid}}"
@@ -32,6 +33,10 @@
             ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${{tapid}}-2"
             sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
             sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
+
+            # Claim a vlan range from the CI system 
+            export CLAIMED_VLAN_RANGE=$(python /opt/nodepool-scripts/claim_vlan.py)
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TENANT_VLAN_RANGE=${{vlan_range}}"
           }}
           export -f pre_test_hook
 
@@ -41,6 +46,12 @@
           export -f gate_hook
 
           function post_test_hook {{
+            # Release vlan range back to pool
+            min-vlan=$(echo "$CLAIMED_VLAN_RANGE" | cut -f1 -d":") 
+            max-vlan=$(echo "$CLAIMED_VLAN_RANGE" | cut -f2 -d":")
+            python /opt/nodepool-scripts/free_vlan.py $min-vlan $max-vlan
+
+            # Destory the virtual L2 path to the nexus
             local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
             tapid="tap${{tapid}}"
             ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
