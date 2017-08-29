@@ -39,7 +39,7 @@
                                     restart_service ${ovs_service}"
             eval $install_ovs_deps
 
-            # Setup the virtual L2 path to the nexus
+            # Setup the virtual L2 path to the nexus
             local private_ip=$(cat /etc/nodepool/primary_node_private)
             local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
             tapid="tap${{tapid}}"
