@@ -57,7 +57,7 @@
 
             sudo ovs-vsctl add-port br-nexusnet nexustap1
 
-            # Claim a vlan range from the CI system 
+            # Claim a vlan range from the CI system 
             export CLAIMED_VLAN_RANGE=$(python /opt/nodepool-scripts/claim_vlan.py)
           }}
           export -f pre_test_hook
