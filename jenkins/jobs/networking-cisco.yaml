@@ -35,8 +35,8 @@
             fi
 
             local install_ovs_deps="source $BASE/new/devstack/functions-common; \
-                                    install_package ${ovs_package}; \
-                                    restart_service ${ovs_service}"
+                                    install_package ${{ovs_package}}; \
+                                    restart_service ${{ovs_service}}"
             eval $install_ovs_deps
 
             # Setup the virtual L2 path to the nexus
