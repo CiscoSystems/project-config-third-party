@@ -22,9 +22,6 @@
 
           export OVERRIDE_ZUUL_BRANCH=stable/ocata
 
-          # Claim a vlan range from the CI system
-          python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
-
           function pre_test_hook {{
             if is_suse || is_fedora; then
               local ovs_package='openvswitch'
@@ -59,10 +56,16 @@
             sudo ovs-vsctl add-br br-ex
 
             sudo ovs-vsctl add-port br-nexusnet nexustap1
+
+            # Claim a vlan range from the CI system
+            python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
           }}
           export -f pre_test_hook
 
           function gate_hook {{
+            CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
             exit 0
           }}
           export -f gate_hook
@@ -83,11 +86,7 @@
 
           export PROJECTS="openstack/networking-cisco $PROJECTS"
 
-          CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
-
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRDIGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
 
