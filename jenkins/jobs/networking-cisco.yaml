@@ -1,3 +1,78 @@
+- builder:
+    name: setup-l2-tunnel
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          export BASE=/opt/stack
+          source $BASE/new/devstack/functions-common
+
+          if is_suse || is_fedora; then
+            local ovs_package='openvswitch'
+            local ovs_service='openvswitch'
+          elif uses_debs; then
+            local ovs_package='openvswitch-switch'
+            local ovs_service='openvswitch-switch'
+          else
+            echo "Unsupported platform, can't determine openvswitch service"
+            exit 1
+          fi
+
+          local install_ovs_deps="source $BASE/new/devstack/functions-common; \
+                                  install_package ${{ovs_package}}; \
+                                  restart_service ${{ovs_service}}"
+          eval $install_ovs_deps
+
+          # Setup the virtual L2 path to the nexus
+          local private_ip=$(cat /etc/nodepool/primary_node_private)
+          local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
+          tapid="tap${{tapid}}"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${{tapid}}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${{tapid}}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${{tapid}}-1 up"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${{tapid}}-2 up"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${{tapid}}-1"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${{tapid}}-2"
+          sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
+          sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
+
+          sudo ovs-vsctl add-br br-nexusnet
+          sudo ovs-vsctl add-br br-ex
+
+          sudo ovs-vsctl add-port br-nexusnet nexustap1
+
+- builder:
+    name: claim-some-vlans
+    builders:
+      - shell: |
+        #!/bin/bash -xe
+        # Claim a vlan range from the CI system
+        python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
+
+- publisher:
+    name: teardown-l2-tunnel
+    publishers:
+      - postbuildscript:
+          builders:
+            - shell: | 
+              #!/bin/bash -xe
+              # Destroy the virtual L2 path to the nexus
+              local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
+              tapid="tap${{tapid}}"
+              ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
+              ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
+
+- publisher:
+    name: release-the-vlans
+    publishers:
+      - postbuildscript:
+          builders:
+            - shell: | 
+              #!/bin/bash -xe
+              # Release vlan range back to pool
+              min-vlan=$(cat claimed_vlans | cut -f1 -d":")
+              max-vlan=$(cat claimed_vlans | cut -f2 -d":")
+              python /opt/nodepool-scripts/free_vlan.py ${{min-vlan}} ${{max-vlan}}
+
 - job-template:
     name: 'gate-{name}-dsvm-tempest-full-nexus-{node}'
     node: '{node}'
@@ -11,6 +86,8 @@
     builders:
       - net-info
       - devstack-checkout-http
+      - setup-l2-tunnel
+      - claim-some-vlans
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -22,71 +99,18 @@
 
           export OVERRIDE_ZUUL_BRANCH=stable/ocata
 
-          function pre_test_hook {{
-            if is_suse || is_fedora; then
-              local ovs_package='openvswitch'
-              local ovs_service='openvswitch'
-            elif uses_debs; then
-              local ovs_package='openvswitch-switch'
-              local ovs_service='openvswitch-switch'
-            else
-              echo "Unsupported platform, can't determine openvswitch service"
-              exit 1
-            fi
-
-            local install_ovs_deps="source $BASE/new/devstack/functions-common; \
-                                    install_package ${{ovs_package}}; \
-                                    restart_service ${{ovs_service}}"
-            eval $install_ovs_deps
-
-            # Setup the virtual L2 path to the nexus
-            local private_ip=$(cat /etc/nodepool/primary_node_private)
-            local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-            tapid="tap${{tapid}}"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${{tapid}}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${{tapid}}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${{tapid}}-1 up"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${{tapid}}-2 up"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${{tapid}}-1"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${{tapid}}-2"
-            sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
-            sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
-
-            sudo ovs-vsctl add-br br-nexusnet
-            sudo ovs-vsctl add-br br-ex
-
-            sudo ovs-vsctl add-port br-nexusnet nexustap1
-
-            # Claim a vlan range from the CI system
-            python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
-          }}
-          export -f pre_test_hook
-
           function gate_hook {{
-            CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
             exit 0
           }}
           export -f gate_hook
 
-          function post_test_hook {{
-            # Release vlan range back to pool
-            min-vlan=$(cat claimed_vlans | cut -f1 -d":")
-            max-vlan=$(cat claimed_vlans | cut -f2 -d":")
-            python /opt/nodepool-scripts/free_vlan.py ${{min-vlan}} ${{max-vlan}}
-
-            # Destroy the virtual L2 path to the nexus
-            local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-            tapid="tap${{tapid}}"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
-          }}
-          export -f post_test_hook
-
           export PROJECTS="openstack/networking-cisco $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
+
+          CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRDIGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
 
@@ -95,5 +119,7 @@
       - link-logs
 
     publishers:
+      - teardown-l2-tunnel
+      - release-some-vlans
       - devstack-logs
       - console-log
