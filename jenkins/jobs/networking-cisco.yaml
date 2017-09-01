@@ -44,34 +44,34 @@
     name: claim-some-vlans
     builders:
       - shell: |
-        #!/bin/bash -xe
-        # Claim a vlan range from the CI system
-        python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
+          #!/bin/bash -xe
+          # Claim a vlan range from the CI system
+          python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
 
 - publisher:
     name: teardown-l2-tunnel
     publishers:
       - postbuildscript:
           builders:
-            - shell: | 
-              #!/bin/bash -xe
-              # Destroy the virtual L2 path to the nexus
-              local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-              tapid="tap${{tapid}}"
-              ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
-              ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
+            - shell: |
+                #!/bin/bash -xe
+                # Destroy the virtual L2 path to the nexus
+                local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
+                tapid="tap${{tapid}}"
+                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
+                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
 
 - publisher:
     name: release-the-vlans
     publishers:
       - postbuildscript:
           builders:
-            - shell: | 
-              #!/bin/bash -xe
-              # Release vlan range back to pool
-              min-vlan=$(cat claimed_vlans | cut -f1 -d":")
-              max-vlan=$(cat claimed_vlans | cut -f2 -d":")
-              python /opt/nodepool-scripts/free_vlan.py ${{min-vlan}} ${{max-vlan}}
+            - shell: |
+                #!/bin/bash -xe
+                # Release vlan range back to pool
+                min-vlan=$(cat claimed_vlans | cut -f1 -d":")
+                max-vlan=$(cat claimed_vlans | cut -f2 -d":")
+                python /opt/nodepool-scripts/free_vlan.py ${{min-vlan}} ${{max-vlan}}
 
 - job-template:
     name: 'gate-{name}-dsvm-tempest-full-nexus-{node}'
