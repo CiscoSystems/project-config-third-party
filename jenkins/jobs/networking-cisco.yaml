@@ -3,8 +3,8 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          export BASE=/opt/stack
-          source $BASE/devstack/functions-common
+          export BASE=/opt/git
+          source $BASE/openstack-dev/devstack/functions-common
 
           if is_suse || is_fedora; then
             local ovs_package='openvswitch'
@@ -17,7 +17,7 @@
             exit 1
           fi
 
-          local install_ovs_deps="source $BASE/devstack/functions-common; \
+          local install_ovs_deps="source $BASE/openstack-dev/devstack/functions-common; \
                                   install_package ${{ovs_package}}; \
                                   restart_service ${{ovs_service}}"
           eval $install_ovs_deps
@@ -52,6 +52,7 @@
     name: teardown-l2-tunnel
     publishers:
       - postbuildscript:
+          script-only-if-succeeded: false
           builders:
             - shell: |
                 #!/bin/bash -xe
@@ -65,6 +66,7 @@
     name: release-some-vlans
     publishers:
       - postbuildscript:
+          script-only-if-succeeded: false
           builders:
             - shell: |
                 #!/bin/bash -xe
