@@ -160,3 +160,22 @@
   groups:
     - openstack-ci
   description: Configuration files for project CI systems
+- project: openstack/horizon
+  description: OpenStack Dashboard (Horizon)
+  options:
+    - translate
+- project: openstack/manila-ui
+  description: The UI component for Manila
+  options:
+    - translate
+- project: openstack/os-apply-config
+  description: Apply configuration from cloud metadata.
+- project: openstack/os-collect-config
+  description: Collect and cache metadata, run hooks on changes.
+- project: openstack/django_openstack_auth
+  groups:
+    - django-openstack-auth
+  description: A Django authentication backend for use with the OpenStack Keystone
+    Identity backend.
+  options:
+    - translate

@@ -22,6 +22,9 @@
 
           export OVERRIDE_ZUUL_BRANCH=stable/ocata
 
+          # Claim a vlan range from the CI system
+          python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
+
           function pre_test_hook {{
             if is_suse || is_fedora; then
               local ovs_package='openvswitch'
@@ -56,9 +59,6 @@
             sudo ovs-vsctl add-br br-ex
 
             sudo ovs-vsctl add-port br-nexusnet nexustap1
-
-            # Claim a vlan range from the CI system 
-            export CLAIMED_VLAN_RANGE=$(python /opt/nodepool-scripts/claim_vlan.py)
           }}
           export -f pre_test_hook
 
@@ -69,9 +69,9 @@
 
           function post_test_hook {{
             # Release vlan range back to pool
-            min-vlan=$(echo "$CLAIMED_VLAN_RANGE" | cut -f1 -d":") 
-            max-vlan=$(echo "$CLAIMED_VLAN_RANGE" | cut -f2 -d":")
-            python /opt/nodepool-scripts/free_vlan.py $min-vlan $max-vlan
+            min-vlan=$(cat claimed_vlans | cut -f1 -d":")
+            max-vlan=$(cat claimed_vlans | cut -f2 -d":")
+            python /opt/nodepool-scripts/free_vlan.py ${min-vlan} ${max-vlan}
 
             # Destroy the virtual L2 path to the nexus
             local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
@@ -82,6 +82,8 @@
           export -f post_test_hook
 
           export PROJECTS="openstack/networking-cisco $PROJECTS"
+
+          CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
