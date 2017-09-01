@@ -4,7 +4,7 @@
       - shell: |
           #!/bin/bash -xe
           export BASE=/opt/stack
-          source $BASE/new/devstack/functions-common
+          source $BASE/devstack/functions-common
 
           if is_suse || is_fedora; then
             local ovs_package='openvswitch'
@@ -17,7 +17,7 @@
             exit 1
           fi
 
-          local install_ovs_deps="source $BASE/new/devstack/functions-common; \
+          local install_ovs_deps="source $BASE/devstack/functions-common; \
                                   install_package ${{ovs_package}}; \
                                   restart_service ${{ovs_service}}"
           eval $install_ovs_deps
