@@ -62,7 +62,7 @@
                 ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
 
 - publisher:
-    name: release-the-vlans
+    name: release-some-vlans
     publishers:
       - postbuildscript:
           builders:
