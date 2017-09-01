@@ -71,7 +71,7 @@
             # Release vlan range back to pool
             min-vlan=$(cat claimed_vlans | cut -f1 -d":")
             max-vlan=$(cat claimed_vlans | cut -f2 -d":")
-            python /opt/nodepool-scripts/free_vlan.py ${min-vlan} ${max-vlan}
+            python /opt/nodepool-scripts/free_vlan.py ${{min-vlan}} ${{max-vlan}}
 
             # Destroy the virtual L2 path to the nexus
             local tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
