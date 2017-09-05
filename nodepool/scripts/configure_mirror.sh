@@ -49,8 +49,7 @@ done
 if [ "$LSBDISTID" == "Debian" ] || [ "$LSBDISTID" == "Ubuntu" ]; then
     # Make sure our indexes are up to date.
     sudo apt-get update
+elif [ "$LSBDISTID" == "CentOS" ]; then
+    # Clear fastest mirror cache
+    sudo rm -f /var/cache/yum/timedhosts.txt
 fi
-#    sudo apt-get install -y default-jdk
-#elif [ "$LSBDISTID" == "CentOS" ]; then
-#    sudo yum -y install java-1.7.0-openjdk-devel
-#fi
