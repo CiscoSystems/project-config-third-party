@@ -71,9 +71,9 @@
             - shell: |
                 #!/bin/bash -xe
                 # Release vlan range back to pool
-                min-vlan=$(cat claimed_vlans | cut -f1 -d":")
-                max-vlan=$(cat claimed_vlans | cut -f2 -d":")
-                python /opt/nodepool-scripts/free_vlan.py ${min-vlan} ${max-vlan}
+                minvlan=$(cat claimed_vlans | cut -f1 -d":")
+                maxvlan=$(cat claimed_vlans | cut -f2 -d":")
+                python /opt/nodepool-scripts/free_vlan.py "${minvlan}" "${maxvlan}"
 
 - job-template:
     name: 'gate-{name}-dsvm-tempest-full-nexus-{node}'
