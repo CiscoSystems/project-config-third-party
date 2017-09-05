@@ -18,20 +18,20 @@
           fi
 
           install_ovs_deps="source $BASE/openstack-dev/devstack/functions-common; \
-                            install_package ${{ovs_package}}; \
-                            restart_service ${{ovs_service}}"
+                            install_package ${ovs_package}; \
+                            restart_service ${ovs_service}"
           eval $install_ovs_deps
 
           # Setup the virtual L2 path to the nexus
           private_ip=$(cat /etc/nodepool/primary_node_private)
           tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-          tapid="tap${{tapid}}"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${{tapid}}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${{tapid}}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${{tapid}}-1 up"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${{tapid}}-2 up"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${{tapid}}-1"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${{tapid}}-2"
+          tapid="tap${tapid}"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-1 up"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-2 up"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${tapid}-1"
+          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${tapid}-2"
           sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
           sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
 
@@ -58,9 +58,9 @@
                 #!/bin/bash -xe
                 # Destroy the virtual L2 path to the nexus
                 tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-                tapid="tap${{tapid}}"
-                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-1"
-                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${{tapid}}-2"
+                tapid="tap${tapid}"
+                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-1"
+                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-2"
 
 - publisher:
     name: release-some-vlans
@@ -73,7 +73,7 @@
                 # Release vlan range back to pool
                 min-vlan=$(cat claimed_vlans | cut -f1 -d":")
                 max-vlan=$(cat claimed_vlans | cut -f2 -d":")
-                python /opt/nodepool-scripts/free_vlan.py ${{min-vlan}} ${{max-vlan}}
+                python /opt/nodepool-scripts/free_vlan.py ${min-vlan} ${max-vlan}
 
 - job-template:
     name: 'gate-{name}-dsvm-tempest-full-nexus-{node}'
