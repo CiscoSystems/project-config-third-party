@@ -112,6 +112,7 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
