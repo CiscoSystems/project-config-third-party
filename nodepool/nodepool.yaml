@@ -94,6 +94,8 @@ diskimages:
       GIT_BASE: https://git.openstack.org
       DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/project-config/nodepool/projects.yaml
       NODEPOOL_SCRIPTDIR: /etc/nodepool/scripts
+      NODEPOOL_STATIC_NAMESERVER_V4: 208.67.222.222
+      NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK: 208.67.220.220
   - name: centos-7
     elements:
       - centos-minimal
@@ -117,3 +119,5 @@ diskimages:
       GIT_BASE: https://git.openstack.org
       DIB_CUSTOM_PROJECTS_LIST_URL: file:///etc/project-config/nodepool/projects.yaml
       NODEPOOL_SCRIPTDIR: /etc/nodepool/scripts
+      NODEPOOL_STATIC_NAMESERVER_V4: 208.67.222.222
+      NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK: 208.67.220.220
