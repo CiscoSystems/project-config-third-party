@@ -64,7 +64,7 @@ chmod 0644 /var/log/unbound.log
 #
 # On Redhat systems, systemd's rc-local service looks for an
 # executable /etc/rc.d/rc.local file to run.  On Debian/Ubuntu, the
-# eqivalent file is /etc/rc.local.
+# eqivalent file is /etc/rc.local, which is missing on Debian stretch.
 #
 # Centos' systemd package symlinks /etc/rc.local to /etc/rc.d/rc.local
 # correctly. Fedora, however, does not come with an rc.local file at
@@ -76,7 +76,7 @@ chmod 0644 /var/log/unbound.log
 # details on all this.  As at 2016-10-18 is unresolved.
 #
 # [1] https://bugzilla.redhat.com/show_bug.cgi?id=1386052
-if [[ ! -e /etc/rc.local ]]; then
+if [[ ! -e /etc/rc.local ]] && [[ ! -e /etc/debian_version ]]; then
     if [[ ! -d /etc/rc.d ]]; then
         echo "No rc.local and no rc.d directory!  See comments in 89-unbound"
         exit 1
@@ -87,9 +87,13 @@ if [[ ! -e /etc/rc.local ]]; then
     # end of build.
 fi
 
+
+# And furthermore on SUSE systems rc.local is called /etc/init.d/boot.local
+rclocal=/etc/rc.local
+[ -f /etc/init.d/boot.local ] && rclocal=/etc/init.d/boot.local
 # Overwrite /etc/resolv.conf at boot (let's hope nothing else is using
 # rc.local...)
-dd of=/etc/rc.local <<EOF
+dd of=$rclocal <<EOF
 #!/bin/bash
 set -o xtrace
 
@@ -97,6 +101,7 @@ set -o xtrace
 # for DNS nameservers. This is expected to fail on some nodes so remove -e.
 set +e
 sed -i -e 's/^\(DNS[0-9]*=[.0-9]\+\)/#\1/g' /etc/sysconfig/network-scripts/ifcfg-*
+sed -i -e 's/^NETCONFIG_DNS_POLICY=.*/NETCONFIG_DNS_POLICY=""/g' /etc/sysconfig/network/config
 set -e
 
 echo 'nameserver 127.0.0.1' > /etc/resolv.conf
@@ -108,9 +113,16 @@ EOF
 # CentOS (and the file we created for Fedora) do not ... this is to
 # avoid it holding up the boot as it relies on the network being up).
 # Add +x so it runs.
-chmod a+x /etc/rc.local
+chmod a+x $rclocal
 
 echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
+
+# Disable dlv. Per the unbound.conf manpage this should not be used
+# anymore but is in use by some of our distros. The problem here is it
+# does lookasides for DNSSEC which increases the number of queries and
+# introduces more points of lookup failure. Disable it to avoid these
+# problems.
+sed -i -e 's/dlv-anchor-file:/#dlv-anchor-file:/g' /etc/unbound/unbound.conf
 
 # This defaults file must be in place to work around this bug:
 # https://bugs.launchpad.net/ubuntu/+source/unbound/+bug/988513
