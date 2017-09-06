@@ -104,12 +104,13 @@
           export PROJECTS="openstack/networking-cisco $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service net-cisco"
 
           CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRDIGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
