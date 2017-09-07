@@ -114,7 +114,7 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|\$Q_PLUGIN_CONF_FILE]]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/\$Q_PLUGIN_CONF_FILE]]"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_cisco]"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"nexus_driver=ncclient"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_mech_cisco_nexus:192.133.148.206]"
