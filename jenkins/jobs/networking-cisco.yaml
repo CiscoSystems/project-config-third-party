@@ -122,7 +122,7 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"password=CTO1234!"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ssh_port=22"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"physnet=nexusnet"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${hostname}=1/5"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${{hostname}}=1/5"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
