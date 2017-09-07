@@ -106,6 +106,7 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service net-cisco"
 
+          HOSTNAME=$(hostname)
           CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
@@ -113,6 +114,15 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/$Q_PLUGIN_CONF_FILE]]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_cisco]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"nexus_driver=ssh"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_mech_cisco_nexus:192.133.148.206]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"username=admin"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"password=CTO1234!"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ssh_port=22"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"physnet=nexusnet"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${hostname}=1/5"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
