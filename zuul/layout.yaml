@@ -54,6 +54,6 @@ jobs:
 projects:
   - name: openstack/networking-cisco
     check:
-      - gate-networking-cisco-dsvm-tempest-full-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-centos-7
     silent:
-      - gate-networking-cisco-dsvm-tempest-full-nexus-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-multinode-centos-7-2-node

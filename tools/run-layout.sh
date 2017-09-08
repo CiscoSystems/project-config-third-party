@@ -29,7 +29,7 @@ cd .test/jenkins-job-builder
 tox -e compare-xml-new
 
 cd ..
-find jenkins-job-builder/.test/new/out/ -printf "%f\n" > job-list.txt
+find jenkins-job-builder/.test/new/out/ -exec basename {} \; > job-list.txt
 
 cd zuul
 tox -e venv -- zuul-server -c etc/zuul.conf-sample -l ../../zuul/layout.yaml -t ../job-list.txt

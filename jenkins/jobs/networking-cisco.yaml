@@ -76,7 +76,7 @@
                 python /opt/nodepool-scripts/free_vlan.py "${minvlan}" "${maxvlan}"
 
 - job-template:
-    name: 'gate-{name}-dsvm-tempest-full-nexus-{node}'
+    name: 'gate-{name}-dsvm-tempest-smoke-nexus-{node}'
     node: '{node}'
 
     wrappers:
@@ -97,7 +97,64 @@
           export BUILD_TIMEOUT=10800000
           export DEVSTACK_GATE_TEMPEST=1
 
-          #export DEVSTACK_GATE_TOPOLOGY="multinode"
+          export OVERRIDE_ZUUL_BRANCH=stable/ocata
+
+          export PROJECTS="openstack/networking-cisco $PROJECTS"
+
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service net-cisco"
+
+          HOSTNAME=$(hostname)
+          CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/\$Q_PLUGIN_CONF_FILE]]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_cisco]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"nexus_driver=ncclient"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_mech_cisco_nexus:192.133.148.206]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"username=admin"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"password=CTO1234!"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ssh_port=22"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"physnet=nexusnet"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${{HOSTNAME}}=1/5"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+      - link-logs
+
+    publishers:
+      - teardown-l2-tunnel
+      - release-some-vlans
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: 'gate-{name}-dsvm-tempest-smoke-nexus-multinode-{node}'
+    node: '{node}'
+
+    wrappers:
+      - timeout:
+          timeout: 185  # Timeout in *minutes*
+          fail: true  # A job run that exceeds the timeout will cause a failure
+      - timestamps
+
+    builders:
+      - net-info
+      - devstack-checkout-http
+      - setup-l2-tunnel
+      - claim-some-vlans
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          # 180 minutes in milliseconds
+          export BUILD_TIMEOUT=10800000
+          export DEVSTACK_GATE_TEMPEST=1
+
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
 
           export OVERRIDE_ZUUL_BRANCH=stable/ocata
 

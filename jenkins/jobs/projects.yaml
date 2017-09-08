@@ -1,4 +1,17 @@
 - project:
+    name: networking-cisco
+    github-org: openstack
+    node:
+      - ubuntu-xenial
+      - centos-7
+    vendor: cisco
+
+    jobs:
+        - 'gate-{name}-dsvm-tempest-smoke-nexus-{node}'
+        - 'gate-{name}-dsvm-tempest-smoke-nexus-multinode-{node}':
+            node: centos-7-2-node
+
+- project:
     name: sandbox
     github-org: openstack-dev
     node:
@@ -9,15 +22,3 @@
     jobs:
         - 'noop-check-communication-{node}'
         - 'gate-{name}-dsvm-tempest-full-{node}'
-
-- project:
-    name: networking-cisco
-    github-org: openstack
-    node:
-      - ubuntu-xenial
-      - centos-7
-    vendor: cisco
-
-    jobs:
-        - 'gate-{name}-dsvm-tempest-full-{node}'
-        - 'gate-{name}-dsvm-tempest-full-nexus-{node}'
