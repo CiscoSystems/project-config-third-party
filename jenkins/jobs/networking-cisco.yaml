@@ -76,7 +76,7 @@
                 python /opt/nodepool-scripts/free_vlan.py "${minvlan}" "${maxvlan}"
 
 - job-template:
-    name: 'gate-{name}-dsvm-tempest-smoke-nexus-{node}'
+    name: 'gate-{name}-dsvm-tempest-smoke-nexus-{zuul-branch}-{node}'
     node: '{node}'
 
     wrappers:
@@ -97,7 +97,7 @@
           export BUILD_TIMEOUT=10800000
           export DEVSTACK_GATE_TEMPEST=1
 
-          export OVERRIDE_ZUUL_BRANCH=stable/ocata
+          export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
 
           export PROJECTS="openstack/networking-cisco $PROJECTS"
 

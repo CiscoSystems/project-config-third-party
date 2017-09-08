@@ -1,13 +1,18 @@
 - project:
     name: networking-cisco
     github-org: openstack
+    zuul-branch:
+      - pike
+      - ocata
+      - newton
+      - mitaka
     node:
       - ubuntu-xenial
       - centos-7
     vendor: cisco
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-nexus-{node}'
+        - 'gate-{name}-dsvm-tempest-smoke-nexus-{zuul-branch}-{node}'
         - 'gate-{name}-dsvm-tempest-smoke-nexus-multinode-{node}':
             node: centos-7-2-node
 
