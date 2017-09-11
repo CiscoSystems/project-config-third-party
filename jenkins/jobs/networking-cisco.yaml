@@ -35,15 +35,15 @@
             echo "$subtapid" | sudo tee /etc/nodepool/sub_tapid
           fi
 
-          # Clear any links that are already using this IP address as the remote
+          # Clear any links that are already using this IP address as the remote
           ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -L 1 sudo ip link del"
 
           if [[ -n "$subnode_private_ip" ]]; then
-            # Clear any links that are already using subnode IP address as the remote
+            # Clear any links that are already using subnode IP address as the remote
             ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $subnode_private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -L 1 sudo ip link del"
           fi
 
-          # Setup l2 tunnels endpoints on bridge VM
+          # Setup l2 tunnels endpoints on bridge VM
           ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
           ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
           ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-1 up"
@@ -51,7 +51,7 @@
           ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${tapid}-1"
           ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${tapid}-2"
 
-          # Setup l2 tunnels endpoints on bridge VM for subnode
+          # Setup l2 tunnels endpoints on bridge VM for subnode
           if [[ -n "$subnode_private_ip" ]]; then
             ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-1 type gretap local 10.0.0.15 remote $subnode_private_ip key 1"
             ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-2 type gretap local 10.0.0.15 remote $subnode_private_ip key 2"
@@ -61,25 +61,25 @@
             ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${subtapid}-2"
           fi
 
-          # Setup l2 tunnel endpoints on this node
+          # Setup l2 tunnel endpoints on this node
           sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
           sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
 
-          # Create OVS bridge to represent physnet connected to nexus
+          # Create OVS bridge to represent physnet connected to nexus
           sudo ovs-vsctl add-br br-nexusnet
           sudo ovs-vsctl add-br br-ex
 
-          # Add l2 tunnel for nexus port 1 to the OVS bridge
+          # Add l2 tunnel for nexus port 1 to the OVS bridge
           sudo ovs-vsctl add-port br-nexusnet nexustap1
 
           if [[ -n "$subnode_private_ip" ]]; then
-            # Setup l2 tunnel endpoints on subnode
+            # Setup l2 tunnel endpoints on subnode
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap1 type gretap local $subnode_private_ip remote 10.0.0.15 key 1"
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap2 type gretap local $subnode_private_ip remote 10.0.0.15 key 2"
-            # Create OVS bridge to represent physnet connected to nexus
+            # Create OVS bridge to represent physnet connected to nexus
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-br br-nexusnet"
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-br br-ex"
-            # Add l2 tunnel for nexus port 2 to the OVS bridge
+            # Add l2 tunnel for nexus port 2 to the OVS bridge
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-port br-nexusnet nexustap2"
           fi
 
