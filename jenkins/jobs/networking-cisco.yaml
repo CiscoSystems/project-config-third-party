@@ -3,8 +3,23 @@
     builders:
       - shell: |
           #!/bin/bash -xe
+          echo "Setting up the virtual L2 path to the nexus"
+
           export BASE=/opt/git
           source $BASE/openstack-dev/devstack/functions-common
+
+          echo "Calculating the test nodes tapids"
+          private_ip=$(cat /etc/nodepool/primary_node_private)
+          subnode_private_ip=$(cat /etc/nodepool/sub_nodes_private)
+          tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
+          tapid="tap${tapid}"
+
+          if [[ -n "$subnode_private_ip" ]]; then
+            subtapid=$(ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "cat /etc/nodepool/uuid")
+            subtapid=$(echo "$subtapid" | cut -c1-8)
+            subtapid="tap${subtapid}"
+            echo "$subtapid" | sudo tee /etc/nodepool/sub_tapid
+          fi
 
           if is_suse || is_fedora; then
             ovs_package='openvswitch'
@@ -20,19 +35,13 @@
           install_ovs_deps="source $BASE/openstack-dev/devstack/functions-common; \
                             install_package ${ovs_package}; \
                             restart_service ${ovs_service}"
+
+          echo "Installing OVS"
           eval $install_ovs_deps
 
-          echo "Setting up the virtual L2 path to the nexus"
-          private_ip=$(cat /etc/nodepool/primary_node_private)
-          subnode_private_ip=$(cat /etc/nodepool/sub_nodes_private)
-          tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-          tapid="tap${tapid}"
-
           if [[ -n "$subnode_private_ip" ]]; then
-            subtapid=$(ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "cat /etc/nodepool/uuid")
-            subtapid=$(echo "$subtapid" | cut -c1-8)
-            subtapid="tap${subtapid}"
-            echo "$subtapid" | sudo tee /etc/nodepool/sub_tapid
+            echo "Installing OVS on subnode"
+            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "$install_ovs_deps"
           fi
 
           echo "Clearing any links that are already using this IP address as the remote"
@@ -107,7 +116,7 @@
                 ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-2"
 
                 echo "Checking for subnode tap interface id"
-                touch /etc/nodepool/sub_tapid
+                sudo touch /etc/nodepool/sub_tapid
                 subtapid=$(cat /etc/nodepool/sub_tapid)
 
                 if [[ -n "subtapid" ]]; then
@@ -152,7 +161,11 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
 
-          export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
+          if [[ "{zuul-branch}" != "mitaka" ]]; then
+            export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
+          else
+            export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+          fi
 
           export PROJECTS="openstack/networking-cisco $PROJECTS"
 
