@@ -1,0 +1,12 @@
+- name: Copy devstack gate to devstack gate safe
+  copy:
+    src: "{{ workspace }}/devstack-gate/devstack-vm-gate-wrap.sh"
+    dest: "{{ workspace }}/safe-devstack-vm-gate-wrap.sh"
+
+- name: Run devstack gate
+  environment: "{{ devstack_gate_env }}"
+  args:
+    chdir "{{ workspace }}"
+  command: ./safe-devstack-vm-gate-wrap.sh
+  become: true
+  become_user: stack

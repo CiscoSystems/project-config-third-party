@@ -1,0 +1,9 @@
+# Run devstack gate only on primary
+- hosts: primary
+  vars:
+    projects:
+      - openstack/networking-cisco
+    claimed_vlan_range: "100:200"
+    devstack_local_conf: "{{ lookup('template', './templates/nexus_job_local_conf.j2') }}"
+  roles:
+    - run-devstack-gate

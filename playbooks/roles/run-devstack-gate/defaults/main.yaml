@@ -1,0 +1,8 @@
+devstack_gate_env:
+  DEVSTACK_LOCAL_CONF: "{{ devstack_local_conf }}"
+  PROJECTS: "{{ projects }}"
+  OVERRIDE_ZUUL_BRANCH: "{{ override_zuul_branch }}"
+  PYTHONUNBUFFERED: true
+  BUILD_TIMEOUT: 10800000
+  DEVSTACK_GATE_TEMPEST: 1
+  DEVSTACK_GATE_NEUTRON: 1

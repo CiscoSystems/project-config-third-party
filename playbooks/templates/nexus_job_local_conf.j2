@@ -1,0 +1,23 @@
+ML2_VLAN_RANGES=nexusnet:{{claimed_vlan_range}}
+OVS_VLAN_RANGES=nexusnet:{{claimed_vlan_range}}
+ENABLE_TENANT_VLANS=True
+OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet
+Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus
+Q_ML2_TENANT_NETWORK_TYPE=vlan
+[[post-config|/\$Q_PLUGIN_CONF_FILE]]
+[ml2_cisco]
+nexus_driver=ncclient
+[ml2_mech_cisco_nexus:192.133.148.206]
+username=admin
+password=CTO1234!
+ssh_port=22
+physnet=nexusnet
+{% for host in groups['primary'] %}
+{{ hostvars[host]["ansible_hostname"] }}=1/5
+{% endfor %}
+
+{% if groups['subnodes'] is defined %}
+{% for host in groups['subnodes'] %}
+{{ hostvars[host]["ansible_hostname"] }}=1/6
+{% endfor %}
+{% endif %}
