@@ -1,0 +1,8 @@
+- hosts: all
+  roles:
+    - install-openvswitch
+    - setup-l2-tunnels
+
+- hosts: primary
+  roles:
+    - claim-some-vlans
