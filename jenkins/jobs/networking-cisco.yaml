@@ -177,7 +177,7 @@
             export OVERRIDE_ZUUL_BRANCH=mitaka-eol
           fi
 
-          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/nexus-job.yaml
+          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/nexus-job.yaml
       - link-logs
 
     publishers:
