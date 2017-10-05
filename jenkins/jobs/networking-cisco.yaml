@@ -152,6 +152,23 @@
 
           sudo pip install ansible
 
+- builder:
+    name: generate-inventory
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+	  # Write inventory file with groupings
+	  COUNTER=1
+	  PRIMARY_NODE=$(cat /etc/nodepool/primary_node_private)
+	  echo "[primary]" > "$WORKSPACE/inventory"
+	  echo "localhost ansible_connection=local host_counter=$COUNTER nodepool='{\"private_ipv4\": \"$PRIMARY_NODE\"}'" >> "$WORKSPACE/inventory"
+	  echo "[subnodes]" >> "$WORKSPACE/inventory"
+	  export SUBNODES=$(cat /etc/nodepool/sub_nodes_private)
+	  for SUBNODE in $SUBNODES ; do
+	      let COUNTER=COUNTER+1
+	      echo "$SUBNODE host_counter=$COUNTER nodepool='{\"private_ipv4\": \"$SUBNODE\"}'" >> "$WORKSPACE/inventory"
+	  done
+
 - job-template:
     name: 'gate-{name}-dsvm-tempest-smoke-nexus-{zuul-branch}-{node}'
     node: '{node}'
@@ -169,6 +186,7 @@
       - setup-l2-tunnel
       - claim-some-vlans
       - install-ansible
+      - generate-inventory
       - shell: |
           #!/bin/bash -xe
           if [[ "{zuul-branch}" != "mitaka" ]]; then
