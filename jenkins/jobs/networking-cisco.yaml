@@ -142,6 +142,16 @@
                 maxvlan=$(cat claimed_vlans | cut -f2 -d":")
                 python /opt/nodepool-scripts/free_vlan.py "${minvlan}" "${maxvlan}"
 
+- builder:
+    name: install-ansible
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          export BASE=/opt/git
+          source $BASE/openstack-dev/devstack/functions-common
+
+          sudo pip install ansible
+
 - job-template:
     name: 'gate-{name}-dsvm-tempest-smoke-nexus-{zuul-branch}-{node}'
     node: '{node}'
@@ -158,6 +168,7 @@
       - devstack-checkout-http
       - setup-l2-tunnel
       - claim-some-vlans
+      - install-ansible
       - shell: |
           #!/bin/bash -xe
           if [[ "{zuul-branch}" != "mitaka" ]]; then
