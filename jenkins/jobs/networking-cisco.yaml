@@ -8,6 +8,8 @@
           export BASE=/opt/git
           source $BASE/openstack-dev/devstack/functions-common
 
+          BRIDGEVM_IP="10.0.0.24"
+
           echo "Calculating the test nodes tapids"
           private_ip=$(cat /etc/nodepool/primary_node_private)
           subnode_private_ip=$(cat /etc/nodepool/sub_nodes_private)
@@ -41,38 +43,38 @@
 
           if [[ -n "$subnode_private_ip" ]]; then
             echo "Installing OVS on subnode"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "$install_ovs_deps"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "$install_ovs_deps"
           fi
 
           echo "Clearing any links that are already using this IP address as the remote"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del"
 
           if [[ -n "$subnode_private_ip" ]]; then
             echo "Clearing any links that are already using subnode IP address as the remote"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $subnode_private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $subnode_private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del"
           fi
 
           echo "Setting up l2 tunnels endpoints on bridge VM"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-1 type gretap local 10.0.0.15 remote $private_ip key 1"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-2 type gretap local 10.0.0.15 remote $private_ip key 2"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-1 up"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-2 up"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${tapid}-1"
-          ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${tapid}-2"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-1 type gretap local ${BRIDGEVM_IP} remote $private_ip key 1"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-2 type gretap local ${BRIDGEVM_IP} remote $private_ip key 2"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-1 up"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-2 up"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${tapid}-1"
+          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${tapid}-2"
 
           echo "Setting up l2 tunnels endpoints on bridge VM for subnode"
           if [[ -n "$subnode_private_ip" ]]; then
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-1 type gretap local 10.0.0.15 remote $subnode_private_ip key 1"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-2 type gretap local 10.0.0.15 remote $subnode_private_ip key 2"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${subtapid}-1 up"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${subtapid}-2 up"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${subtapid}-1"
-            ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${subtapid}-2"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-1 type gretap local ${BRIDGEVM_IP} remote $subnode_private_ip key 1"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-2 type gretap local ${BRIDGEVM_IP} remote $subnode_private_ip key 2"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${subtapid}-1 up"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${subtapid}-2 up"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${subtapid}-1"
+            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${subtapid}-2"
           fi
 
           echo "Setting up l2 tunnel endpoints on this node"
-          sudo ip link add nexustap1 type gretap local $private_ip remote 10.0.0.15 key 1
-          sudo ip link add nexustap2 type gretap local $private_ip remote 10.0.0.15 key 2
+          sudo ip link add nexustap1 type gretap local $private_ip remote ${BRIDGEVM_IP} key 1
+          sudo ip link add nexustap2 type gretap local $private_ip remote ${BRIDGEVM_IP} key 2
 
           echo "Creating OVS bridge to represent physnet connected to nexus"
           sudo ovs-vsctl add-br br-nexusnet
@@ -83,8 +85,8 @@
 
           if [[ -n "$subnode_private_ip" ]]; then
             echo "Setting up l2 tunnel endpoints on subnode"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap1 type gretap local $subnode_private_ip remote 10.0.0.15 key 1"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap2 type gretap local $subnode_private_ip remote 10.0.0.15 key 2"
+            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap1 type gretap local $subnode_private_ip remote ${BRIDGEVM_IP} key 1"
+            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap2 type gretap local $subnode_private_ip remote ${BRIDGEVM_IP} key 2"
             echo "Creating OVS bridge to represent physnet connected to nexus"
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-br br-nexusnet"
             ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-br br-ex"
@@ -111,9 +113,11 @@
                 tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
                 tapid="tap${tapid}"
 
+                BRIDGEVM_IP="10.0.0.24"
+
                 echo "Destroying the virtual L2 path to the nexus"
-                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-1"
-                ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-2"
+                ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-1"
+                ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-2"
 
                 echo "Checking for subnode tap interface id"
                 sudo touch /etc/nodepool/sub_tapid
@@ -121,8 +125,8 @@
 
                 if [[ -n "subtapid" ]]; then
                   echo "Destroying the virtual L2 path to the nexus for subnode"
-                  ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-1"
-                  ssh tapuser@10.0.0.15 -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-2"
+                  ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-1"
+                  ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-2"
                 fi
 
 - publisher:
