@@ -125,7 +125,11 @@ echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
 sed -i -e 's/dlv-anchor-file:/#dlv-anchor-file:/g' /etc/unbound/unbound.conf
 
 # Disable DNSSEC because openDNS doesn't support it
-sed -i -e 's/auto-trust-anchor-file:/#auto-trust-anchor-file:/g' /etc/unbound/unbound.conf
+if [[ "$DISTRO_NAME" =~ (centos|fedora|opensuse) ]] ; then
+  sed -i -e 's/auto-trust-anchor-file:/#auto-trust-anchor-file:/g' /etc/unbound/unbound.conf
+else
+  sed -i -e 's/auto-trust-anchor-file:/#auto-trust-anchor-file:/g' /etc/unbound/unbound.conf.d/root-auto-trust-anchor-file.conf
+fi
 
 # This defaults file must be in place to work around this bug:
 # https://bugs.launchpad.net/ubuntu/+source/unbound/+bug/988513
