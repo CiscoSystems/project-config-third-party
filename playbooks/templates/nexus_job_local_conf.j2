@@ -17,11 +17,11 @@ ssh_port=22
 physnet=nexusnet
 
 {% for host in groups['primary'] %}
-{{ hostvars[host]["ansible_hostname"] }}=1/5
+{{ hostvars[host]["ansible_hostname"] }}=1/17
 {% endfor %}
 
 {% if groups['subnodes'] is defined %}
 {% for host in groups['subnodes'] %}
-{{ hostvars[host]["ansible_hostname"] }}=1/6
+{{ hostvars[host]["ansible_hostname"] }}=1/18
 {% endfor %}
 {% endif %}

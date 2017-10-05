@@ -123,7 +123,7 @@
                 sudo touch /etc/nodepool/sub_tapid
                 subtapid=$(cat /etc/nodepool/sub_tapid)
 
-                if [[ -n "subtapid" ]]; then
+                if [[ -n "${subtapid}" ]]; then
                   echo "Destroying the virtual L2 path to the nexus for subnode"
                   ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-1"
                   ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-2"
@@ -218,12 +218,12 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/\$Q_PLUGIN_CONF_FILE]]"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_cisco]"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"nexus_driver=ncclient"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_mech_cisco_nexus:192.133.148.206]"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_mech_cisco_nexus:192.133.148.13]"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"username=admin"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"password=CTO1234!"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ssh_port=22"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"physnet=nexusnet"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${{HOSTNAME}}=1/5"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${{HOSTNAME}}=1/17"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh

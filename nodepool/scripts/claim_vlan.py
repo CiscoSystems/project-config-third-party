@@ -1,6 +1,6 @@
 import MySQLdb
 
-db = MySQLdb.connect(host="10.0.0.2",
+db = MySQLdb.connect(host="10.0.196.2",
                      user="ciuser",
                      passwd="secret",
                      db="ciresources")
