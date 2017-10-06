@@ -26,7 +26,7 @@
           done
 
 - builder:
-    name: run-pre-job
+    name: run-ansible-playbook
     builders:
       - shell: |
           #!/bin/bash -xe
@@ -35,7 +35,7 @@
           else
             export OVERRIDE_ZUUL_BRANCH=mitaka-eol
           fi
-          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{job-name}-job-pre.yaml
+          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - publisher:
     name: run-post-job
@@ -50,7 +50,7 @@
                 else
                   export OVERRIDE_ZUUL_BRANCH=mitaka-eol
                 fi
-                ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{job-name}-job-post.yaml
+                ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - job-template:
     name: 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}'
@@ -68,18 +68,17 @@
       - devstack-checkout-http
       - install-ansible
       - generate-inventory
-      - run-pre-job
-      - shell: |
-          #!/bin/bash -xe
-          if [[ "{zuul-branch}" != "mitaka" ]]; then
-            export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
-          else
-            export OVERRIDE_ZUUL_BRANCH=mitaka-eol
-          fi
-          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{job-name}-job.yaml
+      - run-ansible-playbook:
+          zuul-branch: "{zuul-branch}"
+          book-name: "{job-name}-job-pre.yaml"
+      - run-ansible-playbook:
+          zuul-branch: "{zuul-branch}"
+          book-name: "{job-name}-job.yaml"
       - link-logs
 
     publishers:
-      - run-post-job
+      - run-post-job:
+          zuul-branch: "{zuul-branch}"
+          book-name: "{job-name}-job-post.yaml"
       - devstack-logs
       - console-log
