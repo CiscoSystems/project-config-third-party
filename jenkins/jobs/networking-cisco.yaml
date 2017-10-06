@@ -22,7 +22,7 @@
           # Add bridge VM to inventory
           ssh-keyscan 10.0.0.24 >> ~/.ssh/known_hosts
           echo "[bridge]" >> "$WORKSPACE/inventory"
-          echo "10.0.0.24 ansible_ssh_private_key_file=/opt/nodepool-scripts/vm-bridge-key"
+          echo "10.0.0.24 ansible_ssh_private_key_file=/opt/nodepool-scripts/vm-bridge-key ansible_ssh_user=tapuser"
 
           # Add subnodes to inventory
           echo "[subnodes]" >> "$WORKSPACE/inventory"
