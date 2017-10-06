@@ -1,3 +1,4 @@
 - hosts: primary
   roles:
     - release-some-vlans
+    - tear-l2-tunnels

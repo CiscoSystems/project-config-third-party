@@ -1,0 +1,2 @@
+minvlan: "{{ lookup('file', '{{ workspace }}/claimed_vlans').split(':')[0] }}"
+maxvlan: "{{ lookup('file', '{{ workspace }}/claimed_vlans').split(':')[1] }}"
