@@ -1,148 +1,4 @@
 - builder:
-    name: setup-l2-tunnel
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          echo "Setting up the virtual L2 path to the nexus"
-
-          export BASE=/opt/git
-          source $BASE/openstack-dev/devstack/functions-common
-
-          BRIDGEVM_IP="10.0.0.24"
-
-          echo "Calculating the test nodes tapids"
-          private_ip=$(cat /etc/nodepool/primary_node_private)
-          subnode_private_ip=$(cat /etc/nodepool/sub_nodes_private)
-          tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-          tapid="tap${tapid}"
-
-          if [[ -n "$subnode_private_ip" ]]; then
-            subtapid=$(ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "cat /etc/nodepool/uuid")
-            subtapid=$(echo "$subtapid" | cut -c1-8)
-            subtapid="tap${subtapid}"
-            echo "$subtapid" | sudo tee /etc/nodepool/sub_tapid
-          fi
-
-          if is_suse || is_fedora; then
-            ovs_package='openvswitch'
-            ovs_service='openvswitch'
-          elif uses_debs; then
-            ovs_package='openvswitch-switch'
-            ovs_service='openvswitch-switch'
-          else
-            echo "Unsupported platform, can't determine openvswitch service"
-            exit 1
-          fi
-
-          install_ovs_deps="source $BASE/openstack-dev/devstack/functions-common; \
-                            install_package ${ovs_package}; \
-                            restart_service ${ovs_service}"
-
-          echo "Installing OVS"
-          eval $install_ovs_deps
-
-          if [[ -n "$subnode_private_ip" ]]; then
-            echo "Installing OVS on subnode"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "$install_ovs_deps"
-          fi
-
-          echo "Clearing any links that are already using this IP address as the remote"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del"
-
-          if [[ -n "$subnode_private_ip" ]]; then
-            echo "Clearing any links that are already using subnode IP address as the remote"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip -o -d link | grep $subnode_private_ip | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del"
-          fi
-
-          echo "Setting up l2 tunnels endpoints on bridge VM"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-1 type gretap local ${BRIDGEVM_IP} remote $private_ip key 1"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${tapid}-2 type gretap local ${BRIDGEVM_IP} remote $private_ip key 2"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-1 up"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${tapid}-2 up"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${tapid}-1"
-          ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${tapid}-2"
-
-          echo "Setting up l2 tunnels endpoints on bridge VM for subnode"
-          if [[ -n "$subnode_private_ip" ]]; then
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-1 type gretap local ${BRIDGEVM_IP} remote $subnode_private_ip key 1"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link add ${subtapid}-2 type gretap local ${BRIDGEVM_IP} remote $subnode_private_ip key 2"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${subtapid}-1 up"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link set dev ${subtapid}-2 up"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint1 ${subtapid}-1"
-            ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo brctl addif nexusint2 ${subtapid}-2"
-          fi
-
-          echo "Setting up l2 tunnel endpoints on this node"
-          sudo ip link add nexustap1 type gretap local $private_ip remote ${BRIDGEVM_IP} key 1
-          sudo ip link add nexustap2 type gretap local $private_ip remote ${BRIDGEVM_IP} key 2
-
-          echo "Creating OVS bridge to represent physnet connected to nexus"
-          sudo ovs-vsctl add-br br-nexusnet
-          sudo ovs-vsctl add-br br-ex
-
-          echo "Adding l2 tunnel for nexus port 1 to the OVS bridge"
-          sudo ovs-vsctl add-port br-nexusnet nexustap1
-
-          if [[ -n "$subnode_private_ip" ]]; then
-            echo "Setting up l2 tunnel endpoints on subnode"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap1 type gretap local $subnode_private_ip remote ${BRIDGEVM_IP} key 1"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ip link add nexustap2 type gretap local $subnode_private_ip remote ${BRIDGEVM_IP} key 2"
-            echo "Creating OVS bridge to represent physnet connected to nexus"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-br br-nexusnet"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-br br-ex"
-            echo "Adding l2 tunnel for nexus port 2 to the OVS bridge"
-            ssh jenkins@${subnode_private_ip} -o StrictHostKeyChecking=no -i /etc/nodepool/id_rsa "sudo ovs-vsctl add-port br-nexusnet nexustap2"
-          fi
-
-- builder:
-    name: claim-some-vlans
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          echo "Claiming a vlan range from the CI system"
-          python /opt/nodepool-scripts/claim_vlan.py > claimed_vlans
-
-- publisher:
-    name: teardown-l2-tunnel
-    publishers:
-      - postbuildscript:
-          script-only-if-succeeded: false
-          builders:
-            - shell: |
-                #!/bin/bash -xe
-                tapid=$(cat /etc/nodepool/uuid | cut -c1-8)
-                tapid="tap${tapid}"
-
-                BRIDGEVM_IP="10.0.0.24"
-
-                echo "Destroying the virtual L2 path to the nexus"
-                ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-1"
-                ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${tapid}-2"
-
-                echo "Checking for subnode tap interface id"
-                sudo touch /etc/nodepool/sub_tapid
-                subtapid=$(cat /etc/nodepool/sub_tapid)
-
-                if [[ -n "${subtapid}" ]]; then
-                  echo "Destroying the virtual L2 path to the nexus for subnode"
-                  ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-1"
-                  ssh tapuser@${BRIDGEVM_IP} -o StrictHostKeyChecking=no -i /opt/nodepool-scripts/vm-bridge-key "sudo ip link del dev ${subtapid}-2"
-                fi
-
-- publisher:
-    name: release-some-vlans
-    publishers:
-      - postbuildscript:
-          script-only-if-succeeded: false
-          builders:
-            - shell: |
-                #!/bin/bash -xe
-                echo "Releasing vlan range back to pool"
-                minvlan=$(cat claimed_vlans | cut -f1 -d":")
-                maxvlan=$(cat claimed_vlans | cut -f2 -d":")
-                python /opt/nodepool-scripts/free_vlan.py "${minvlan}" "${maxvlan}"
-
-- builder:
     name: install-ansible
     builders:
       - shell: |
@@ -169,8 +25,35 @@
               echo "$SUBNODE host_counter=$COUNTER nodepool='{\"private_ipv4\": \"$SUBNODE\"}'" >> "$WORKSPACE/inventory"
           done
 
+- builder:
+    name: run-pre-job
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          if [[ "{zuul-branch}" != "mitaka" ]]; then
+            export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
+          else
+            export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+          fi
+          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{job-name}-job-pre.yaml
+
+- publisher:
+    name: run-post-job
+    publishers:
+      - postbuildscript:
+          script-only-if-succeeded: false
+          builders:
+            - shell: |
+                #!/bin/bash -xe
+                if [[ "{zuul-branch}" != "mitaka" ]]; then
+                  export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
+                else
+                  export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+                fi
+                ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{job-name}-job-post.yaml
+
 - job-template:
-    name: 'gate-{name}-dsvm-tempest-smoke-nexus-{zuul-branch}-{node}'
+    name: 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}'
     node: '{node}'
 
     wrappers:
@@ -183,10 +66,9 @@
       - net-info
       - project-config-checkout-http
       - devstack-checkout-http
-      - setup-l2-tunnel
-      - claim-some-vlans
       - install-ansible
       - generate-inventory
+      - run-pre-job
       - shell: |
           #!/bin/bash -xe
           if [[ "{zuul-branch}" != "mitaka" ]]; then
@@ -194,72 +76,10 @@
           else
             export OVERRIDE_ZUUL_BRANCH=mitaka-eol
           fi
-
-          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/nexus-job.yaml
+          ansible-playbook -i inventory -c local -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{job-name}-job.yaml
       - link-logs
 
     publishers:
-      - teardown-l2-tunnel
-      - release-some-vlans
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: 'gate-{name}-dsvm-tempest-smoke-nexus-multinode-{node}'
-    node: '{node}'
-
-    wrappers:
-      - timeout:
-          timeout: 185  # Timeout in *minutes*
-          fail: true  # A job run that exceeds the timeout will cause a failure
-      - timestamps
-
-    builders:
-      - net-info
-      - devstack-checkout-http
-      - setup-l2-tunnel
-      - claim-some-vlans
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          # 180 minutes in milliseconds
-          export BUILD_TIMEOUT=10800000
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_NEUTRON=1
-
-          export DEVSTACK_GATE_TOPOLOGY="multinode"
-
-          export OVERRIDE_ZUUL_BRANCH=stable/ocata
-
-          export PROJECTS="openstack/networking-cisco $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service net-cisco"
-
-          HOSTNAME=$(hostname)
-          CLAIMED_VLAN_RANGE=$(cat claimed_vlans)
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_VLAN_RANGES=nexusnet:${{CLAIMED_VLAN_RANGE}}"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/\$Q_PLUGIN_CONF_FILE]]"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_cisco]"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"nexus_driver=ncclient"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"[ml2_mech_cisco_nexus:192.133.148.13]"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"username=admin"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"password=CTO1234!"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ssh_port=22"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"physnet=nexusnet"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"${{HOSTNAME}}=1/17"
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-      - link-logs
-
-    publishers:
-      - teardown-l2-tunnel
-      - release-some-vlans
+      - run-post-job
       - devstack-logs
       - console-log

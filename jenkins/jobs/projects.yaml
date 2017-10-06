@@ -12,8 +12,10 @@
     vendor: cisco
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-nexus-{zuul-branch}-{node}'
-        - 'gate-{name}-dsvm-tempest-smoke-nexus-multinode-{node}':
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+            job-name: nexus
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+            job-name: nexus
             node: centos-7-2-node
 
 - project:

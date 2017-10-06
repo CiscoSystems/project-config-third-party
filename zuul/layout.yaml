@@ -59,4 +59,4 @@ projects:
       - gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7
     silent:
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-multinode-centos-7-2-node
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
