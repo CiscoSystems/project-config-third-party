@@ -3,3 +3,4 @@
 
 - name: Install OpenVSwitch
   package: name={{ovs_package}} state=present
+  become: true
