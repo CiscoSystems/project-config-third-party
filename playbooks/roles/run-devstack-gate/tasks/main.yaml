@@ -10,6 +10,7 @@
 - name: Run devstack gate
   environment: "{{ devstack_gate_env }}"
   register: devstack-gate
+  show_output: true
   args:
     chdir: "{{ workspace }}"
   command: "./safe-devstack-vm-gate-wrap.sh"
