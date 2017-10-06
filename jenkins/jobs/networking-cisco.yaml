@@ -18,9 +18,17 @@
           PRIMARY_NODE=$(cat /etc/nodepool/primary_node_private)
           echo "[primary]" > "$WORKSPACE/inventory"
           echo "localhost ansible_connection=local host_counter=$COUNTER nodepool='{\"private_ipv4\": \"$PRIMARY_NODE\"}'" >> "$WORKSPACE/inventory"
+
+          # Add bridge VM to inventory
+          ssh-keyscan 10.0.0.24 >> ~/.ssh/known_hosts
+          echo "[bridge]" >> "$WORKSPACE/inventory"
+          echo "10.0.0.24 ansible_ssh_private_key_file=/opt/nodepool-scripts/vm-bridge-key"
+
+          # Add subnodes to inventory
           echo "[subnodes]" >> "$WORKSPACE/inventory"
           export SUBNODES=$(cat /etc/nodepool/sub_nodes_private)
           for SUBNODE in $SUBNODES ; do
+              ssh-keyscan $SUBNODE >> ~/.ssh/known_hosts
               let COUNTER=COUNTER+1
               echo "$SUBNODE host_counter=$COUNTER nodepool='{\"private_ipv4\": \"$SUBNODE\"}'" >> "$WORKSPACE/inventory"
           done
