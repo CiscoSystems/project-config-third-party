@@ -20,9 +20,9 @@
           echo "localhost ansible_connection=local host_counter=$COUNTER nodepool='{\"private_ipv4\": \"$PRIMARY_NODE\"}'" >> "$WORKSPACE/inventory"
 
           # Add bridge VM to inventory
-          ssh-keyscan 10.0.0.24 >> ~/.ssh/known_hosts
-          echo "[bridge]" >> "$WORKSPACE/inventory"
-          echo "10.0.0.24 ansible_ssh_private_key_file=/opt/nodepool-scripts/vm-bridge-key ansible_user=tapuser"
+          # ssh-keyscan 10.0.0.24 >> ~/.ssh/known_hosts
+          # echo "[bridge]" >> "$WORKSPACE/inventory"
+          # echo "10.0.0.24 ansible_ssh_private_key_file=/opt/nodepool-scripts/vm-bridge-key ansible_user=tapuser" >> "$WORKSPACE/inventory"
 
           # Add subnodes to inventory
           echo "[subnodes]" >> "$WORKSPACE/inventory"
@@ -43,7 +43,7 @@
           else
             export OVERRIDE_ZUUL_BRANCH=mitaka-eol
           fi
-          ansible-playbook -vvvv -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
+          ansible-playbook -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - publisher:
     name: run-post-job
@@ -58,7 +58,7 @@
                 else
                   export OVERRIDE_ZUUL_BRANCH=mitaka-eol
                 fi
-                ansible-playbook -vvvv -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
+                ansible-playbook -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - job-template:
     name: 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}'
