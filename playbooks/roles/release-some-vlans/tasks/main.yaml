@@ -1,3 +1,3 @@
 - name: claim-some-vlans
-  command: "python /opt/nodepool-scripts/free_vlan.py {{ minvlan }} {{ maxvlan }}"
+  command: "python {{ workspace }}/project-config-third-party/scripts/free_vlan.py {{ minvlan }} {{ maxvlan }}"
   register: command_output

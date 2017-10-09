@@ -1,5 +1,5 @@
 - name: claim-some-vlans
-  command: "python /opt/nodepool-scripts/claim_vlan.py"
+  command: "python {{ workspace }}/project-config-third-party/scripts/claim_vlan.py"
   register: command_output
 
 - name: save-vlans-to-disk
