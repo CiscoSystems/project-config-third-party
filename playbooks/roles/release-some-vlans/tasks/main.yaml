@@ -1,3 +1,9 @@
+- name: Check that the somefile.conf exists
+  stat:
+    path: "{{ workspace }}/claimed_vlans"
+  register: stat_result
+
 - name: claim-some-vlans
   command: "python {{ workspace }}/project-config-third-party/scripts/free_vlan.py {{ minvlan }} {{ maxvlan }}"
   register: command_output
+  when: stat_result.stat.exists == True
