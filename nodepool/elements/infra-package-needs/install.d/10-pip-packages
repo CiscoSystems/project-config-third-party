@@ -20,7 +20,7 @@ if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
 fi
 set -e
 
-packages='tox ansible'
+packages='tox ansible==2.3.2.0'
 
 for package in $packages ; do
     pip install $package
