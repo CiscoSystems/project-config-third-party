@@ -58,7 +58,7 @@
                 else
                   export OVERRIDE_ZUUL_BRANCH=mitaka-eol
                 fi
-                ansible-playbook -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
+                ansible-playbook -vvv -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - job-template:
     name: 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}'
