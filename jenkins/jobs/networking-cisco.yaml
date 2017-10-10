@@ -7,6 +7,7 @@
           source $BASE/openstack-dev/devstack/functions-common
 
           sudo pip install --upgrade ansible
+          touch $WORKSPACE/ansible_default.cfg
 
 - builder:
     name: generate-inventory
@@ -41,7 +42,7 @@
           else
             export OVERRIDE_ZUUL_BRANCH=mitaka-eol
           fi
-          export ANSIBLE_CONFIG=/etc/ansible/ansible.cfg
+          export ANSIBLE_CONFIG=$WORKSPACE/ansible_default.cfg
           ansible-playbook -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - publisher:
@@ -57,7 +58,7 @@
                 else
                   export OVERRIDE_ZUUL_BRANCH=mitaka-eol
                 fi
-                export ANSIBLE_CONFIG=/etc/ansible/ansible.cfg
+                export ANSIBLE_CONFIG=$WORKSPACE/ansible_default.cfg
                 ansible-playbook -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - job-template:
