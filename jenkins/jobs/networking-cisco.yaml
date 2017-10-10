@@ -9,7 +9,7 @@
           sudo pip install --upgrade ansible
           cat > $WORKSPACE/ansible_default.cfg << EOF
           [defaults]
-          stdout_callback = minimal
+          stdout_callback = default
           EOF
 
 - builder:

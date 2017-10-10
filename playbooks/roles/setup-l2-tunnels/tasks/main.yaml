@@ -1,4 +1,22 @@
 ---
+- name: Slurp nodepool node uuid
+  slurp:
+    src: /etc/nodepool/uuid
+  register: nodepool_uuid_file
+
+- name: Set tapid fact from node uuid
+  set_fact:
+    tapid: "{{ (nodepool_uuid_file['content'] | b64decode).split('-')[0] }}"
+
+- name: Get nodepool node's private IP
+  slurp:
+    src: /etc/nodepool/node_private
+  register: nodepool_private_ip_file
+
+- name: Set private IP fact from file
+  set_fact:
+    private_nodepool_ip: "{{ nodepool_private_ip_file['content'] | b64decode }}"
+
 - name: Setup l2 tunnels
   shell: |
     ip link add nexustap1 type gretap local {{ private_nodepool_ip }} remote 10.0.0.24 key 1
