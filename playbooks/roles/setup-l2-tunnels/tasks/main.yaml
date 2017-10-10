@@ -15,12 +15,12 @@
 
 - name: Set private IP fact from file
   set_fact:
-    private_nodepool_ip: "{{ nodepool_private_ip_file['content'] | b64decode }}"
+    private_nodepool_ip: "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
 
 - name: Setup l2 tunnels
   shell: |
-    ip link add nexustap1 type gretap local {{ private_nodepool_ip }} remote 10.0.0.24 key 1
-    ip link add nexustap2 type gretap local {{ private_nodepool_ip }} remote 10.0.0.24 key 2
+    ip link add nexustap1 type gretap local {{ private_nodepool_ip | quote }} remote 10.0.0.24 key 1
+    ip link add nexustap2 type gretap local {{ private_nodepool_ip | quote }} remote 10.0.0.24 key 2
     ip link set dev nexustap1 up
     ip link set dev nexustap2 up
   become: true
@@ -45,9 +45,9 @@
 
 - name: Plumb the other side of the L2 tunnel
   raw: |
-    sudo ip -o -d link | grep {{ private_nodepool_ip }} | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del && \
-    sudo ip link add tap{{ tapid }}-1 type gretap local 10.0.0.24 remote {{ private_nodepool_ip }} key 1 && \
-    sudo ip link add tap{{ tapid }}-2 type gretap local 10.0.0.24 remote {{ private_nodepool_ip }} key 2 && \
+    sudo ip -o -d link | grep {{ private_nodepool_ip | quote }} | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del && \
+    sudo ip link add tap{{ tapid }}-1 type gretap local 10.0.0.24 remote {{ private_nodepool_ip | quote }} key 1 && \
+    sudo ip link add tap{{ tapid }}-2 type gretap local 10.0.0.24 remote {{ private_nodepool_ip | quote }} key 2 && \
     sudo ip link set dev tap{{ tapid }}-1 up && \
     sudo ip link set dev tap{{ tapid }}-2 up
   delegate_to: 10.0.0.24
