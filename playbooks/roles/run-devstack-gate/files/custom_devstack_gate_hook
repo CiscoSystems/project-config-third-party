@@ -1,0 +1,4 @@
+function gate_hook {
+  sed -i -e "s/libvirt-python.*/libvirt-python===3.2.0/g" /opt/stack/new/requirements/upper-constraints.txt
+}
+export -f gate_hook

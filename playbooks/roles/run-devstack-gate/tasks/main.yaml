@@ -1,3 +1,8 @@
+- name: Copy custom gate hooks into workspace
+  copy:
+    src: custom_devstack_gate_hook
+    dest: "{{ workspace }}/custom_devstack_gate_hook"
+
 - name: Copy devstack gate to devstack gate safe
   copy:
     src: "{{ workspace }}/devstack-gate/devstack-vm-gate-wrap.sh"

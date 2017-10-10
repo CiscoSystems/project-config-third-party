@@ -6,3 +6,4 @@ devstack_gate_env:
   BUILD_TIMEOUT: 10800000
   DEVSTACK_GATE_TEMPEST: 1
   DEVSTACK_GATE_NEUTRON: 1
+  DEVSTACK_GATE_SETTINGS: "{{ workspace }}/custom_devstack_gate_hook"
