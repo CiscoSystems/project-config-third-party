@@ -1,5 +1,5 @@
 devstack_gate_env:
-  DEVSTACK_LOCAL_CONF: "{{ devstack_local_conf }}"
+  DEVSTACK_LOCAL_CONFIG: "{{ devstack_local_conf }}"
   PROJECTS: "{{ projects | join(' ') }}"
   OVERRIDE_ZUUL_BRANCH: "{{ override_zuul_branch }}"
   PYTHONUNBUFFERED: true
