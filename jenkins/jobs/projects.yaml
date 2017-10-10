@@ -17,6 +17,8 @@
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
             job-name: nexus
             node: centos-7-2-node
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+            job-name: ucsm
 
 - project:
     name: sandbox
