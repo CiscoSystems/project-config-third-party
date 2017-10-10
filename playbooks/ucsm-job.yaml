@@ -3,6 +3,7 @@
   vars:
     projects:
       - openstack/networking-cisco
+    claimed_vlan_range: "{{ lookup('file', '{{ workspace }}/claimed_vlans') }}"
     devstack_local_conf: "{{ lookup('template', 'templates/ucsm_job_local_conf.j2') }}"
   roles:
     - run-devstack-gate
