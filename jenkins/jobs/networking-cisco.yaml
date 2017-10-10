@@ -7,7 +7,10 @@
           source $BASE/openstack-dev/devstack/functions-common
 
           sudo pip install --upgrade ansible
-          touch $WORKSPACE/ansible_default.cfg
+          cat > $WORKSPACE/ansible_default.cfg << EOF
+          [defaults]
+          stdout_callback = mimimal
+          EOF
 
 - builder:
     name: generate-inventory
