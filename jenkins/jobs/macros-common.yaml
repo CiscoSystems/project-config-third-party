@@ -47,6 +47,9 @@
               fi
               cd ..
           fi
+          cd devstack-gate
+          git fetch https://git.openstack.org/openstack-infra/devstack-gate refs/changes/46/510946/1 && git cherry-pick FETCH_HEAD
+          cd ..
 
 - builder:
     name: project-config-checkout-http
