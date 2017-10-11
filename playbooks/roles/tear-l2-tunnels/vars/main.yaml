@@ -1,2 +1,0 @@
----
-private_nodepool_ip: "{{ lookup('file', '/etc/nodepool/node_private') }}"
