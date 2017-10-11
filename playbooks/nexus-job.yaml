@@ -1,7 +1,7 @@
 # Collect information from all nodes so we can use it in the devstack config file
 - hosts: all
   tasks:
-    - ping
+    - ping:
 
 # Run devstack gate only on primary
 - hosts: primary
