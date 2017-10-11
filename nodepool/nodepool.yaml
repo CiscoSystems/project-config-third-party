@@ -18,26 +18,26 @@ labels:
   - name: ubuntu-xenial
     image: ubuntu-xenial
     ready-script: configure_mirror.sh
-    min-ready: 3
+    min-ready: 0
     providers:
       - name: devstack-rocket-man
   - name: ubuntu-xenial-2-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
-    min-ready: 1
+    min-ready: 0
     subnodes: 1
     providers:
       - name: devstack-rocket-man
   - name: centos-7
     image: centos-7
     ready-script: configure_mirror.sh
-    min-ready: 3
+    min-ready: 2
     providers:
       - name: devstack-rocket-man
   - name: centos-7-2-node
     image: centos-7
     ready-script: multinode_setup.sh
-    min-ready: 1
+    min-ready: 0
     subnodes: 1
     providers:
       - name: devstack-rocket-man
@@ -50,7 +50,7 @@ providers:
     auth-url: http://192.133.156.19/identity
     api-timeout: 60
     boot-timeout: 120
-    max-servers: 20
+    max-servers: 2
     rate: 0.001
     # Remove this when glean has support for ipv6 on centos
     ipv6-preferred: false
