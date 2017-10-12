@@ -9,6 +9,11 @@
     dest: "{{ workspace }}/safe-devstack-vm-gate-wrap.sh"
     mode: u=rwx,g=r,o=r
 
+- name: Copy custom features.yaml into workspace
+  copy:
+    src: features.yaml
+    dest: "{{ workspace }}/features.yaml"
+
 - name: Output devstack gate env
   debug: msg="{{ devstack_gate_env }}"
 
