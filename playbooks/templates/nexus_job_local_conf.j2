@@ -1,7 +1,9 @@
 enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco
 enable_service net-cisco
+
 ML2_VLAN_RANGES=nexusnet:{{claimed_vlan_range}}
 OVS_VLAN_RANGES=nexusnet:{{claimed_vlan_range}}
+
 ENABLE_TENANT_VLANS=True
 OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet
 Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus

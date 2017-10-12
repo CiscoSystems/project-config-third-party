@@ -1,9 +1,25 @@
+default_enabled_projects:
+  - "openstack-infra/devstack-gate"
+  - "openstack-dev/devstack"
+  - "openstack/glance"
+  - "openstack/keystone"
+  - "openstack/neutron"
+  - "openstack/nova"
+  - "openstack/requirements"
+  - "openstack/tempest"
+  - "openstack/tempest-lib"
+
 devstack_gate_env:
   DEVSTACK_LOCAL_CONFIG: "{{ devstack_local_conf }}"
-  PROJECTS: "{{ projects | join(' ') }}"
+  DEVSTACK_GATE_PROJECTS_OVERRIDE: "{{ (default_enabled_projects | join(' ')) (projects | join(' ')) }}"
   OVERRIDE_ZUUL_BRANCH: "{{ override_zuul_branch }}"
   PYTHONUNBUFFERED: true
   BUILD_TIMEOUT: 10800000
+  DEVSTACK_GATE_NO_SERVICE: 1
   DEVSTACK_GATE_TEMPEST: 1
   DEVSTACK_GATE_NEUTRON: 1
+  DEVSTACK_GATE_GLANCE: 1
+  DEVSTACK_GATE_NOVA: 1
+  DEVSTACK_GATE_KEYSTONE: 1
+  DEVSTACK_GATE_PLACEMENT: "{% if ('mitaka' in override_zuul_branch or 'newton' in override_zuul_branch) %} 0 {% else %} 1 {% endif %}"
   DEVSTACK_GATE_SETTINGS: "{{ workspace }}/custom_devstack_gate_hook"
