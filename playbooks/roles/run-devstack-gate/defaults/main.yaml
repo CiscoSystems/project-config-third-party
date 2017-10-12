@@ -11,7 +11,7 @@ default_enabled_projects:
 
 devstack_gate_env:
   DEVSTACK_LOCAL_CONFIG: "{{ devstack_local_conf }}"
-  DEVSTACK_GATE_PROJECTS_OVERRIDE: "{{ (default_enabled_projects | join(' ')) (projects | join(' ')) }}"
+  DEVSTACK_GATE_PROJECTS_OVERRIDE: "{{ default_enabled_projects | join(' ') }} {{ projects | join(' ') }}"
   OVERRIDE_ZUUL_BRANCH: "{{ override_zuul_branch }}"
   PYTHONUNBUFFERED: true
   BUILD_TIMEOUT: 10800000
