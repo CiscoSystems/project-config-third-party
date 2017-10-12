@@ -3,7 +3,7 @@
     path: "{{ workspace }}/claimed_vlans"
   register: stat_result
 
-- name: claim-some-vlans
+- name: Release the claimed VLANs
   command: "python {{ workspace }}/project-config-third-party/scripts/free_vlan.py {{ minvlan }} {{ maxvlan }}"
   register: command_output
   when: stat_result.stat.exists == True
