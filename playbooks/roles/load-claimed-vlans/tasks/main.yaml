@@ -7,7 +7,7 @@
   slurp:
     src: "{{ workspace }}/claimed_vlans"
   register: claimed_vlans_file
-  when: stat_result.stat.exists == True
+  when: stat_claimed_vlans.stat.exists == True
 
 - name: Set facts from the claimed vlans
   set_fact:
