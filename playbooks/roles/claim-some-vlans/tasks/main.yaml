@@ -1,5 +1,10 @@
+- name: Copy script to workspace
+  copy:
+    src: "claim_vlan.py"
+    dest: "{{ workspace }}/claim_vlan.py"
+
 - name: Claim some VLANs for use in the tests
-  command: "python {{ workspace }}/project-config-third-party/scripts/claim_vlan.py"
+  command: "python {{ workspace }}/claim_vlan.py"
   register: claimed_vlans_result
 
 - name: Save VLANs as fact
