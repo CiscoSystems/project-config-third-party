@@ -1,0 +1,8 @@
+---
+nexus_ip: 192.133.148.13
+nexus_user: admin
+nexus_password: CTO1234!
+nexus_port: 22
+nexus_interfaces:
+  - 1/17
+  - 1/18

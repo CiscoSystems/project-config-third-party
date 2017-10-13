@@ -1,4 +1,6 @@
 - hosts: primary
   roles:
+    - load-claimed-vlans
+    # - clear-nexus-vlans
     - release-some-vlans
     - tear-l2-tunnels

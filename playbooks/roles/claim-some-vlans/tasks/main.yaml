@@ -1,8 +1,17 @@
-- name: claim-some-vlans
+- name: Claim some VLANs for use in the tests
   command: "python {{ workspace }}/project-config-third-party/scripts/claim_vlan.py"
-  register: command_output
+  register: claimed_vlans_result
 
-- name: save-vlans-to-disk
+- name: Save VLANs as fact
+  set_fact:
+    claimed_vlan_range: "{{ claimed_vlans.stdout }}"
+
+- name: Set more facts from the claimed vlans
+  set_fact:
+    maxvlan: "{{ claimed_vlan_range.split(':')[1] }}"
+    minvlan: "{{ claimed_vlan_range.split(':')[0] }}"
+
+- name: Save claimed VLANs to file
   copy:
-    content: "{{ command_output.stdout }}"
+    content: "{{ claimed_vlan_range }}"
     dest: "{{ workspace }}/claimed_vlans"
