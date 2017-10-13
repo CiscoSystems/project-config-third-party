@@ -54,13 +54,13 @@ jobs:
 projects:
   - name: openstack/networking-cisco
     check:
-      #- gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7
-      #- gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7
-      #- gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7
-      #- gate-networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
-      #- gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
-      #- gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
-    #silent:
-      #- gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
+    silent:
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
