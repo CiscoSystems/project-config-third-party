@@ -9,7 +9,7 @@
 
 - name: Save VLANs as fact
   set_fact:
-    claimed_vlan_range: "{{ claimed_vlans.stdout }}"
+    claimed_vlan_range: "{{ claimed_vlans_result.stdout }}"
 
 - name: Set more facts from the claimed vlans
   set_fact:
