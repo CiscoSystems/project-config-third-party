@@ -1,5 +1,5 @@
 ---
-nexus_ip: 192.133.148.13
+nexus_ip: 192.133.149.9
 nexus_user: admin
 nexus_password: CTO1234!
 nexus_port: 22

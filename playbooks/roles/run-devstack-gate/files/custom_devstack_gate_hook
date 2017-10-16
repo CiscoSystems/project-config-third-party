@@ -1,7 +1,9 @@
 function pre_test_hook {
   sed -i -e "s/libvirt-python.*/libvirt-python===3.2.0/g" /opt/stack/new/requirements/upper-constraints.txt
 
+  # Cherrypick changes to devstack-gate to allow for testing against EOL tags.
   (cd /opt/stack/new/devstack-gate && \
-   git fetch https://git.openstack.org/openstack-infra/devstack-gate refs/changes/46/510946/1 && git cherry-pick FETCH_HEAD)
+   git fetch https://git.openstack.org/openstack-infra/devstack-gate refs/changes/46/510946/1 && git cherry-pick FETCH_HEAD && \
+   git fetch https://git.openstack.org/openstack-infra/devstack-gate refs/changes/45/512245/1 && git cherry-pick FETCH_HEAD)
 }
 export -f pre_test_hook
