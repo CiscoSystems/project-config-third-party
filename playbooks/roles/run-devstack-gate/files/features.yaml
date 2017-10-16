@@ -11,7 +11,8 @@ config:
     # and don't need to incur the overhead of installing all services in the process.
     no_services: [default]
   neutron:
-    features: [neutron, neutron-adv]
+    features: [neutron]
+    #features: [neutron, neutron-adv]
   # different backends
   postgres:
     features: [postgresql]
