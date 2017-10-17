@@ -1,6 +1,9 @@
 - hosts: primary
   roles:
     - load-claimed-vlans
-    - clear-nexus-vlans
+      # NOTE(sambetts) Ignore errors from clearing the nexus to make sure that
+      # we release the vlans we claimed.
+    - role: clear-nexus-vlans
+      ignore_errors: true
     - release-some-vlans
     - tear-l2-tunnels
