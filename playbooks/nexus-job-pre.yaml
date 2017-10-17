@@ -6,4 +6,4 @@
 - hosts: primary
   roles:
     - claim-some-vlans
-    # - clear-nexus-vlans
+    - clear-nexus-vlans

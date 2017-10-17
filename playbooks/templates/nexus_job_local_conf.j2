@@ -10,18 +10,13 @@ Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_nexus
 Q_ML2_TENANT_NETWORK_TYPE=vlan
 
 [[post-config|/$Q_PLUGIN_CONF_FILE]]
-[ml2_cisco]
-nexus_driver=ncclient
 [ml2_mech_cisco_nexus:{{ nexus_ip }}]
 username={{ nexus_user }}
 password={{ nexus_password }}
-ssh_port={{ nexus_port }}
 physnet=nexusnet
-
 {% for host in groups['primary'] %}
 {{ hostvars[host]["ansible_hostname"] }}={{ nexus_interfaces[0] }}
 {% endfor %}
-
 {% if groups['subnodes'] is defined %}
 {% for host in groups['subnodes'] %}
 {{ hostvars[host]["ansible_hostname"] }}={{ nexus_interfaces[1] }}
