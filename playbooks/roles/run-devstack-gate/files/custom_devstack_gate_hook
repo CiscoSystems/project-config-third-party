@@ -1,6 +1,6 @@
 function pre_test_hook {
   # Hack the version of libvirt-python so its compatible with centos7
-  ansible all -i $WORKSPACE/inventory -m "replace" -a "path=/opt/stack/new/requirements/upper-constraints.txt regexp='libvirt-python.*' replace='libvirt-python===3.2.0'"
+  $ANSIBLE all -i $WORKSPACE/inventory -m "replace" -a "path=/opt/stack/new/requirements/upper-constraints.txt regexp='libvirt-python.*' replace='libvirt-python===3.2.0'"
 
   # Cherrypick changes to devstack-gate to allow for testing against EOL tags.
   (cd /opt/stack/new/devstack-gate && \
