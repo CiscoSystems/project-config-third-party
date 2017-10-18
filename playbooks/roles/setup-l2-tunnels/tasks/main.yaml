@@ -27,7 +27,8 @@
   become: true
 
 - name: Reload iptables rules from rules file
-  command: "iptables-restore < /etc/sysconfig/iptables"
+  shell: |
+    iptables-restore < /etc/sysconfig/iptables
   become: true
 
 # yamllint disable rule:line-length
