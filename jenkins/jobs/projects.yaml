@@ -17,15 +17,4 @@
             node: centos-7-2-node
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
             job-name: ucsm
-
-- project:
-    name: sandbox
-    github-org: openstack-dev
-    node:
-      - ubuntu-xenial
-      - centos-7
-    vendor: cisco
-
-    jobs:
-        - 'noop-check-communication-{node}'
-        - 'gate-{name}-dsvm-tempest-full-{node}'
+            node: centos-7
