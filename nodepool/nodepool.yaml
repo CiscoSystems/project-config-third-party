@@ -31,7 +31,7 @@ labels:
   - name: centos-7
     image: centos-7
     ready-script: configure_mirror.sh
-    min-ready: 8
+    min-ready: 1
     providers:
       - name: devstack-rocket-man
   - name: centos-7-2-node
