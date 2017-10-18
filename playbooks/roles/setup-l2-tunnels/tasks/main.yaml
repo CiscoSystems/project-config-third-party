@@ -20,14 +20,14 @@
 
 - name: Make sure GRE is allowed by iptables in rules file
   lineinfile:
-    path: /etc/iptables/rules.v4
+    path: /etc/sysconfig/iptables
     line: '-A openstack-INPUT -p gre -j ACCEPT'
     insertafter: '-A openstack-INPUT -p icmp .*'
     state: present
   become: true
 
 - name: Reload iptables rules from rules file
-  command: "iptables-restore < /etc/iptables/rules.v4"
+  command: "iptables-restore < /etc/sysconfig/iptables"
   become: true
 
 # yamllint disable rule:line-length
