@@ -19,3 +19,4 @@
     {{ nexus_user }} {{ nexus_password }} {{ item }}
     {{ minvlan }} {{ maxvlan }}
   with_items: "{{ nexus_interfaces }}"
+  when: minvlan is defined and maxvlan is defined
