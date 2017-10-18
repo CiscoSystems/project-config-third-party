@@ -1,3 +1,5 @@
+# yamllint disable rule:line-length
+---
 config:
   default:
     master: [default, glance, nova, placement, keystone]
@@ -12,7 +14,7 @@ config:
     no_services: [default]
   neutron:
     features: [neutron]
-    #features: [neutron, neutron-adv]
+    # features: [neutron, neutron-adv]
   # different backends
   postgres:
     features: [postgresql]
@@ -162,7 +164,7 @@ primary:
 
   ironic-inspector:
     base:
-      services: [ironic-inspector,ironic-inspector-dhcp]
+      services: [ironic-inspector, ironic-inspector-dhcp]
 
   sahara:
     base:
@@ -297,3 +299,4 @@ subnode:
       rm-services: [tls-proxy]
     newton:
       rm-services: [tls-proxy]
+# yamllint enable

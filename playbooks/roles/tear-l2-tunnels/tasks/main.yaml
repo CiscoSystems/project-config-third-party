@@ -1,3 +1,4 @@
+---
 - name: Get nodepool node's private IP
   slurp:
     src: /etc/nodepool/node_private
@@ -5,11 +6,13 @@
 
 - name: Set private IP fact from file
   set_fact:
-    private_nodepool_ip: "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
+    private_nodepool_ip: >
+      "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
 
 - name: Tear down l2 tunnel from bridge vm
-  raw: |
-    sudo ip -o -d link | grep {{ private_nodepool_ip }} | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del
+  raw: >
+    sudo ip -o -d link | grep {{ private_nodepool_ip }} | cut -d ' ' -f2 |
+    cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del
   delegate_to: 10.0.0.24
   vars:
     ansible_private_key_file: /opt/nodepool-scripts/vm-bridge-key

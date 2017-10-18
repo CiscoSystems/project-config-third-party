@@ -15,8 +15,10 @@
 
 - name: Set private IP fact from file
   set_fact:
-    private_nodepool_ip: "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
+    private_nodepool_ip: >
+      "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
 
+# yamllint disable rule:line-length
 - name: Setup l2 tunnels
   shell: |
     ip link add nexustap1 type gretap local {{ private_nodepool_ip | quote }} remote 10.0.0.24 key 1
@@ -24,6 +26,7 @@
     ip link set dev nexustap1 up
     ip link set dev nexustap2 up
   become: true
+# yamllint enable
 
 - name: Create OVS bridge to represent ex-net
   command: ovs-vsctl add-br br-ex
@@ -43,6 +46,7 @@
   become: true
   when: "'subnodes' in group_names"
 
+# yamllint disable rule:line-length
 - name: Plumb the other side of the L2 tunnel
   raw: |
     sudo ip -o -d link | grep {{ private_nodepool_ip | quote }} | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del && \
@@ -56,3 +60,4 @@
   vars:
     ansible_private_key_file: /opt/nodepool-scripts/vm-bridge-key
     ansible_user: tapuser
+# yamllint enable

@@ -1,9 +1,11 @@
-# Run devstack gate only on primary
+---
+# Run devstack gate only on primary
 - hosts: primary
   vars:
     projects:
       - openstack/networking-cisco
-    devstack_local_conf: "{{ lookup('template', 'templates/ucsm_job_local_conf.j2') }}"
+    devstack_local_conf: >
+      "{{ lookup('template', 'templates/ucsm_job_local_conf.j2') }}"
   roles:
     - load-claimed-vlans
     - run-devstack-gate

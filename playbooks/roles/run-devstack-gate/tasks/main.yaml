@@ -1,3 +1,4 @@
+---
 - name: Copy custom gate hooks into workspace
   copy:
     src: custom_devstack_gate_hook
@@ -23,5 +24,3 @@
   args:
     chdir: "{{ workspace }}"
   command: "./safe-devstack-vm-gate-wrap.sh"
-  #become: true
-  #become_user: stack

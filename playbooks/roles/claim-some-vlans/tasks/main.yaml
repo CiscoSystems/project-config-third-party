@@ -1,3 +1,4 @@
+---
 - name: Copy script to workspace
   copy:
     src: "claim_vlan.py"

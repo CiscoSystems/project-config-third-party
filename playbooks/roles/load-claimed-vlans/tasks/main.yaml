@@ -1,3 +1,4 @@
+---
 - name: Check that the claimed_vlans file exists
   stat:
     path: "{{ workspace }}/claimed_vlans"

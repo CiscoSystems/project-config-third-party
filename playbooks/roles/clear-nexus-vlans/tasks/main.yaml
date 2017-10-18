@@ -1,3 +1,4 @@
+---
 - name: Copy script to workspace
   copy:
     src: "clear_nexus_vlans.py"
@@ -13,5 +14,8 @@
     key: "{{ nexus_keyscan_result.stdout }}"
 
 - name: Clear the claimed VLANs on the Nexus interfaces
-  command: "python {{ workspace }}/clear_nexus_vlans.py {{ nexus_ip }} {{ nexus_user }} {{ nexus_password }} {{ item }} {{ minvlan }} {{ maxvlan }}"
+  command: >
+    "python {{ workspace }}/clear_nexus_vlans.py {{ nexus_ip }}"
+    "{{ nexus_user }} {{ nexus_password }} {{ item }}"
+    "{{ minvlan }} {{ maxvlan }}"
   with_items: "{{ nexus_interfaces }}"

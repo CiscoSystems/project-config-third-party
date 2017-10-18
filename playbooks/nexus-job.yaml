@@ -1,14 +1,17 @@
-# Collect information from all nodes so we can use it in the devstack config file
+---
+# Collect information from all nodes so we can use it in the devstack
+# config file
 - hosts: all
   tasks:
     - ping:
 
-# Run devstack gate only on primary
+# Run devstack gate only on primary
 - hosts: primary
   vars:
     projects:
       - openstack/networking-cisco
-    devstack_local_conf: "{{ lookup('template', 'templates/nexus_job_local_conf.j2') }}"
+    devstack_local_conf: >
+      "{{ lookup('template', 'templates/nexus_job_local_conf.j2') }}"
   roles:
     - load-claimed-vlans
     - run-devstack-gate
