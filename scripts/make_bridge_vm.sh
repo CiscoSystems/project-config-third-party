@@ -21,6 +21,9 @@ ip link add nexustap2 type gretap local 10.0.196.33 remote 10.0.196.3 key 2
 brctl addif nexusint1 nexustap1
 brctl addif nexusint2 nexustap2
 
+# insert -A openstack-INPUT -p gre -j ACCEPT into /etc/iptables/rules.v4
+iptables-restore < /etc/iptables/rules.v4
+
 # Setup bridges and taps state up
 ip link set nexustap1 up
 ip link set nexustap2 up

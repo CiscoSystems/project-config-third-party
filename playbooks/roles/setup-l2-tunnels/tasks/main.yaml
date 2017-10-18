@@ -18,6 +18,18 @@
     private_nodepool_ip:
       "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
 
+- name: Make sure GRE is allowed by iptables in rules file
+  lineinfile:
+    path: /etc/iptables/rules.v4
+    line: '-A openstack-INPUT -p gre -j ACCEPT'
+    insertafter: '-A openstack-INPUT -p icmp .*'
+    state: present
+  become: true
+
+- name: Reload iptables rules from rules file
+  command: "iptables-restore < /etc/iptables/rules.v4"
+  become: true
+
 # yamllint disable rule:line-length
 - name: Setup l2 tunnels
   shell: |
