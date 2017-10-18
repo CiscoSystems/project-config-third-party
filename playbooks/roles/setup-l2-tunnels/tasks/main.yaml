@@ -15,7 +15,7 @@
 
 - name: Set private IP fact from file
   set_fact:
-    private_nodepool_ip: >
+    private_nodepool_ip:
       "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
 
 # yamllint disable rule:line-length

@@ -12,7 +12,7 @@ default_enabled_projects:
 
 devstack_gate_env:
   DEVSTACK_LOCAL_CONFIG: "{{ devstack_local_conf }}"
-  DEVSTACK_GATE_PROJECTS_OVERRIDE: >
+  DEVSTACK_GATE_PROJECTS_OVERRIDE:
     "{{ default_enabled_projects | join(' ') }} {{ projects | join(' ') }}"
   OVERRIDE_ZUUL_BRANCH: "{{ override_zuul_branch }}"
   PYTHONUNBUFFERED: true
@@ -21,5 +21,5 @@ devstack_gate_env:
   DEVSTACK_GATE_NEUTRON: 1
   DEVSTACK_GATE_SETTINGS: "{{ workspace }}/custom_devstack_gate_hook"
   DEVSTACK_GATE_FEATURE_MATRIX: "{{ workspace }}/features.yaml"
-  DEVSTACK_GATE_TOPOLOGY: >
+  DEVSTACK_GATE_TOPOLOGY:
     "{% if (groups['subnodes']|length) > 0 %}multinode{% else %}aio{% endif %}"
