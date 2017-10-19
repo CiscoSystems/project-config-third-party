@@ -35,3 +35,8 @@ cat /etc/sudoers.d/tapuser << EOF
 tapuser ALL=(ALL) NOPASSWD: /sbin/brctl
 tapuser ALL=(ALL) NOPASSWD: /sbin/ip
 EOF
+
+# Setup OpenStack security groups for both internal network and
+# external network
+# openstack security group rule create <security group id> --proto gre
+# openstack security group rule create <security group id> --proto gre --egress

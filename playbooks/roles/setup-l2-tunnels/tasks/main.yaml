@@ -53,7 +53,7 @@
 # yamllint disable rule:line-length
 - name: Plumb the other side of the L2 tunnel
   raw: |
-    sudo ip -o -d link | grep {{ private_nodepool_ip | quote }} | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del && \
+    sudo ip -o -d link | grep "local {{ private_nodepool_ip }} ttl" | cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del && \
     sudo ip link add tap{{ tapid }}-1 type gretap local 10.0.0.24 remote {{ private_nodepool_ip | quote }} key 1 && \
     sudo ip link add tap{{ tapid }}-2 type gretap local 10.0.0.24 remote {{ private_nodepool_ip | quote }} key 2 && \
     sudo ip link set dev tap{{ tapid }}-1 up && \
