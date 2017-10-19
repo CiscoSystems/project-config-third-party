@@ -7,4 +7,7 @@
     - role: clear-nexus-vlans
       ignore_errors: true
     - release-some-vlans
+
+- hosts: all
+  roles:
     - tear-l2-tunnels
