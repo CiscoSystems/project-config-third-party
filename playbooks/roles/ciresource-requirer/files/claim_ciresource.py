@@ -69,7 +69,7 @@ else:
         query = ("UPDATE %(resource)ss SET locked=true, "
                  "timestamp='%(timestamp)s' where %(where)s")
 
-        where = generate_where_clause(d)
+        where = generate_where_clause(data)
         cur.execute(query % {'where': where, 'resource': ci_resource_name,
                              'timestamp': datetime.now().strftime(f)})
     else:
