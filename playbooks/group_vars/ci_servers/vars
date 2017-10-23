@@ -1,0 +1,8 @@
+---
+jenkins_password: "{{vault_jenkins_password}}"
+jenkins_ssh_private_key: "{{vault_jenkins_ssh_private_key}}"
+jenkins_ssh_public_key: "{{vault_jenkins_ssh_public_key}}"
+gerrit_user_ssh_private_key: "{{vault_gerrit_user_ssh_private_key}}"
+gerrit_user_ssh_public_key: "{{vault_gerrit_user_ssh_public_key}}"
+jenkins_api_key: "{{vault_jenkins_api_key}}"
+jenkins_credentials_id: "{{vault_jenkins_credentials_id}}"

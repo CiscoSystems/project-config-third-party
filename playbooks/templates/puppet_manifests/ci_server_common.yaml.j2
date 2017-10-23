@@ -1,0 +1,52 @@
+# See parameter documentation inside ../manifests/single_node_ci.pp
+# Fields commented out have reasonable default values
+
+vhost_name: 192.133.156.17
+#project_config_repo: https://gitlab.com/robcresswell/project-config.git
+project_config_repo: https://github.com/CiscoSystems/project-config-third-party.git
+#serveradmin:
+# Jenkins version 1.651 is the last known version to work out of the box with
+# zuul. However, it has numerous security vulnerabilities, and should only
+# be used for installations that have other means (e.g. firewalls) that block all
+# untrusted access to Jenkins.
+# see SECURITY-170 in:
+# "https://wiki.jenkins-ci.org/display/SECURITY/Jenkins+Security+Advisory+2016-05-11"
+#jenkins_version: 2.60.3
+jenkins_version: latest
+#jenkins_vhost_name: jenkins
+#jenkins_username: jenkins
+jenkins_password: {{ jenkins_password }}
+jenkins_ssh_private_key: |
+  {{ jenkins_ssh_private_key }}
+jenkins_ssh_public_key: {{ jenkins_ssh_public_key }}
+jjb_git_revision: 1.6.2
+java_args_override: "-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g -Dorg.kohsuke.stapler.compression.CompressionFilter.disabled=true -Djava.util.logging.config.file=/var/lib/jenkins/logger.conf -Dhudson.model.ParametersAction.keepUndefinedParameters=true"
+   # Please note that using the parameter: keepUndefinedParameters=true is not secure and exposes a potential jenkins security vulnerability
+#jjb_git_url: https://git.openstack.org/openstack-infra/jenkins-job-builder
+#gerrit_server: review.openstack.org
+#gerrit_ssh_host_key:
+gerrit_user: cisco_ml2_ci
+gerrit_user_ssh_private_key: |
+  {{ gerrit_user_ssh_private_key }}
+gerrit_user_ssh_public_key: {{ gerrit_user_ssh_public_key }}
+git_email: ml2.ci@cisco.com
+git_name: Cisco CI
+log_server: 192.133.156.18
+#smtp_host:
+#smtp_default_from:
+#smtp_default_to:
+zuul_revision: 2.5.2
+#zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
+oscc_file_contents: |
+  # Insert OSCC file contents here as explained in the
+  # documentation so that nodepool is able to
+  # authenticate to your cloud(s)
+  #
+
+mysql_root_password: secret
+mysql_nodepool_password: secret
+#nodepool_jenkins_target: jenkins1
+jenkins_api_key: {{ jenkins_api_key }}
+jenkins_credentials_id: {{ jenkins_credentials_id }}
+nodepool_revision: master
+#nodepool_git_source_repo: https://git.openstack.org/openstack-infra/nodepool
