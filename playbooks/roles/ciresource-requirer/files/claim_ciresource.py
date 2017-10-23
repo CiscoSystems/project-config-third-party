@@ -38,7 +38,7 @@ cur = db.cursor()
 def generate_where_clause(data):
     equals = []
     for k, v in data.items():
-        equals.append("%s=%s" % (k, v))
+        equals.append("%s=\"%s\"" % (k, v))
     return " AND ".join(equals)
 
 
