@@ -1,0 +1,14 @@
+---
+- name: Copy script to workspace
+  copy:
+    src: "set_nexus_vlans.py"
+    dest: "{{ workspace }}/set_nexus_vlans.py"
+
+- name: ssh-keyscan the nexus switch
+  command: "ssh-keyscan -t rsa {{ nexus_ip }}"
+  register: nexus_keyscan_result
+
+- name: Ensure nexus switch is in known_hosts
+  known_hosts:
+    name: "{{ nexus_ip }}"
+    key: "{{ nexus_keyscan_result.stdout }}"

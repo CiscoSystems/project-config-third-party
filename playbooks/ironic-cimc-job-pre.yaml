@@ -9,3 +9,4 @@
     - claim-some-vlans
     - clear-nexus-vlans
     - requires-a-cimc-baremetal
+    - configure-vlan-for-baremetal
