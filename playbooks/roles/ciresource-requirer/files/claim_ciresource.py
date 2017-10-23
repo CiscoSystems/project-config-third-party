@@ -22,7 +22,8 @@ fields = {
     ],
     'cimc_baremetal': [
         'bmc_address',
-        'nexus_port'
+        'nexus_port',
+        'mac_address'
     ]
 }
 

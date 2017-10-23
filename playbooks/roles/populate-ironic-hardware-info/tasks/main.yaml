@@ -1,0 +1,5 @@
+---
+- name: Write hardware_info file
+  template:
+    src: hardware_info.j2
+    dest: "{{workspace}}/hardware_info"

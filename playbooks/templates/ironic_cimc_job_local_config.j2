@@ -1,0 +1,13 @@
+enable_plugin ironic https://git.openstack.org/openstack/ironic
+
+ML2_VLAN_RANGES=nexusnet:{{minvlan}}:{{minvlan}}
+OVS_VLAN_RANGES=nexusnet:{{minvlan}}:{{minvlan}}
+
+ENABLE_TENANT_VLANS=True
+OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet
+Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge
+Q_ML2_TENANT_NETWORK_TYPE=vlan
+
+IRONIC_IS_HARDWARE=True
+IRONIC_DEPLOY_DRIVER=pxe_iscsi_cimc
+IRONIC_HWINFO_FILE={{workspace}}/hardware_info

@@ -15,7 +15,9 @@
       - openstack/ironic-lib
     devstack_local_conf:
       "{{ lookup('template', 'templates/ironic_cimc_job_local_conf.j2') }}"
+    tempest_regex: "ironic"
   roles:
     - load-claimed-vlans
     - load-claimed-baremetal
-    # - run-devstack-gate
+    - populate-ironic-hardware-info
+    - run-devstack-gate
