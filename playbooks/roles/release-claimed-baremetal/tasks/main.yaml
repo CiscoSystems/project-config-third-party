@@ -8,4 +8,4 @@
   command: >
     python {{workspace}}/claim_ciresource.py cimc_baremetal
     --release {{ workspace }}/claimed_baremetal
-  when: claimed_baremetal_file.exists
+  when: claimed_baremetal_file.stat.exists
