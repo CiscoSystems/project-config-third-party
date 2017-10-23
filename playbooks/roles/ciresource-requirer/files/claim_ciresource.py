@@ -63,7 +63,7 @@ else:
 
     if row is not None:
         data = {}
-        for i in len(ci_resource_fields):
+        for i in range(len(ci_resource_fields)):
             data[ci_resource_fields[i]] = row[i]
 
         query = ("UPDATE %(resource)ss SET locked=true, "
