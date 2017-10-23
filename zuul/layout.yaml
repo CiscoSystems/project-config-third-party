@@ -31,10 +31,10 @@ pipelines:
     manager: IndependentPipelineManager
     trigger:
       gerrit:
-        - event: patchset-created
-        - event: change-restored
+        #        - event: patchset-created
+        #        - event: change-restored
         - event: comment-added
-          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*cisco-experimental
     success:
       smtp:
         to: rcresswe@cisco.com
@@ -62,3 +62,7 @@ projects:
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
+
+  - name: openstack/ironic
+    silent:
+      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7

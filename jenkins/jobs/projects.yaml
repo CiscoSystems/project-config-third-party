@@ -1,4 +1,18 @@
 - project:
+    name: ironic
+    github-org: openstack
+    zuul-branch:
+      - current
+    node:
+      - centos-7
+    vendor: cisco
+
+    jobs:
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+            job-name: ironic-cimc
+            node: centos-7
+
+- project:
     name: networking-cisco
     github-org: openstack
     zuul-branch:

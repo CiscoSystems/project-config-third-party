@@ -1,0 +1,21 @@
+---
+# Collect information from all nodes so we can use it in the devstack
+# config file
+- hosts: all
+  tasks:
+    - ping:
+
+# Run devstack gate only on primary
+- hosts: primary
+  vars:
+    projects:
+      - openstack/ironic
+      - openstack/python-ironicclient
+      - openstack/ironic-python-agent
+      - openstack/ironic-lib
+    devstack_local_conf:
+      "{{ lookup('template', 'templates/ironic_cimc_job_local_conf.j2') }}"
+  roles:
+    - load-claimed-vlans
+    - load-claimed-baremetal
+    # - run-devstack-gate

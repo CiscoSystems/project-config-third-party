@@ -40,10 +40,12 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          if [[ "{zuul-branch}" != "mitaka" ]]; then
-            export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
-          else
+          if [[ "{zuul-branch}" == "mitaka" ]]; then
             export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+          elif [[ "{zuul-branch}" == "current" ]]; then
+            export OVERRIDE_ZUUL_BRANCH=
+          else
+            export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
           fi
           export ANSIBLE_CONFIG=$WORKSPACE/ansible_default.cfg
           ansible-playbook -v -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
@@ -56,10 +58,12 @@
           builders:
             - shell: |
                 #!/bin/bash -xe
-                if [[ "{zuul-branch}" != "mitaka" ]]; then
-                  export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
-                else
+                if [[ "{zuul-branch}" == "mitaka" ]]; then
                   export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+                elif [[ "{zuul-branch}" == "current" ]]; then
+                  export OVERRIDE_ZUUL_BRANCH=
+                else
+                  export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
                 fi
                 export ANSIBLE_CONFIG=$WORKSPACE/ansible_default.cfg
                 ansible-playbook -v -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}

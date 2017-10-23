@@ -1,0 +1,5 @@
+---
+- name: Release the claimed baremetal resource
+  command: >
+    python {{workspace}}/claim_ciresource.py cimc_baremetal
+    --release {{ workspace }}/claimed_baremetal

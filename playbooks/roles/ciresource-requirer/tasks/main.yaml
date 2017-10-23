@@ -1,0 +1,5 @@
+---
+- name: Copy script to workspace
+  copy:
+    src: "claim_ciresource.py"
+    dest: "{{ workspace }}/claim_ciresource.py"

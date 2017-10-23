@@ -1,0 +1,13 @@
+---
+- name: Claim a baremetal resource
+  command: "python {{workspace}}/claim_ciresource.py cimc_baremetal"
+  register: claimed_baremetal_result
+
+- name: Set some facts based on the claimed baremetal
+  set_fact:
+    claimed_baremetal: "{{ claimed_baremetal_result.stdout }}"
+
+- name: Write baremetal claim to file for cleanup later
+  copy:
+    content: "{{ claimed_baremetal_result.stdout }}"
+    dest: "{{ workspace }}/claimed_baremetal"
