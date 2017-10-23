@@ -11,8 +11,8 @@ TOP_DIR=$(cd $(dirname "$0") && pwd)
 FULL_PROJECT_CONFIG_PATH=${FULL_PROJECT_CONFIG_PATH:-/home/rocket-man/project-config-third-party}
 
 if [ -d "$FULL_PROJECT_CONFIG_PATH" ]; then
-  echo "Could not run through local.sh because FULL_PROJECT_CONFIG_PATH is not set to a valid path" 
-  exit 0
+    echo "Could not run through local.sh because FULL_PROJECT_CONFIG_PATH is not set to a valid path"
+    exit 0
 fi
 
 # Get OpenStack admin authentication
@@ -28,14 +28,14 @@ sudo ip link set dev br-ex up
 security_group_id=$(openstack security group list --project demo -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
-openstack security group rule create ${security_group_id} --proto tcp --port 22  
-openstack security group rule create ${security_group_id} --proto icmp --port 0  
+openstack security group rule create ${security_group_id} --proto tcp --port 22
+openstack security group rule create ${security_group_id} --proto icmp --port 0
 
 security_group_id=$(openstack security group list --project demo -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
-openstack security group rule create ${security_group_id} --proto tcp --port 22  
-openstack security group rule create ${security_group_id} --proto icmp --port 0  
+openstack security group rule create ${security_group_id} --proto tcp --port 22
+openstack security group rule create ${security_group_id} --proto icmp --port 0
 
 # Configure flavor for use by the testing system
 openstack flavor create Performance --ram 8192 --disk 30 --vcpus 4
@@ -99,4 +99,4 @@ openstack server create --image bridge-vm-image --flavor Performance \
                         --config-drive=true nexus-bridge
 
 # Run the playbook to setup and configure the bridge VM ready for use by the tests
-ansible-playbook -i "$pub_ip," --private-key=bridge-vm-setup-key -u root -e $PATH_TO_PROJECT_CONFIG $PATH_TO_PROJECT_CONFIG/playbooks/bridge-vm-setup.yaml 
+ansible-playbook -i "$pub_ip," --private-key=bridge-vm-setup-key -u root -e $PATH_TO_PROJECT_CONFIG $PATH_TO_PROJECT_CONFIG/playbooks/bridge-vm-setup.yaml

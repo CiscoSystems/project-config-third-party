@@ -9,7 +9,9 @@
       authorized_key:
         user: tapuser
         state: present
-        key: "{{ lookup('file', '%s/nodepool/scripts/vm-bridge-key.pub' % project_config_repo) }}"
+        key: >-
+          {{ lookup('file', '%s/nodepool/scripts/vm-bridge-key.pub'
+          % project_config_repo) }}
 
     - name: Add sudo rules for the tapuser
       blockinfile:
@@ -17,7 +19,7 @@
         block: |
           tapuser ALL=(ALL) NOPASSWD: /sbin/brctl
           tapuser ALL=(ALL) NOPASSWD: /sbin/ip
-        create: yes
+        create: "yes"
 
     # Setup infrastructure for the L2 tunnels
     - name: Install bridge-utils
@@ -25,10 +27,10 @@
         name: bridge-utils
         state: latest
 
-    - name: Check if bridges exist 
+    - name: Check if bridges exist
       shell: brctl show | grep {{ item }}
       register: check_bridges_exist
-      changed_when: False
+      changed_when: "False"
       failed_when: check_bridges_exist.rc >= 2
       with_items:
         - nexusint1
@@ -39,28 +41,30 @@
       when: item.rc == 1
       with_items: "{{ check_bridges_exist.results }}"
 
-    - name: Check if tap interfaces exist 
+    - name: Check if tap interfaces exist
       shell: ip link | grep {{ item.name }}
       register: check_taps_exist
-      changed_when: False
+      changed_when: "False"
       failed_when: check_taps_exist.rc >= 2
       with_items:
-        - { name: 'nexustap1', key: 1}
-        - { name: 'nexustap2', key: 2}
+        - {name: 'nexustap1', key: 1}
+        - {name: 'nexustap2', key: 2}
 
     - name: Create GRE tap for first nexus interface
-      command: ip link add {{ item.item.name }} type gretap local 10.0.196.33 remote 10.0.196.3 key {{ item.item.key }}
+      command: >
+        ip link add {{ item.item.name }} type gretap local 10.0.196.33
+        remote 10.0.196.3 key {{ item.item.key }}
       when: item.rc == 1
       with_items: "{{ check_taps_exist.results }}"
 
     - name: Check if GRE taps are added to the bridges
       shell: brctl show {{ item.bridge }} | grep {{ item.tap }}
       register: check_taps_in_bridges
-      changed_when: False
+      changed_when: "False"
       failed_when: check_taps_in_bridges.rc >= 2
       with_items:
-        - { bridge: 'nexusint1', tap: 'nexustap1' }
-        - { bridge: 'nexusint2', tap: 'nexustap2' }
+        - {bridge: 'nexusint1', tap: 'nexustap1'}
+        - {bridge: 'nexusint2', tap: 'nexustap2'}
 
     - name: Add nexus taps to the bridges
       command: brctl addif {{ item.item.bridge }} {{ item.item.tap }}
@@ -70,7 +74,7 @@
     - name: Check if interfaces are up
       shell: ip link sh {{ item }} | grep "UP"
       register: check_devices_up
-      changed_when: False
+      changed_when: "False"
       failed_when: check_devices_up.rc >= 2
       with_items:
         - nexusint1
@@ -80,7 +84,7 @@
 
     - name: Bring up all the interfaces
       command: ip link set {{ item.item }} up
-      changed_when: False
+      changed_when: "False"
       when: item.rc == 1
       with_items: "{{ check_devices_up.results }}"
 
@@ -88,7 +92,7 @@
     - name: Check if GRE rule already in iptables
       shell: iptables --list-rules | grep "-p gre"
       register: check_iptables_result
-      changed_when: False
+      changed_when: "False"
       failed_when: check_iptables_result.rc >= 2
 
     - name: Make sure GRE is allowed by iptables
