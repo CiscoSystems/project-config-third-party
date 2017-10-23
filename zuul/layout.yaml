@@ -65,4 +65,4 @@ projects:
 
   - name: openstack/ironic
     silent:
-      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7
+      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc

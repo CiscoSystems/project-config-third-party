@@ -15,6 +15,7 @@ zookeeper-servers:
   - host: localhost
 
 labels:
+  # Labels for the networking-cisco CI
   - name: ubuntu-xenial
     image: ubuntu-xenial
     ready-script: configure_mirror.sh
@@ -41,6 +42,19 @@ labels:
     subnodes: 1
     providers:
       - name: devstack-rocket-man
+  # Labels for the ironic jobs so they are limited
+  - name: centos-7-cimc
+    image: centos-7
+    ready-script: configure_mirror.sh
+    min-ready: 1
+    providers:
+      - name: devstack-rocket-man-cimc
+  - name: centos-7-ucsm
+    image: centos-7
+    ready-script: configure_mirror.sh
+    min-ready: 1
+    providers:
+      - name: devstack-rocket-man-ucsm
 
 providers:
   - name: devstack-rocket-man
@@ -52,6 +66,66 @@ providers:
     boot-timeout: 120
     max-servers: 20
     rate: 0.001
+    # Remove this when glean has support for ipv6 on centos
+    ipv6-preferred: false
+    image-type: qcow2
+    template-hostname: '{image.name}-{timestamp}'
+    images:
+      - name: ubuntu-xenial
+        min-ram: 8192
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+      - name: centos-7
+        min-ram: 8192
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+  # Re-entering the same provider again so we can limit the max number of
+  # servers to prevent us starting too many jobs for ironic
+  - name: devstack-rocket-man-cimc
+    username: admin
+    password: secret
+    project-name: demo
+    auth-url: http://192.133.156.19/identity
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 4
+    rate: 1
+    # Remove this when glean has support for ipv6 on centos
+    ipv6-preferred: false
+    image-type: qcow2
+    template-hostname: '{image.name}-{timestamp}'
+    images:
+      - name: ubuntu-xenial
+        min-ram: 8192
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+      - name: centos-7
+        min-ram: 8192
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+  # Re-entering the same provider again so we can limit the max number of
+  # servers to prevent us starting too many jobs for ironic
+  - name: devstack-rocket-man-ucsm
+    username: admin
+    password: secret
+    project-name: demo
+    auth-url: http://192.133.156.19/identity
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 3
+    rate: 1
     # Remove this when glean has support for ipv6 on centos
     ipv6-preferred: false
     image-type: qcow2

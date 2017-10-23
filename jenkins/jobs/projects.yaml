@@ -10,7 +10,7 @@
     jobs:
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
             job-name: ironic-cimc
-            node: centos-7
+            node: centos-7-cimc
 
 - project:
     name: networking-cisco
