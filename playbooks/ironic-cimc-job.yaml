@@ -15,6 +15,10 @@
       - openstack/ironic-lib
     devstack_local_conf:
       "{{ lookup('template', 'templates/ironic_cimc_job_local_conf.j2') }}"
+    devstack_gate_env_override:
+      DEVSTACK_GATE_VIRT_DRIVER: "ironic"
+      DEVSTACK_GATE_CONFIG_DRIVE: "1"
+      DEVSTACK_GATE_TEMPEST_REGEX: "ironic"
     tempest_regex: "ironic"
   roles:
     - load-claimed-vlans
