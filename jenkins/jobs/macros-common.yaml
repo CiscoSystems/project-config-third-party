@@ -57,6 +57,12 @@
     builders:
       - shell: |
           #!/bin/bash -xe
+          if [[ "{experimental}" == "-expr" ]]; then
+              branch=experimental
+          else
+              branch=master
+          fi
+
           if [[ ! -e project-config-third-party ]]; then
               git clone http://github.com/CiscoSystems/project-config-third-party
           else
@@ -68,8 +74,8 @@
                   sleep 1
                   git clean -x -f
               fi
-              git checkout master
-              git reset --hard remotes/origin/master
+              git checkout ${{branch}}
+              git reset --hard remotes/origin/${{branch}}
               if ! git clean -x -f ; then
                   sleep 1
                   git clean -x -f

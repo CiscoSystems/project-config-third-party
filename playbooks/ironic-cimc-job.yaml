@@ -19,7 +19,6 @@
       DEVSTACK_GATE_VIRT_DRIVER: "ironic"
       DEVSTACK_GATE_CONFIG_DRIVE: "1"
       DEVSTACK_GATE_TEMPEST_REGEX: "ironic"
-    tempest_regex: "ironic"
   roles:
     - load-claimed-vlans
     - load-claimed-baremetal

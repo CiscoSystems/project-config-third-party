@@ -6,9 +6,12 @@
     node:
       - centos-7
     vendor: cisco
+    post-fix:
+      - ''
+      - '-expr'
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}{post-fix}':
             job-name: ironic-cimc
             node: centos-7-cimc
 
@@ -24,11 +27,14 @@
       - ubuntu-xenial
       - centos-7
     vendor: cisco
+    post-fix:
+      - ''
+      - '-expr'
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}{post-fix}':
             job-name: nexus
             node: centos-7-2-node
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}{post-fix}':
             job-name: ucsm
             node: centos-7
