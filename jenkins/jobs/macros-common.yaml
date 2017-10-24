@@ -65,6 +65,9 @@
 
           if [[ ! -e project-config-third-party ]]; then
               git clone http://github.com/CiscoSystems/project-config-third-party
+              cd project-config-third-party
+              git checkout ${{branch}}
+              cd ..
           else
               cd project-config-third-party
               git remote set-url origin http://github.com/CiscoSystems/project-config-third-party
