@@ -57,11 +57,7 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          if [[ "{experimental}" == "-expr" ]]; then
-              branch=experimental
-          else
-              branch=master
-          fi
+          branch=${{CISCO_CI_EXPR_BRANCH:-master}}
 
           if [[ ! -e project-config-third-party ]]; then
               git clone http://github.com/CiscoSystems/project-config-third-party

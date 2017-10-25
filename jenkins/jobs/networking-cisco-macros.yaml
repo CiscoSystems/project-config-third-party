@@ -80,8 +80,7 @@
 
     builders:
       - net-info
-      - project-config-checkout-http:
-          experimental: "{post-fix}"
+      - project-config-checkout-http
       - devstack-checkout-http
       - install-ansible
       - generate-inventory

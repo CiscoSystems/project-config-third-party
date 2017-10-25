@@ -62,3 +62,13 @@ def set_node_options(item, job, params):
         re.match(signing_re, job.name) or
         re.match(wheel_re, job.name)):
         reusable_node(item, job, params)
+
+    signing_re = r'^(.*-expr)$'
+    dependent_ci_branch_re = r'^Cisco-CI-Experimental-Branch: (.*)\s$'
+    if (re.match(signing_re, job.name)):
+        commitMessageSearch = re.search(dependent_ci_branch_re,
+                                        item.change._data['commitMessage'])
+        if commitMessageSearch:
+            params['CISCO_CI_EXPR_BRANCH'] = commitMessageSearch.group(1)
+        else:
+            params['CISCO_CI_EXPR_BRANCH'] = "master"
