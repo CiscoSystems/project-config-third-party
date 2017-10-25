@@ -57,12 +57,12 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          branch=${{CISCO_CI_EXPR_BRANCH:-master}}
+          branch=${CISCO_CI_EXPR_BRANCH:-master}
 
           if [[ ! -e project-config-third-party ]]; then
               git clone http://github.com/CiscoSystems/project-config-third-party
               cd project-config-third-party
-              git checkout ${{branch}}
+              git checkout ${branch}
               cd ..
           else
               cd project-config-third-party
@@ -73,8 +73,8 @@
                   sleep 1
                   git clean -x -f
               fi
-              git checkout ${{branch}}
-              git reset --hard remotes/origin/${{branch}}
+              git checkout ${branch}
+              git reset --hard remotes/origin/${branch}
               if ! git clean -x -f ; then
                   sleep 1
                   git clean -x -f
