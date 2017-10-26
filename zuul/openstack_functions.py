@@ -48,7 +48,7 @@ def set_node_options(item, job, params):
     # Pass tags through for subunit2sql
     params['JOB_TAGS'] = ' '.join(sorted(job.tags))
     proposal_re = r'^.*(propose|upstream)-(.*?)-(constraints-.*|updates?|update-(liberty|mitaka|newton|ocata|pike)|plugins-list|openstack-constraints|update-constraints|osa-test-scripts)$'  # noqa
-    release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
+    release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'  # noqa
     hook_re = r'^hook-(.*?)-(rtfd)$'
     wheel_re = r'^wheel-(build|release)-.*$'
     reprepro_re = r'^reprepro-(import|release|sign)-.*$'

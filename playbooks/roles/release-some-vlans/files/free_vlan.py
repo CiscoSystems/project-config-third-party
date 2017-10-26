@@ -15,7 +15,8 @@ db = MySQLdb.connect(host="10.0.196.2",
 cur = db.cursor()
 
 vlans = {"min_vlan": args.min_vlan, "max_vlan": args.max_vlan}
-cur.execute("UPDATE vlans SET locked=false where min_vlan=%(min_vlan)s AND max_vlan=%(max_vlan)s" % vlans)
+cur.execute("UPDATE vlans SET locked=false where min_vlan=%(min_vlan)s AND "
+            "max_vlan=%(max_vlan)s" % vlans)
 
 db.commit()
 db.close()

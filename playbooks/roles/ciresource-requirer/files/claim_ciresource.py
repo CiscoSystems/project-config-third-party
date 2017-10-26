@@ -52,7 +52,8 @@ if args.release:
         raise Exception('Missing field information from claimed resource')
 
     where = generate_where_clause(d)
-    cur.execute("UPDATE %ss SET locked=false where %s" % (ci_resource_name, where))
+    cur.execute("UPDATE %ss SET locked=false where %s" % (ci_resource_name,
+                                                          where))
 
 else:
     select_fields = ", ".join(ci_resource_fields)

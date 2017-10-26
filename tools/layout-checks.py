@@ -75,6 +75,7 @@ def check_sections():
             last = current
     return errors
 
+
 def check_formatting():
     errors = False
     count = 1
@@ -90,6 +91,7 @@ def check_formatting():
         count = count + 1
 
     return errors
+
 
 def check_all():
     errors = check_sections()
