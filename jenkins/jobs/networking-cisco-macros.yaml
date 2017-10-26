@@ -69,7 +69,7 @@
                 ansible-playbook -v -i inventory -e workspace=$WORKSPACE -e override_zuul_branch=$OVERRIDE_ZUUL_BRANCH project-config-third-party/playbooks/{book-name}
 
 - job-template:
-    name: 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}{post-fix}'
+    name: 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}'
     node: '{node}'
 
     wrappers:

@@ -1,10 +1,13 @@
 includes:
-    #TODO: Rename this file. These functions are what enables single use nodes in nodepool.
+  # TODO: Rename this file. These functions are what enables single use nodes
+  # in nodepool.
   - python-file: openstack_functions.py
 
 pipelines:
   - name: check
-    description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
+    description: >
+      Newly uploaded patchsets enter this pipeline to receive an initial +/-1
+      Verified vote from Jenkins.
     failure-message: "Build failed.  To recheck use 'recheck'."
     manager: IndependentPipelineManager
     trigger:
@@ -26,25 +29,23 @@ pipelines:
         subject: Upstream change {change} has a merge failure
 
 
-  - name: silent
-    description: Newly uploaded patchsets enter this pipeline to check jobs whose results are NOT to be posted (because e.g. they are not yet stable)
+  - name: experimental
+    description: >
+      Patchsets will enter this pipeline when a cisco-experimental comment is
+      left on them. This pipeline is for running experimental jobs and allows
+      for devs to test their changes to job code without impacting the ordinary
+      running of the CI.
     manager: IndependentPipelineManager
     trigger:
       gerrit:
-        #        - event: patchset-created
-        #        - event: change-restored
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*cisco-experimental
     success:
-      smtp:
-        to: rcresswe@cisco.com
-        from: zuul@cisco-openstack-ci.com
-        subject: 'Silent check of {change.project} {change.number},{change.patchset} passed'
+      gerrit:
+        verified: 1
     failure:
-      smtp:
-        to: rcresswe@cisco.com
-        from: zuul@cisco-openstack-ci.com
-        subject: 'Silent check of {change.project} {change.number},{change.patchset} failed'
+      gerrit:
+        verified: -1
 
 
 jobs:
@@ -62,16 +63,16 @@ projects:
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
-    silent:
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7-expr
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7-expr
+    experimental:
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node
+      - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
 
   - name: openstack/ironic
-    silent:
-      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc-expr
+    experimental:
+      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc

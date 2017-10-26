@@ -63,9 +63,8 @@ def set_node_options(item, job, params):
         re.match(wheel_re, job.name)):
         reusable_node(item, job, params)
 
-    signing_re = r'^(.*-expr)$'
     dependent_ci_branch_re = r'^Cisco-CI-Experimental-Branch: (.*)\s$'
-    if (re.match(signing_re, job.name)):
+    if (item.pipeline.name == "experimental"):
         commitMessageSearch = re.search(dependent_ci_branch_re,
                                         item.change._data['commitMessage'],
                                         re.MULTILINE | re.IGNORECASE)
