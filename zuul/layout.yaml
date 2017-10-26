@@ -35,17 +35,17 @@ pipelines:
       left on them. This pipeline is for running experimental jobs and allows
       for devs to test their changes to job code without impacting the ordinary
       running of the CI.
+    success-message: Build succeeded (experimental pipeline).
+    failure-message: Build failed (experimental pipeline).
     manager: IndependentPipelineManager
     trigger:
       gerrit:
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*cisco-experimental
     success:
-      gerrit:
-        verified: 1
+      gerrit: {}
     failure:
-      gerrit:
-        verified: -1
+      gerrit: {}
 
 
 jobs:
