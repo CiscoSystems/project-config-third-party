@@ -67,7 +67,8 @@ def set_node_options(item, job, params):
     dependent_ci_branch_re = r'^Cisco-CI-Experimental-Branch: (.*)\s$'
     if (re.match(signing_re, job.name)):
         commitMessageSearch = re.search(dependent_ci_branch_re,
-                                        item.change._data['commitMessage'])
+                                        item.change._data['commitMessage'],
+                                        re.MULTILINE | re.IGNORECASE)
         if commitMessageSearch:
             params['CISCO_CI_EXPR_BRANCH'] = commitMessageSearch.group(1)
         else:
