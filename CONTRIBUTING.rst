@@ -1,6 +1,12 @@
-=================
-How to contribute
-=================
+=============================================
+How to contribute to the Cisco Third Party CI
+=============================================
+
+.. contents::
+  :depth: 1
+
+Introduction
+------------
 
 There are several steps required to contribute to the Cisco Third Party CI,
 such as adding a new job or modifying an existing one.
@@ -30,17 +36,16 @@ Typical workflow for adding a new job to the CI
 -----------------------------------------------
 
 When new jobs are added to the CI, they must first go through an experimental
-phase to prove their success and stablity. Once they have proved themselves
-they can then be promoted to run on every patchset that is pushed to gerrit for
-the project they care about. These steps cover the processes required to add a
-new experimental job, develop it and then get it promoted to a regular job.
+phase to prove their success and stablity. These steps cover the processes
+required to add a new experimental job, develop it and then get it promoted to
+a regular job.
 
 .. contents::
   :depth: 1
   :local:
 
 Add a new job as an experimental job for development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Clone project-config-third-party to your local system
 
@@ -48,30 +53,33 @@ Add a new job as an experimental job for development
 
 #. Define a new job and enable it in the experimental queue
 
-  #. Modify jenkins/jobs/projects.yaml and under the project your adding the
-     job for add::
+   #. Modify jenkins/jobs/projects.yaml and under the project your adding the
+      job for add::
 
-       - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-         job-name: <job-name>
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+          job-name: <job-name>
 
-     Where ``<job-name>`` is replaced with the name of the job you want to add,
-     for example ``nexus``, ``ironic-cimc``.
+      Where ``<job-name>`` is replaced with the name of the job you want to add,
+      for example ``nexus``, ``ironic-cimc``.
 
-  #. Modify zuul/layout.yaml and under the project your job is for add the job
-     under the experimental header::
+   #. Modify zuul/layout.yaml and under the project your job is for add the job
+      under the experimental header::
 
-       experimental:
-         - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
-         - <your fully expanded job name here>
+        experimental:
+          - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
+          - <your fully expanded job name here>
 
-     The job name included in this file needs to be fully expanded with all the
-     parts of the name populated, for example the first job in the example
-     above was filled in with this information:
-    
-     - its for the project networking-cisco,
-     - the job-name is nexus, 
-     - its going to test the pike release,
-     - it needs to run on a centos-7-2-node cluster
+      The job name included in this file needs to be fully expanded with all the
+      parts of the name populated, for example the first job in the example
+      above was filled in with this information:
+
+      - ``{name}`` is now ``networking-cisco`` because its for the project
+        networking-cisco,
+      - ``{job-name}`` is the job-name, in this case ``nexus``,
+      - ``{zuul-branch}`` is now ``pike`` as this job is going to test the pike
+        release,
+      - ``{node}`` is now ``centos-7-2-node`` as this job needs to run on a
+        centos-7-2-node cluster
 
 #. Run the local tox test suite using ``tox`` to ensure that you've defined
    your job correctly in both the jenkins config file and the zuul config file.
@@ -95,14 +103,14 @@ Add a new job as an experimental job for development
 
 #. Leave a comment on that patch with the text ``cisco-experimental`` and it
    should trigger your patch to enter the experimental queue, and you can check
-   that on the `Zuul Dashboard <http://192.133.156.17>`_.
+   that on the `Zuul Dashboard`_.
 
 #. After some amount of time the experimental queue should post its results to
    your [DNM] patch. Your new experimental job will fail because we haven't
    populated the playbooks for job yet.
 
 Develop the job logic and test actions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Create the three base playbooks required for any job running the Cisco CI in
    the ``playbooks`` directory:
@@ -151,7 +159,7 @@ Develop the job logic and test actions
   the current stable state of the repository.
 
 Get your new job accepted into the master branch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Do a final rebase on to master by running ``git fetch && git rebase -i
    origin/master``, if there are any conflicts resolve them.
@@ -186,7 +194,7 @@ Get your new job accepted into the master branch
   then be fixed on your development branch and a new pull request made to
   reaccept your job.
 
-Typical Workflow for modifying an existing CI job
+Typical workflow for modifying an existing CI job
 -------------------------------------------------
 
 Occasionally an existing job in the CI will need updating to increase its
@@ -201,7 +209,7 @@ for that job accepted into the master branch.
   :local:
 
 Develop the fix for the job logic and test it
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Clone project-config-third-party to your local system
 
@@ -221,7 +229,7 @@ Develop the fix for the job logic and test it
 
 #. Leave a comment on your [DMN] patch with the text ``cisco-experimental`` and
    it should trigger your patch to enter the experimental queue, and you can
-   check that on the `Zuul Dashboard <http://192.133.156.17>`_.
+   check that on the `Zuul Dashboard`_.
 
 #. Wait for the results to be posted to the gerrit patch, and then check if all
    the jobs in the experimental queue have succeeded or failed.
@@ -241,7 +249,7 @@ Develop the fix for the job logic and test it
    failing, but you can ignore those.
 
 Get your fix accepted into the master branch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Do a final rebase on to master by running ``git fetch && git rebase -i
    origin/master``, if there are any conflicts resolve them.
@@ -261,3 +269,5 @@ Get your fix accepted into the master branch
 
 #. This pull request will then be reviewed and if there are no issues found
    with it, it'll be accepted and merged onto the master branch.
+
+.. _Zuul Dashboard: http://192.133.156.17
