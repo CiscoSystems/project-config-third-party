@@ -49,7 +49,9 @@ Add a new job as an experimental job for development
 
 #. Clone project-config-third-party to your local system
 
-#. Create a new development branch by running ``git checkout -b <branch name>``
+#. Create the first development branch by running ``git checkout -b <branch
+   name>`` whist on ``master``, a good example of a branch name is
+   ``adding_experimental_<job name>``
 
 #. Define a new job and enable it in the experimental queue
 
@@ -111,6 +113,10 @@ Add a new job as an experimental job for development
 
 Develop the job logic and test actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+#. Create a second development branch based on the first development branch by
+   running ``git checkout -b <branch name>``, a good example branch name is
+   ``adding_<job name>_job_logic``
 
 #. Create the three base playbooks required for any job running the Cisco CI in
    the ``playbooks`` directory:
