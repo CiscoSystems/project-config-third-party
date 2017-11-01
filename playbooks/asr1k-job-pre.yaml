@@ -1,0 +1,32 @@
+---
+- hosts: all
+  roles:
+    - install-openvswitch
+    - setup-l2-tunnels
+
+- hosts: primary
+  vars:
+    nexus_interfaces: >
+      {{ ci_node_interfaces }} +
+      {{ routers|map('extract', connections, ['data', 'port'])|list }}
+    fip_cidr: 172.24.5.0/24
+    tempest_intf_vlan: "{{ pub_net_vlan }}"
+    tempest_intf_IP: 10.254.0.1/24
+    tempest_intf_GW: 10.254.0.1
+  roles:
+    - claim-some-vlans
+    - configure-vlan-for-hosts
+    - setup-tempest-intf
+
+# - hosts: primary
+#   vars:
+#     nexus_interfaces: >
+#       {{ ci_node_interfaces }} +
+#       {{ routers|map('extract', connections, ['data', 'port'])|list }}
+#     tempest_intf_vlan: 1001
+#     tempest_intf_IP: 10.254.0.10/24
+#     minvlan: "{{ tempest_intf_vlan }}"
+#     maxvlan: "{{ tempest_intf_vlan }}"
+#   roles:
+#     - configure-vlan-for-hosts
+#     - setup-tempest-intf

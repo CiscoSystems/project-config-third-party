@@ -1,5 +1,7 @@
 ---
 - hosts: primary
+  vars:
+    nexus_interfaces: "{{ ci_node_interfaces }}"
   roles:
     # NOTE(sambetts) Ignore errors from clearing the nexus to make sure that
     # we release the vlans we claimed.

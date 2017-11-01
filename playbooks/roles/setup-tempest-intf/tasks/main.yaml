@@ -1,0 +1,32 @@
+---
+# TODO: make common...basically the same logic as
+#  playbooks/roles/setup-ironic-conductor-interface/tasks/main.yaml
+
+# yamllint disable rule:line-length
+- name: Create sub-interface on second nexus tap for tempest
+  shell: |
+    ip link add link nexustap2 name nexustap2.{{tempest_intf_vlan}} type vlan id {{tempest_intf_vlan}}
+  become: true
+# yamllint enable
+
+- name: Assign IP address for tempest access to sub-intf (routed to ext-net)
+  shell: |
+    ip addr add {{ tempest_intf_IP }} dev nexustap2.{{tempest_intf_vlan}}
+  become: true
+
+- name: Bring up sub-interface for tempest access
+  shell: |
+    ip link set dev nexustap2.{{tempest_intf_vlan}} up
+  become: true
+
+- name: Set MTU to smaller value (because VLAN over GRE)
+  shell: |
+    ip link set dev nexustap2.{{tempest_intf_vlan}} mtu {{ physnet_mtu }}
+  become: true
+
+# yamllint disable rule:line-length
+# - name: Setup FIP-net route to tempest intf gateway (routed to ext-net)
+#   shell: |
+#     ip route add {{ fip_cidr }} via {{ tempest_intf_GW }} dev nexustap2.{{tempest_intf_vlan}}
+#   become: true
+# yamllint enable

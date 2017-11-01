@@ -1,0 +1,14 @@
+---
+# Run devstack gate only on primary
+- hosts: primary
+  vars:
+    projects:
+      - openstack/networking-cisco
+    devstack_local_conf:
+      "{{ lookup('template', 'templates/asr1k_job_local_conf.j2') }}"
+    devstack_gate_env_override:
+      DEVSTACK_GATE_FLOATING_RANGE: 10.254.0.0/24
+      DEVSTACK_GATE_PUBLIC_NETWORK_GATEWAY: "10.254.0.1"
+  roles:
+    - load-claimed-vlans
+    - run-devstack-gate

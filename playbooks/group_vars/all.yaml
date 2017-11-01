@@ -3,6 +3,59 @@ nexus_ip: 192.133.149.9
 nexus_user: admin
 nexus_password: CTO1234!
 nexus_port: 22
-nexus_interfaces:
+ci_node_interfaces:
   - 1/17
   - 1/18
+
+vlan_physnet: nexusnet
+physnet_mtu: 1350
+pub_net_vlan: 1001
+
+routers:
+  - ASR_1
+  - ASR_2
+
+common_credentials: &common_credentials
+  user: admin
+  password: CTO1234!
+
+devices:
+  Test_infra_N9K:
+    type: N9000
+    location:
+      rack: AA25
+      ru: 16/15
+    ssh:
+      ipaddr: 192.133.149.9
+      <<: *common_credentials
+
+  ASR_1:
+    type: ASR1000
+    location:
+      rack: AA25
+      ru: 32/31
+    ssh:
+      ipaddr: 192.133.149.10
+      <<: *common_credentials
+
+  ASR_2:
+    type: ASR1000
+    location:
+      rack: AA25
+      ru: 30/29
+    ssh:
+      ipaddr: 192.133.149.11
+      <<: *common_credentials
+
+connections:
+  ASR_1:
+    data:
+      device: Test_infra_N9K
+      port: 1/21
+      localport: te0/1/0
+  ASR_2:
+    data:
+      device: Test_infra_N9K
+      port: 1/22
+      type: data
+      localport: te0/1/0

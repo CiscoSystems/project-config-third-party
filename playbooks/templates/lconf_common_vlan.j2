@@ -1,0 +1,11 @@
+Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge
+# expect cisco ML2 drivers' sections to use neutron_ml2_extension_driver_add
+# to append
+
+ML2_VLAN_RANGES={{ vlan_physnet }}:{{claimed_vlan_range}}
+OVS_VLAN_RANGES={{ vlan_physnet }}:{{claimed_vlan_range}}
+
+ENABLE_TENANT_VLANS=True
+Q_ML2_TENANT_NETWORK_TYPE=vlan
+
+OVS_BRIDGE_MAPPINGS=public:br-ex,{{ vlan_physnet }}:br-nexusnet

@@ -1,0 +1,24 @@
+---
+# Test playbook for rendering ASR1K templates from group_vars
+# run like:
+#   ansible-playbook -i ds_hosts.inv asr1k_lconf.yaml -e "test_outdir=~/tmp"
+# - output files will be put in ~/tmp on localhost
+- hosts: primary
+  gather_facts: "False"
+  vars:
+    nexus_interfaces: >
+      {{ ci_node_interfaces }} +
+      {{ routers|map('extract', connections, ['data', 'port'])|list }}
+
+  tasks:
+    - debug: var=nexus_interfaces
+
+    - name: Use template including other templates
+      set_fact:
+        local_conf:
+          "{{ lookup('template', 'templates/asr1k_job_local_conf.j2') }}"
+    - debug: var=local_conf
+
+    - template:
+        src: templates/asr1k_job_local_conf.j2
+        dest: "{{ test_outdir }}/asr1k_local_conf.out"

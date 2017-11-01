@@ -1,0 +1,47 @@
+disable_service q-l3
+{% if 'ocata' in override_zuul_branch or 'pike' in override_zuul_branch %}
+#NEUTRON_CREATE_INITIAL_NETWORKS=False
+{% endif %}
+NEUTRON_CREATE_INITIAL_NETWORKS=True
+Q_USE_PROVIDERNET_FOR_PUBLIC=True
+PUBLIC_PHYSICAL_NETWORK={{ vlan_physnet }}
+
+#CISCO_CREATE_NETS=True
+#CISCO_EXTNET_VLAN={{ minvlan }}
+IP_VERSION=4
+
+IPV6_ENABLED=False
+IPV6_SUBNET_ATTRIBUTES_ENABLED=False
+
+# Default routertype for Neutron routers
+Q_CISCO_DEFAULT_ROUTER_TYPE=ASR1k_router
+
+ENABLE_ISOLATED_METADATA=True
+
+enable_service ciscocfgagent
+enable_service q-ciscorouter
+
+{# Custom list of supported network extensions #}
+{# exclude ext-gw-mode,dvr,l3-flavors,l3-ha,router_availability_zone  #}
+NETWORK_API_EXTENSIONS="address-scope,agent,allowed-address-pairs,auto-allocated-topology"
+NETWORK_API_EXTENSIONS+=",availability_zone,binding,dhcp_agent_scheduler"
+NETWORK_API_EXTENSIONS+=",external-net,extra_dhcp_opt,extraroute,flavors"
+NETWORK_API_EXTENSIONS+=",l3_agent_scheduler,multi-provider,net-mtu"
+NETWORK_API_EXTENSIONS+=",network-ip-availability,network_availability_zone,pagination"
+NETWORK_API_EXTENSIONS+=",port-security,project-id,provider,quotas,rbac-policies,router"
+NETWORK_API_EXTENSIONS+=",security-group,service-type,sorting"
+NETWORK_API_EXTENSIONS+=",standard-attr-description,standard-attr-revisions"
+NETWORK_API_EXTENSIONS+=",subnet-service-types,subnet_allocation,tag"
+{% if 'mitaka' in override_zuul_branch %}
+NETWORK_API_EXTENSIONS+=",default-subnetpool,timestamp_core"
+{% else %}
+{# post mitaka some extension names changed and a few new adds #}
+NETWORK_API_EXTENSIONS+=",default-subnetpools,standard-attr-timestamp"
+NETWORK_API_EXTENSIONS+=",pagination,sorting,project-id,subnet-service-types"
+{% endif %}
+{% if 'ocata' in override_zuul_branch or 'pike' in override_zuul_branch %}
+NETWORK_API_EXTENSIONS+=",tag-ext"
+{% endif %}
+{% if 'pike' in override_zuul_branch %}
+NETWORK_API_EXTENSIONS+="quota_details,revision-if-match,standard-attr-tag"
+{% endif %}

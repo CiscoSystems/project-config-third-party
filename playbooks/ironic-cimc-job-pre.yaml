@@ -17,6 +17,8 @@
     - install-additional-pip-libraries
 
 - hosts: primary
+  vars:
+    nexus_interfaces: "{{ ci_node_interfaces }}"
   roles:
     - claim-a-vlan-range
     - clear-nexus-vlans

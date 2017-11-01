@@ -1,0 +1,10 @@
+# Example inventory file for testing local.conf generation
+# Use like:
+#  ansible-playbook -vvvvv -i ds_hosts.inv setup_lconf_vars.yaml 
+[primary]
+localhost  ansible_connection=local
+
+[all:vars]
+vlan_tenant_enabled = True
+#CLAIMED_VLAN_RANGE = 100:200
+claimed_vlan_range = 100:200

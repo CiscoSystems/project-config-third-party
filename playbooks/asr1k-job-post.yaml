@@ -1,0 +1,14 @@
+---
+- hosts: primary
+  vars:
+    nexus_interfaces: >
+      {{ ci_node_interfaces }} +
+      {{ routers|map('extract', connections, ['data', 'port'])|list }}
+  roles:
+    - load-claimed-vlans
+    - clear-nexus-vlans
+    - release-some-vlans
+
+- hosts: all
+  roles:
+    - tear-l2-tunnels
