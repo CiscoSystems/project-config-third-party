@@ -72,10 +72,10 @@ projects:
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
 
   - name: openstack/ironic
     experimental:
