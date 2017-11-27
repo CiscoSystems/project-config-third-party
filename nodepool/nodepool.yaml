@@ -55,6 +55,13 @@ labels:
     min-ready: 1
     providers:
       - name: devstack-rocket-man-ucsm
+  # Labels for the ASR jobs so they are limited
+  - name: centos-7-asr
+    image: centos-7
+    ready-script: configure_mirror.sh
+    min-ready: 1
+    providers:
+      - name: devstack-rocket-man-asr
 
 providers:
   - name: devstack-rocket-man
@@ -125,6 +132,36 @@ providers:
     api-timeout: 60
     boot-timeout: 120
     max-servers: 3
+    rate: 1
+    # Remove this when glean has support for ipv6 on centos
+    ipv6-preferred: false
+    image-type: qcow2
+    template-hostname: '{image.name}-{timestamp}'
+    images:
+      - name: ubuntu-xenial
+        min-ram: 8192
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+      - name: centos-7
+        min-ram: 8192
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+  # Re-entering the same provider again so we can limit the max number of
+  # servers to prevent us starting too many jobs for ASR
+  - name: devstack-rocket-man-asr
+    username: admin
+    password: secret
+    project-name: demo
+    auth-url: http://192.133.156.19/identity
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 1
     rate: 1
     # Remove this when glean has support for ipv6 on centos
     ipv6-preferred: false
