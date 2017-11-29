@@ -40,11 +40,11 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          if [[ "{zuul-branch}" == "mitaka" ]]; then
-            export OVERRIDE_ZUUL_BRANCH=mitaka-eol
-          elif [[ "{zuul-branch}" == "newton" ]]; then
-            export OVERRIDE_ZUUL_BRANCH=newton-eol
-          elif [[ "{zuul-branch}" == "current" ]]; then
+          #if [[ "{zuul-branch}" == "mitaka" ]]; then
+          #  export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+          #elif [[ "{zuul-branch}" == "newton" ]]; then
+          #  export OVERRIDE_ZUUL_BRANCH=newton-eol
+          if [[ "{zuul-branch}" == "current" ]]; then
             export OVERRIDE_ZUUL_BRANCH=
           else
             export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
@@ -60,11 +60,11 @@
           builders:
             - shell: |
                 #!/bin/bash -xe
-                if [[ "{zuul-branch}" == "mitaka" ]]; then
-                  export OVERRIDE_ZUUL_BRANCH=mitaka-eol
-                elif [[ "{zuul-branch}" == "newton" ]]; then
-                  export OVERRIDE_ZUUL_BRANCH=newton-eol
-                elif [[ "{zuul-branch}" == "current" ]]; then
+                #if [[ "{zuul-branch}" == "mitaka" ]]; then
+                #  export OVERRIDE_ZUUL_BRANCH=mitaka-eol
+                #elif [[ "{zuul-branch}" == "newton" ]]; then
+                #  export OVERRIDE_ZUUL_BRANCH=newton-eol
+                if [[ "{zuul-branch}" == "current" ]]; then
                   export OVERRIDE_ZUUL_BRANCH=
                 else
                   export OVERRIDE_ZUUL_BRANCH=stable/{zuul-branch}
