@@ -20,6 +20,7 @@ devstack_gate_env:
   PYTHONUNBUFFERED: true
   BUILD_TIMEOUT: 10800000
   DEVSTACK_GATE_TEMPEST: 1
+  DEVSTACK_GATE_TEMPEST_ALL_PLUGINS: 0
   DEVSTACK_GATE_NEUTRON: 1
   DEVSTACK_GATE_SETTINGS: "{{ workspace }}/custom_devstack_gate_hook"
   DEVSTACK_GATE_FEATURE_MATRIX: "{{ workspace }}/features.yaml"
@@ -35,3 +36,5 @@ default_openstack_project_cherrypicks:
 # yamllint enable
 
 run_devstack_gate_unstack: false
+
+custom_pre_test_hook_script: ""

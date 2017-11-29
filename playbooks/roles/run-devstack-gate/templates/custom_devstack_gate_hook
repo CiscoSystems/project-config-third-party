@@ -32,6 +32,8 @@ function pre_test_hook {
   # Custom cherrypicks applied to only this job
   #############################################
   {{ render_cherrypicks(openstack_project_cherrypicks) | indent(2) }}
+
+  {{ custom_pre_test_hook_script | indent(2) }}
 }
 export -f pre_test_hook
 

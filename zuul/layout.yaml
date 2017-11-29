@@ -83,6 +83,8 @@ projects:
       - gate-networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
 
   - name: openstack/ironic
+    check:
+      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc
     experimental:
       - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc
 

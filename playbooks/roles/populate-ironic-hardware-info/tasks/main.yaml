@@ -1,5 +1,6 @@
 ---
-- name: Write hardware_info file
+- name: Write hardware_info file to workspace
   template:
     src: hardware_info.j2
     dest: "{{workspace}}/hardware_info"
+    mode: "u=rw,g=r,o=r"
