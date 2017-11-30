@@ -25,15 +25,6 @@ devstack_gate_env:
   DEVSTACK_GATE_FEATURE_MATRIX: "{{ workspace }}/features.yaml"
   DEVSTACK_GATE_TOPOLOGY:
     "{% if (groups['subnodes']|length) > 0 %}multinode{% else %}aio{% endif %}"
-  OVERRIDE_REQUIREMENTS_PROJECT_BRANCH: |-
-    {% if override_zuul_branch == 'newton-eol' -%}stable/newton
-    {%- else -%}{{override_zuul_branch}}{%- endif -%}
-  OVERRIDE_DEVSTACK_PROJECT_BRANCH: |-
-    {% if override_zuul_branch == 'newton-eol' -%}stable/newton
-    {%- else -%}{{override_zuul_branch}}{%- endif -%}
-  OVERRIDE_NOVA_PROJECT_BRANCH: |-
-    {% if override_zuul_branch == 'newton-eol' -%}stable/newton
-    {%- else -%}{{override_zuul_branch}}{%- endif -%}
 
 openstack_project_cherrypicks: {}
 
