@@ -1,22 +1,8 @@
 ---
-- name: Copy script to workspace
-  copy:
-    src: "clear_nexus_vlans.py"
-    dest: "{{ workspace }}/clear_nexus_vlans.py"
-
-- name: ssh-keyscan the nexus switch
-  command: "ssh-keyscan -t rsa {{ nexus_ip }}"
-  register: nexus_keyscan_result
-
-- name: Ensure nexus switch is in known_hosts
-  known_hosts:
-    name: "{{ nexus_ip }}"
-    key: "{{ nexus_keyscan_result.stdout }}"
-
 - name: Clear the claimed VLANs on the Nexus interfaces
   command: >
-    python {{ workspace }}/clear_nexus_vlans.py {{ nexus_ip }}
-    {{ nexus_user }} {{ nexus_password }} {{ item }}
+    python {{ workspace }}/set_nexus_vlans.py {{ nexus_ip }}
+    {{ nexus_user }} {{ nexus_password }} remove {{ item }}
     {{ minvlan }} {{ maxvlan }}
   with_items: "{{ nexus_interfaces }}"
   when: minvlan is defined and maxvlan is defined
