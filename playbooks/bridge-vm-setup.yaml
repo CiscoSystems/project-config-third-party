@@ -90,7 +90,7 @@
 
     # Make sure GRE is allowed by iptables
     - name: Check if GRE rule already in iptables
-      shell: iptables --list-rules | grep "-p gre"
+      shell: iptables --list-rules | grep -e "-p gre"
       register: check_iptables_result
       changed_when: "False"
       failed_when: check_iptables_result.rc >= 2
