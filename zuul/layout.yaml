@@ -80,3 +80,7 @@ projects:
   - name: openstack/ironic
     experimental:
       - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc
+
+  - name: openstack/cinder
+    experimental:
+      - gate-cinder-dsvm-tempest-smoke-zm_cinder-current-cinder-node

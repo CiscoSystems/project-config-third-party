@@ -1,4 +1,18 @@
 - project:
+    name: cinder
+    github-org: openstack
+    zuul-branch:
+      - current
+    node:
+      - ubuntu-xenial
+    vendor: cisco
+
+    jobs:
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+            job-name: zm_cinder
+            node: cinder-node
+
+- project:
     name: ironic
     github-org: openstack
     zuul-branch:
@@ -35,3 +49,4 @@
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
             job-name: asr1k
             node: centos-7-asr
+
