@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+config=$(readlink -f tools/jenkins.ini)
+
 mkdir -p .test
 cd .test
 [ -d zuul ] || git clone https://git.openstack.org/openstack-infra/zuul --depth 1
@@ -26,7 +28,7 @@ cd ../..
 
 cp jenkins/jobs/* .test/jenkins-job-builder/.test/new/config
 cd .test/jenkins-job-builder
-tox -e compare-xml-new
+tox -e compare-xml-config -- --conf $config test -o .test/new/out/ .test/new/config/
 
 cd ..
 find jenkins-job-builder/.test/new/out/ -exec basename {} \; > job-list.txt

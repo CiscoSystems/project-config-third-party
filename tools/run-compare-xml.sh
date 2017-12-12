@@ -16,6 +16,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+config=$(readlink -f tools/jenkins.ini)
+
 rm -fr .test
 mkdir .test
 cd .test
@@ -40,8 +42,8 @@ cp jenkins/jobs/* .test/jenkins-job-builder/.test/new/config
 
 cd .test/jenkins-job-builder
 
-tox -e compare-xml-old
-tox -e compare-xml-new
+tox -e compare-xml-config -- --conf $config test -o .test/old/out/ .test/old/config/
+tox -e compare-xml-config -- --conf $config test -o .test/new/out/ .test/new/config/
 
 diff -r -N -u .test/old/out .test/new/out
 CHANGED=$?  # 0 == same ; 1 == different ; 2 == error
