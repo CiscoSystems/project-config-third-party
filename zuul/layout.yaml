@@ -83,4 +83,4 @@ projects:
 
   - name: openstack/cinder
     experimental:
-      - gate-cinder-dsvm-tempest-smoke-zm_cinder-current-cinder-node
+      - gate-cinder-dsvm-tempest-smoke-zm-cinder-current-cinder-zonemanager-node

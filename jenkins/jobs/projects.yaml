@@ -9,8 +9,8 @@
 
     jobs:
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: zm_cinder
-            node: cinder-node
+            job-name: zm-cinder
+            node: cinder-zonemanager-node
 
 - project:
     name: ironic
@@ -49,4 +49,3 @@
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
             job-name: asr1k
             node: centos-7-asr
-
