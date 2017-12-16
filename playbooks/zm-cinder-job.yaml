@@ -1,0 +1,13 @@
+---
+# Run devstack gate
+- hosts: all
+  vars:
+    projects:
+      - openstack/cinder
+    devstack_local_conf:
+      "{{ lookup('template', 'templates/zm_cinder_local_conf.j2') }}"
+    devstack_gate_env_override:
+      DEVSTACK_GATE_TEMPEST_REGEX:
+        "AttachVolumeTestJSON.test_attach_detach_volum"
+  roles:
+    - run-devstack-gate
