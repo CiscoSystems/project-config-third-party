@@ -1,0 +1,26 @@
+From 2f4c44a4417e3f9011c5bc8c6e2bfe4c90f9bbd8 Mon Sep 17 00:00:00 2001
+From: Tim Swanson <tiswanso@cisco.com>
+Date: Sat, 16 Dec 2017 19:12:56 -0500
+Subject: [PATCH] Make public providernet able to be vlan type
+
+Change-Id: I69f78886d72d388c8968fbc28ca041db04133475
+---
+ lib/neutron-legacy | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/neutron-legacy b/lib/neutron-legacy
+index de20456..7e3a337 100644
+--- a/lib/neutron-legacy
++++ b/lib/neutron-legacy
+@@ -588,7 +588,7 @@ function create_neutron_initial_network {
+         fi
+         # Create an external network, and a subnet. Configure the external network as router gw
+         if [ "$Q_USE_PROVIDERNET_FOR_PUBLIC" = "True" ]; then
+-            EXT_NET_ID=$(neutron net-create "$PUBLIC_NETWORK_NAME" -- $EXTERNAL_NETWORK_FLAGS --provider:network_type=flat --provider:physical_network=${PUBLIC_PHYSICAL_NETWORK} | grep ' id ' | get_field 2)
++            EXT_NET_ID=$(neutron net-create "$PUBLIC_NETWORK_NAME" -- $EXTERNAL_NETWORK_FLAGS --provider:network_type ${PUBLIC_PROVIDERNET_TYPE:-flat} ${PUBLIC_PROVIDERNET_SEGMENTATION_ID:+--provider:segmentation_id $PUBLIC_PROVIDERNET_SEGMENTATION_ID} --provider:physical_network=${PUBLIC_PHYSICAL_NETWORK} | grep ' id ' | get_field 2)
+         else
+             EXT_NET_ID=$(neutron net-create "$PUBLIC_NETWORK_NAME" -- $EXTERNAL_NETWORK_FLAGS | grep ' id ' | get_field 2)
+         fi
+-- 
+2.10.1 (Apple Git-78)
+

@@ -4,6 +4,19 @@
     src: custom_devstack_gate_hook
     dest: "{{ workspace }}/custom_devstack_gate_hook"
 
+- name: Create EOL branch patch file dir
+  file:
+    path: "{{ workspace }}/patches"
+    state: directory
+    mode: 0755
+
+- name: Copy EOL branch patch files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ workspace }}/patches/"
+  with_items:
+    - devstack_mitaka_providernet_pub_vlan.patch
+
 - name: Copy devstack gate to devstack gate safe
   copy:
     src: "{{ workspace }}/devstack-gate/devstack-vm-gate-wrap.sh"

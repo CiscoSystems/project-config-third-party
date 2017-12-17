@@ -96,7 +96,7 @@ auto_delete=False
 {% set router = devices[router_name] -%}
 {% if router.type == 'ASR1000' -%}
 [HwVLANTrunkingPlugDriver:{{ loop.index }}]
-external_net_interface_1=*:{{ connections[router_name]['data'].localport }}.{{ pub_net_vlan }}
+external_net_interface_1=*:{{ connections[router_name]['data'].localport }}
 internal_net_interface_1=*:{{ connections[router_name]['data'].localport }}
 
 {% endif -%}

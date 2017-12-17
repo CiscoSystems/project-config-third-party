@@ -10,7 +10,7 @@
       {{ ci_node_interfaces }} +
       {{ routers|map('extract', connections, ['data', 'port'])|list }}
     fip_cidr: 172.24.5.0/24
-    tempest_intf_vlan: "{{ pub_net_vlan }}"
+    tempest_intf_vlan: "{{ minvlan }}"
     tempest_intf_IP: 10.254.0.1/24
     tempest_intf_GW: 10.254.0.1
   roles:
