@@ -1,72 +1,65 @@
-import os
+import argparse
 import paramiko
 import sys
 
-nexus_ip = os.environ.get('NEXUS_IP')
-nexus_user = os.environ.get('NEXUS_USER')
-nexus_password = os.environ.get('NEXUS_PASSWORD')
-nexus_intf_num = os.environ.get('NEXUS_INTF_NUM')
-nexus_vlan_start = os.environ.get('NEXUS_VLAN_START')
-nexus_vlan_end = os.environ.get('NEXUS_VLAN_END')
+
+parser = argparse.ArgumentParser()
+parser.add_argument('address')
+parser.add_argument('username')
+parser.add_argument('password')
+parser.add_argument('interface_number', metavar='interface-number')
+parser.add_argument('vlanstart', metavar='vlan-start')
+parser.add_argument('vlanend', metavar='vlan-end')
+parser.add_argument('vlannative', nargs='?', metavar='native-vlan')
+parser.add_argument('--remove', action='store_true',
+                    help=("Remove the vlan configurations instead of "
+                          "adding them to the nexus switch"))
+
+# NOTE(sambetts) Ensure that a space is left before and after the semicolon to
+# ensure nexus parses the commands correctly.
+MAIN_TEMPLATE = (
+    "config terminal ; "
+    "interface Ethernet {0.interface_number} ; "
+    "switchport mode trunk ; "
+    "switchport trunk allowed vlan {op} {0.vlanstart}-{0.vlanend} ; "
+    "{no}vlan {0.vlanstart}-{0.vlanend} ; ")
+
+NATIVE_TEMPLATE = "{no}switchport trunk native vlan {0.vlannative} ;"
 
 
-def set_nexus_config(ip, user, password, op, intf_num, vlan_start, vlan_end,
-                     vlan_native=None):
+def set_nexus_config(args):
     client = paramiko.client.SSHClient()
     client.load_system_host_keys()
-    client.connect(ip, username=user, password=password)
+    client.connect(args.address, username=args.username,
+                   password=args.password)
 
-    cmd = 'config terminal ; '
-    if op == 'remove':
-        cmd += 'no '
-    cmd += ('vlan {0}-{1} ; ').format(vlan_start, vlan_end)
-    cmd += ('interface Ethernet {0} ; '
-            'switchport mode trunk ;'
-            'switchport trunk allowed vlan {3} {1}-{2} ; '
-            ).format(intf_num, vlan_start, vlan_end, op)
+    no = ''
+    op = 'add'
+    if args.remove:
+        no = 'no '
+        op = 'remove'
 
-    if vlan_native:
-        if op == 'remove':
-            cmd += 'no '
-        cmd += ('switchport trunk native vlan {0}').format(vlan_native)
+    template = MAIN_TEMPLATE
+    if args.vlannative:
+        template += NATIVE_TEMPLATE
 
-    print cmd
+    cmd = template.format(args, no=no, op=op)
+    print("Running command: %s" % cmd)
+
     stdin, stdout, stderr = client.exec_command(cmd)
-    print stdout.readlines()
+
+    output = ""
+    for line in stdout.readlines():
+        output += line
+    print("Nexus switch returned:")
+    print(output)
+
     client.close()
 
+    if "error" in output:
+        sys.exit(1)
 
-def print_usage():
-    print "Usage:"
-    print "    python %s <nexus-ip> <user> <password> " \
-        "[add|remove]" % sys.argv[0]
-    print "              <intf-num> <vlan-start> <vlan-end> <vlan-native>"
-    print "Example:"
-    print "    python %s 10.0.1.32 admin MyPassword add 1/9 810 813" % \
-        sys.argv[0]
-    print "Note: VLAN range is inclusive."
-    print "Note: Number of VLANs in VLAN range should not exceed 100."
 
 if __name__ == '__main__':
-    if "--help" in sys.argv:
-        print_usage()
-        sys.exit(0)
-    min_args = 8
-    max_args = 9
-    if (len(sys.argv) < min_args or
-            len(sys.argv) > max_args):
-        print_usage()
-        sys.exit(1)
-    ip = sys.argv[1]
-    user = sys.argv[2]
-    passwd = sys.argv[3]
-    op = sys.argv[4]
-    intf = sys.argv[5]
-    min_vlan = sys.argv[6]
-    max_vlan = sys.argv[7]
-    if len(sys.argv) == min_args:
-        set_nexus_config(ip, user, passwd, op, intf, min_vlan, max_vlan)
-    if len(sys.argv) >= min_args + 1:
-        native_vlan = sys.argv[min_args]
-        set_nexus_config(ip, user, passwd, op, intf, min_vlan,
-                         max_vlan, native_vlan)
+    args = parser.parse_args()
+    set_nexus_config(args)

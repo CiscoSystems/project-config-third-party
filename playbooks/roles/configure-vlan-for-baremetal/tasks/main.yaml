@@ -1,7 +1,9 @@
 ---
-- name: Set the claimed VLANs on the Nexus interfaces for baremetal
-  command: >
-    python {{ workspace }}/set_nexus_vlans.py {{ nexus_ip }}
-    {{ nexus_user }} {{ nexus_password }} add {{ claimed_baremetal.nexus_port }}
-    {{ minvlan }} {{ maxvlan }}
-  when: minvlan is defined and maxvlan is defined
+- name: Statically set the claimed VLANs on the Nexus interfaces for baremetal
+  include_role:
+    name: static-nexus-programmer
+  vars:
+    nexus_interface: "{{ claimed_baremetal.nexus_port }}"
+    start_vlan: "{{ minvlan }}"
+    end_vlan: "{{ maxvlan }}"
+    native_vlan: "{{ minvlan }}"

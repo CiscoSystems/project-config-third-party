@@ -1,8 +1,11 @@
 ---
-- name: Clear the claimed VLANs on the Nexus interfaces
-  command: >
-    python {{ workspace }}/set_nexus_vlans.py {{ nexus_ip }}
-    {{ nexus_user }} {{ nexus_password }} remove {{ item }}
-    {{ minvlan }} {{ maxvlan }}
+- name: Clear the claimed VLANs on the Nexus host interfaces
+  include_role:
+    name: static-nexus-programmer
+  vars:
+    nexus_interface: "{{ item }}"
+    start_vlan: "{{ minvlan }}"
+    end_vlan: "{{ maxvlan }}"
+    remove: "yes"
   with_items: "{{ nexus_interfaces }}"
   when: minvlan is defined and maxvlan is defined

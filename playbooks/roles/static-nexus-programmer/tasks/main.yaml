@@ -12,3 +12,10 @@
   known_hosts:
     name: "{{ nexus_ip }}"
     key: "{{ nexus_keyscan_result.stdout }}"
+
+- name: Execute command to program the nexus switch
+  command: >
+    python {{ workspace }}/set_nexus_vlans.py {{ nexus_ip }} {{ nexus_user }}
+    {{ nexus_password }} {% if remove %} --remove {% endif %}
+    {{ nexus_interface }} {{ start_vlan }} {{ end_vlan }}
+    {% if native_vlan is defined %} {{ native_vlan }} {% endif %}
