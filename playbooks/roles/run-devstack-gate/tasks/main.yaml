@@ -1,6 +1,6 @@
 ---
 - name: Copy custom gate hooks into workspace
-  copy:
+  template:
     src: custom_devstack_gate_hook
     dest: "{{ workspace }}/custom_devstack_gate_hook"
 

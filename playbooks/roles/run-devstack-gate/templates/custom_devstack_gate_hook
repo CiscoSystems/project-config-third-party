@@ -1,0 +1,34 @@
+{# Macro for rendering out cherry pick commands #}
+{%- macro render_cherrypicks(cherrypicks) %}
+  {%- for version, projects in cherrypicks.items() %}
+    {%- if version == "all" or version == override_zuul_branch %}
+      {%- for project, patches in projects.items() %}
+        {{- "# Cherrypick pre-merge changes to %s\n" % project }}
+        {{- "(cd /opt/stack/new/%s" % project }}
+        {%- for patch in patches %}
+          {%- if "http" in patch %}
+            {{- " && \\\n git fetch %s && git cherry-pick FETCH_HEAD" % patch }}
+          {%- else %}
+            {{- " && \\\n git apply %s" % patch }}
+          {%- endif %}
+        {%- endfor %})
+        {{- "\n" }}
+      {%- endfor %}
+    {%- endif %}
+  {%- endfor %}
+{%- endmacro -%}
+
+function pre_test_hook {
+  # Hack the version of libvirt-python so its compatible with centos7
+  $ANSIBLE all -i $WORKSPACE/inventory -m "replace" -a "path=/opt/stack/new/requirements/upper-constraints.txt regexp='libvirt-python.*' replace='libvirt-python===3.2.0'"
+
+  #########################################
+  # Default cherrypicks applied to all jobs
+  #########################################
+  {{ render_cherrypicks(default_openstack_project_cherrypicks) | indent(2) }}
+  #############################################
+  # Custom cherrypicks applied to only this job
+  #############################################
+  {{ render_cherrypicks(openstack_project_cherrypicks) | indent(2) }}
+}
+export -f pre_test_hook
