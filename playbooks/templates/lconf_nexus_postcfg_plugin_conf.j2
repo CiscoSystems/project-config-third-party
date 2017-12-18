@@ -1,0 +1,12 @@
+[ml2_mech_cisco_nexus:{{ nexus_ip }}]
+username={{ nexus_user }}
+password={{ nexus_password }}
+physnet=nexusnet
+{% for host in groups['primary'] %}
+{{ hostvars[host]["ansible_hostname"] }}={{ nexus_interfaces[0] }}
+{% endfor %}
+{% if groups['subnodes'] is defined %}
+{% for host in groups['subnodes'] %}
+{{ hostvars[host]["ansible_hostname"] }}={{ nexus_interfaces[1] }}
+{% endfor %}
+{% endif %}

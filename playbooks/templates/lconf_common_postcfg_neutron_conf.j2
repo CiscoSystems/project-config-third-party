@@ -2,7 +2,4 @@
 api_extensions_path = extensions:/opt/stack/networking-cisco/networking_cisco/plugins/cisco/extensions
 
 advertise_mtu = True
-global_physnet_mtu = {{ physnet_mtu }}
-
-[ml2]
-path_mtu = {{ physnet_mtu }}
+global_physnet_mtu = {{ physnet_mtu + 8 }}
