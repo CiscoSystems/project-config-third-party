@@ -19,10 +19,10 @@ parser.add_argument('--remove', action='store_true',
 # ensure nexus parses the commands correctly.
 MAIN_TEMPLATE = (
     "config terminal ; "
+    "{no}vlan {0.vlanstart}-{0.vlanend} ; "
     "interface Ethernet {0.interface_number} ; "
     "switchport mode trunk ; "
-    "switchport trunk allowed vlan {op} {0.vlanstart}-{0.vlanend} ; "
-    "{no}vlan {0.vlanstart}-{0.vlanend} ; ")
+    "switchport trunk allowed vlan {op} {0.vlanstart}-{0.vlanend} ; ")
 
 NATIVE_TEMPLATE = "{no}switchport trunk native vlan {0.vlannative} ;"
 
