@@ -1,0 +1,6 @@
+---
+- name: Create Service Profile
+  include_role:
+    name: configure-ucsm
+  vars:
+    sp_name: "devstack-{{ ansible_hostname[-6:] }}"

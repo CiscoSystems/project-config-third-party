@@ -2,3 +2,4 @@
 - hosts: primary
   roles:
     - release-claimed-vlans
+    - remove-service-profile

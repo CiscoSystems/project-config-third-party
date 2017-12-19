@@ -1,0 +1,7 @@
+---
+- name: Remove Service Profile
+  include_role:
+    name: configure-ucsm
+  vars:
+    sp_name: "devstack-{{ ansible_hostname[-6:] }}"
+    remove_service_profile: "yes"

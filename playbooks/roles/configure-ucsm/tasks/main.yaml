@@ -1,0 +1,10 @@
+---
+- name: Copy script to workspace
+  copy:
+    src: "configure_ucsm.py"
+    dest: "{{ workspace }}/configure_ucsm.py"
+
+- name: Execute command to configure the ucsm
+  command: >
+    python {{ workspace }}/configure_ucsm.py {{ sp_name }}
+    {% if remove_service_profile %} --remove {% endif %}

@@ -1,4 +1,21 @@
 ---
+- hosts: all
+  roles:
+    - install-openvswitch
+  tasks:
+    - name: Create OVS bridge to represent ex-net
+      command: ovs-vsctl add-br br-ex
+      become: true
+
+    - name: Create OVS bridge to represent phynet connected to ucsm
+      command: ovs-vsctl add-br br-ucsmnet
+      become: true
+
 - hosts: primary
+  vars:
+    additional_pip_libraries:
+      - "ucsmsdk==0.9.3.1"
   roles:
     - claim-a-vlan-range
+    - install-additional-pip-libraries
+    - create-service-profile
