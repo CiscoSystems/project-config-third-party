@@ -3,9 +3,6 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          export BASE=/opt/git
-          source $BASE/openstack-dev/devstack/functions-common
-
           sudo pip install --upgrade ansible
           cat > $WORKSPACE/ansible_default.cfg << EOF
           [defaults]
