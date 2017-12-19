@@ -1,4 +1,18 @@
 ---
+- name: Ensure /etc/nodepool exists
+  file:
+    path: /etc/nodepool
+    state: directory
+  when: hostvars[inventory_hostname].nodepool is not defined
+  become: true
+
+- name: Ensure primary_node_private is localhost when not a nodepool node
+  copy:
+    content: 127.0.0.1
+    dest: /etc/nodepool/primary_node_private
+  when: hostvars[inventory_hostname].nodepool is not defined
+  become: true
+
 - name: Copy custom gate hooks into workspace
   template:
     src: custom_devstack_gate_hook
