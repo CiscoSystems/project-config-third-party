@@ -36,6 +36,7 @@
           else
             echo "[primary]" > "$WORKSPACE/inventory"
             echo "localhost ansible_connection=local host_counter=$COUNTER" >> "$WORKSPACE/inventory"
+            echo "[subnodes]" >> "$WORKSPACE/inventory"
           fi
 
 - builder:
