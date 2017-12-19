@@ -60,7 +60,8 @@ def set_node_options(item, job, params):
         re.match(hook_re, job.name) or
         re.match(reprepro_re, job.name) or
         re.match(signing_re, job.name) or
-        re.match(wheel_re, job.name)):
+        re.match(wheel_re, job.name) or
+        "reusenode" in job.tags):
         reusable_node(item, job, params)
 
     dependent_ci_branch_re = r'^Cisco-CI-Experimental-Branch: (.*)\s*$'

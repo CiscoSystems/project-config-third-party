@@ -52,6 +52,11 @@ jobs:
   - name: ^.*$
     parameter-function: set_node_options
 
+  - name: ^.*-cinder-zonemanager-node$
+    tags:
+      - "reusenode"
+
+
 projects:
   - name: openstack/networking-cisco
     check:
