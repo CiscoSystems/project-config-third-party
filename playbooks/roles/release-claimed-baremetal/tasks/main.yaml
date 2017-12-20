@@ -1,11 +1,6 @@
 ---
-- name: Check if we have a claimed baremetal resource
-  stat:
-    path: "{{ workspace }}/claimed_baremetal"
-  register: claimed_baremetal_file
-
 - name: Release the claimed baremetal resource
   command: >
     python {{workspace}}/claim_ciresource.py cimc_baremetal
-    --release {{ workspace }}/claimed_baremetal
-  when: claimed_baremetal_file.stat.exists
+    --release /etc/ansible/facts.d/claimed_baremetal.fact
+  when: ansible_local.claimed_baremetal is defined

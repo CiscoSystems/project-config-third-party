@@ -1,5 +1,0 @@
----
-- name: Load claimed baremetal variables
-  include_vars:
-    file: "{{ workspace }}/claimed_baremetal"
-    name: claimed_baremetal

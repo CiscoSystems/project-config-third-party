@@ -8,6 +8,6 @@
   roles:
     - claim-some-vlans
     - clear-nexus-vlans
-    - requires-a-cimc-baremetal
+    - claim-a-cimc-baremetal
     - configure-vlan-for-baremetal
     - configure-vlan-for-hosts

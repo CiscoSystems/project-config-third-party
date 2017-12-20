@@ -3,7 +3,7 @@
   include_role:
     name: static-nexus-programmer
   vars:
-    nexus_interface: "{{ claimed_baremetal.nexus_port }}"
+    nexus_interface: "{{ ansible_local.claimed_baremetal.nexus_port }}"
     start_vlan: "{{ minvlan }}"
     end_vlan: "{{ maxvlan }}"
     native_vlan: "{{ minvlan }}"

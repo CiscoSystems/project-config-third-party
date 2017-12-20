@@ -1,0 +1,17 @@
+---
+- name: Claim a baremetal resource
+  command: "python {{workspace}}/claim_ciresource.py cimc_baremetal"
+  register: claimed_baremetal_result
+
+- name: create directory for ansible custom facts
+  file: state=directory recurse=yes path=/etc/ansible/facts.d
+  become: true
+
+- name: Write baremetal claim to file for cleanup later
+  copy:
+    content: "{{ claimed_baremetal_result.stdout }}"
+    dest: "/etc/ansible/facts.d/claimed_baremetal.fact"
+  become: true
+
+- name: Re-read facts after adding custom fact
+  setup: filter=ansible_local
