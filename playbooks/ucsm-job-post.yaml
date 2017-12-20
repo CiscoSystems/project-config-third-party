@@ -1,5 +1,4 @@
 ---
 - hosts: primary
   roles:
-    - load-claimed-vlans
-    - release-some-vlans
+    - release-claimed-vlans

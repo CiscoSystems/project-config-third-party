@@ -1,7 +1,7 @@
 enable_plugin ironic https://git.openstack.org/openstack/ironic
 
-ML2_VLAN_RANGES=nexusnet:{{minvlan}}:{{minvlan}}
-OVS_VLAN_RANGES=nexusnet:{{minvlan}}:{{minvlan}}
+ML2_VLAN_RANGES=nexusnet:{{ansible_local.claimed_vlans.min_vlan}}:{{ansible_local.claimed_vlans.max_vlan}}
+OVS_VLAN_RANGES=nexusnet:{{ansible_local.claimed_vlans.min_vlan}}:{{ansible_local.claimed_vlans.max_vlan}}
 
 ENABLE_TENANT_VLANS=True
 OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet

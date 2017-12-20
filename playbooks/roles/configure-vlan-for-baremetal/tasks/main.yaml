@@ -4,6 +4,6 @@
     name: static-nexus-programmer
   vars:
     nexus_interface: "{{ ansible_local.claimed_baremetal.nexus_port }}"
-    start_vlan: "{{ minvlan }}"
-    end_vlan: "{{ maxvlan }}"
-    native_vlan: "{{ minvlan }}"
+    start_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
+    end_vlan: "{{ ansible_local.claimed_vlans.max_vlan }}"
+    native_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"

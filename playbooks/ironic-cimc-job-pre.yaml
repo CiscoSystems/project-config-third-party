@@ -6,7 +6,7 @@
 
 - hosts: primary
   roles:
-    - claim-some-vlans
+    - claim-a-vlan-range
     - clear-nexus-vlans
     - claim-a-cimc-baremetal
     - configure-vlan-for-baremetal

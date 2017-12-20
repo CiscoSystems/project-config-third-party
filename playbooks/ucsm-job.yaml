@@ -7,5 +7,4 @@
     devstack_local_conf:
       "{{ lookup('template', 'templates/ucsm_job_local_conf.j2') }}"
   roles:
-    - load-claimed-vlans
     - run-devstack-gate

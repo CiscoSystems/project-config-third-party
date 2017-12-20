@@ -1,4 +1,4 @@
 ---
 - hosts: primary
   roles:
-    - claim-some-vlans
+    - claim-a-vlan-range

@@ -1,0 +1,17 @@
+---
+- name: Claim some VLANs for use in the tests
+  command: "python {{workspace}}/claim_ciresource.py vlan"
+  register: claimed_vlans_result
+
+- name: create directory for ansible custom facts
+  file: state=directory recurse=yes path=/etc/ansible/facts.d
+  become: true
+
+- name: Save claimed VLANs to ansible fact
+  copy:
+    content: "{{ claimed_vlans_result.stdout }}"
+    dest: "/etc/ansible/facts.d/claimed_vlans.fact"
+  become: true
+
+- name: Re-read facts after adding custom fact
+  setup: filter=ansible_local

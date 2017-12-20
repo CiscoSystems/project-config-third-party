@@ -20,7 +20,5 @@
       DEVSTACK_GATE_CONFIG_DRIVE: "1"
       DEVSTACK_GATE_TEMPEST_REGEX: "ironic"
   roles:
-    - load-claimed-vlans
-    - load-claimed-baremetal
     - populate-ironic-hardware-info
     - run-devstack-gate
