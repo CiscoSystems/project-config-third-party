@@ -1,8 +1,8 @@
 enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco
 enable_service net-cisco
 
-ML2_VLAN_RANGES=nexusnet:{{claimed_vlan_range}}
-OVS_VLAN_RANGES=nexusnet:{{claimed_vlan_range}}
+ML2_VLAN_RANGES=nexusnet:{{ansible_local.claimed_vlans.min_vlan}}:{{ansible_local.claimed_vlans.max_vlan}}
+OVS_VLAN_RANGES=nexusnet:{{ansible_local.claimed_vlans.min_vlan}}:{{ansible_local.claimed_vlans.max_vlan}}
 
 ENABLE_TENANT_VLANS=True
 OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet
