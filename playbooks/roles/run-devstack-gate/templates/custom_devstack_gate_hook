@@ -7,9 +7,9 @@
         {{- "(cd /opt/stack/new/%s" % project }}
         {%- for patch in patches %}
           {%- if "http" in patch %}
-            {{- " && \\\n git fetch %s && git cherry-pick FETCH_HEAD" % patch }}
+            {{- " && \\\n git fetch %s && git cherry-pick FETCH_HEAD" % (patch | trim) }}
           {%- else %}
-            {{- " && \\\n git apply %s" % patch }}
+            {{- " && \\\n git apply %s" % (patch | trim) }}
           {%- endif %}
         {%- endfor %})
         {{- "\n" }}
