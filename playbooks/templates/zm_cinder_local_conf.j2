@@ -12,13 +12,9 @@ enable_service q-l3
 disable_service q-fwaas
 enable_service q-meta
 enable_service neutron
-enable_service tempest
-
-DATABASE_PASSWORD=cisco123
-RABBIT_PASSWORD=guest
-SERVICE_PASSWORD=cisco123
-ADMIN_PASSWORD=cisco123
-MYSQL_PASSWORD=cisco123
+enable_service c-api
+enable_service c-sch
+enable_service c-vol
 
 Q_PLUGIN=ml2
 Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch
