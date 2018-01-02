@@ -18,6 +18,11 @@
 - name: Output devstack gate env
   debug: msg="{{ devstack_gate_env }}"
 
+- name: Ensure /opt/stack/logs doesnt exist from previous run
+  file:
+    state: absent
+    path: "/opt/stack/logs/"
+
 - name: Run devstack gate
   environment: "{{ devstack_gate_env | combine(devstack_gate_env_override) }}"
   register: devstack-gate
