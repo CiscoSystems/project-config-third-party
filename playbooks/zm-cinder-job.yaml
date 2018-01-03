@@ -9,5 +9,6 @@
     devstack_gate_env_override:
       DEVSTACK_GATE_TEMPEST_REGEX:
         "AttachVolumeTestJSON.test_attach_detach_volum"
+    run_devstack_gate_unstack: true
   roles:
     - run-devstack-gate
