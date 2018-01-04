@@ -31,8 +31,7 @@ openstack_project_cherrypicks: {}
 # yamllint disable rule:line-length
 default_openstack_project_cherrypicks:
   all:
-    devstack-gate:
-      - "https://git.openstack.org/openstack-infra/devstack-gate refs/changes/25/523925/1"
+    devstack-gate: []
 # yamllint enable
 
 run_devstack_gate_unstack: false
