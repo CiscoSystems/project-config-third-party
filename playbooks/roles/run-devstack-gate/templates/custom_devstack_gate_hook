@@ -41,8 +41,8 @@ function post_test_hook {
   echo "Running post_test_hook"
 
   # NOTE(sambetts) Remove this hack when/if https://review.openstack.org/#/c/530726/ merges
-  {% if run_devstack_gate_unstack %}
-  $ANSIBLE all -i "$WORKSPACE/inventory" -m shell -a "cd '$BASE/new/devstack' && sudo -H -u stack ./unstack.sh"
-  {% endif %}
+  # {% if run_devstack_gate_unstack %}
+  # $ANSIBLE all -i "$WORKSPACE/inventory" -m shell -a "cd '$BASE/new/devstack' && sudo -H -u stack ./unstack.sh"
+  # {% endif %}
 }
 export -f post_test_hook
