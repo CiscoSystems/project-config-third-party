@@ -22,6 +22,7 @@
   file:
     state: absent
     path: "/opt/stack/logs/"
+  become: true
 
 - name: Run devstack gate
   environment: "{{ devstack_gate_env | combine(devstack_gate_env_override) }}"
