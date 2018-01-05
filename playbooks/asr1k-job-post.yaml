@@ -5,9 +5,9 @@
       {{ ci_node_interfaces }} +
       {{ routers|map('extract', connections, ['data', 'port'])|list }}
   roles:
-    - load-claimed-vlans
-    - clear-nexus-vlans
-    - release-some-vlans
+    - role: clear-nexus-vlans
+      ignore_errors: true
+    - release-claimed-vlans
 
 - hosts: all
   roles:

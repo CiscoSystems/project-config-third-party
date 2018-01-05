@@ -27,6 +27,8 @@
     - configure-vlan-for-hosts
     - role: setup-vlan-subinterface
       ip_cidr: 10.1.0.2/26
+      subintf_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
+      subintf_mtu: 1350
     - needs-ubuntu-images
   tasks:
     - name: Copy tftpd template into a known location

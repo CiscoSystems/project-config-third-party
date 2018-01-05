@@ -1,23 +1,23 @@
 ---
 # yamllint disable rule:line-length
-- name: Create sub-interface on second nexus tap for conductor
+- name: Create sub-interface on second nexus tap
   shell: |
-    ip link add link nexustap2 name nexustap2.{{ansible_local.claimed_vlans.min_vlan}} type vlan id {{ansible_local.claimed_vlans.min_vlan}}
+    ip link add link nexustap2 name nexustap2.{{ subintf_vlan }} type vlan id {{ subintf_vlan }}
   become: true
 
-- name: Assign IP address for conductor to sub-interface
+- name: Assign IP address to sub-interface
   shell: |
-    ip addr add {{ip_cidr}} dev nexustap2.{{ansible_local.claimed_vlans.min_vlan}}
+    ip addr add {{ip_cidr}} dev nexustap2.{{ subintf_vlan }}
   become: true
   when: ip_cidr is defined
 # yamllint enable
 
-- name: Bring up sub-interface for conductor
+- name: Bring up sub-interface
   shell: |
-    ip link set dev nexustap2.{{ansible_local.claimed_vlans.min_vlan}} up
+    ip link set dev nexustap2.{{ subintf_vlan }} up
   become: true
 
 - name: Set MTU to smaller value (because VLAN over GRE)
   shell: |
-    ip link set dev nexustap2.{{ansible_local.claimed_vlans.min_vlan}} mtu 1350
+    ip link set dev nexustap2.{{ subintf_vlan }} mtu {{ subintf_mtu | default(physnet_mtu) }}
   become: true

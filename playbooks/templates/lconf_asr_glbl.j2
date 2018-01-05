@@ -1,12 +1,9 @@
 disable_service q-l3
-{% if 'ocata' in override_zuul_branch or 'pike' in override_zuul_branch %}
-#NEUTRON_CREATE_INITIAL_NETWORKS=False
-{% endif %}
 NEUTRON_CREATE_INITIAL_NETWORKS=True
 Q_USE_PROVIDERNET_FOR_PUBLIC=True
 PUBLIC_PHYSICAL_NETWORK={{ vlan_physnet }}
 PUBLIC_PROVIDERNET_TYPE=vlan
-PUBLIC_PROVIDERNET_SEGMENTATION_ID={{ minvlan }}
+PUBLIC_PROVIDERNET_SEGMENTATION_ID={{ ansible_local.claimed_vlans.min_vlan }}
 
 IP_VERSION=4
 

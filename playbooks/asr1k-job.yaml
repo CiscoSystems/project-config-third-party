@@ -10,5 +10,4 @@
       DEVSTACK_GATE_FLOATING_RANGE: 10.254.0.0/24
       DEVSTACK_GATE_PUBLIC_NETWORK_GATEWAY: "10.254.0.1"
   roles:
-    - load-claimed-vlans
     - run-devstack-gate
