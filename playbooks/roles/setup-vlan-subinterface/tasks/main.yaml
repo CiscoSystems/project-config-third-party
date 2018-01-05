@@ -17,7 +17,9 @@
     ip link set dev nexustap2.{{ subintf_vlan }} up
   become: true
 
+# yamllint disable rule:line-length
 - name: Set MTU to smaller value (because VLAN over GRE)
   shell: |
     ip link set dev nexustap2.{{ subintf_vlan }} mtu {{ subintf_mtu | default(physnet_mtu) }}
   become: true
+# yamllint enable

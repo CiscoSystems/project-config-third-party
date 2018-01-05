@@ -1,7 +1,7 @@
 {# Macro for rendering out cherry pick commands #}
 {%- macro render_cherrypicks(cherrypicks) %}
   {%- for version, projects in cherrypicks.items() %}
-    {%- if version == "all" or version == override_zuul_branch %}
+    {%- if version == "all" or version in override_zuul_branch %}
       {%- for project, patches in projects.items() %}
         {{- "# Cherrypick pre-merge changes to %s\n" % project }}
         {{- "(cd /opt/stack/new/%s" % project }}
@@ -32,18 +32,6 @@ function pre_test_hook {
   # Custom cherrypicks applied to only this job
   #############################################
   {{ render_cherrypicks(openstack_project_cherrypicks) | indent(2) }}
-
-  # Cherry-pick fix into devstack to allow router public net to be providernet vlan
-{% if 'mitaka' in override_zuul_branch %}
-  (cd /opt/stack/new/devstack && \
-   git apply $WORKSPACE/patches/devstack_mitaka_providernet_pub_vlan.patch)
-{% elif 'newton' in override_zuul_branch %}
-  (cd /opt/stack/new/devstack && \
-   git fetch https://git.openstack.org/openstack-dev/devstack refs/changes/12/528512/1 && git cherry-pick FETCH_HEAD)
-{% else %}
-  (cd /opt/stack/new/devstack && \
-   git fetch https://git.openstack.org/openstack-dev/devstack refs/changes/10/528510/1 && git cherry-pick FETCH_HEAD)
-{% endif %}
 
   {{ custom_pre_test_hook_script | indent(2) }}
 }

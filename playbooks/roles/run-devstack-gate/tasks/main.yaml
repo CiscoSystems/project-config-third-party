@@ -9,6 +9,7 @@
     path: "{{ workspace }}/patches"
     state: directory
     mode: 0755
+  when: "'mitaka' in override_zuul_branch"
 
 - name: Copy EOL branch patch files
   copy:
@@ -16,6 +17,7 @@
     dest: "{{ workspace }}/patches/"
   with_items:
     - devstack_mitaka_providernet_pub_vlan.patch
+  when: "'mitaka' in override_zuul_branch"
 
 - name: Copy devstack gate to devstack gate safe
   copy:

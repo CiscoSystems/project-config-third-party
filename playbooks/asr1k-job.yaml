@@ -1,5 +1,6 @@
 ---
 # Run devstack gate only on primary
+# yamllint disable rule:line-length
 - hosts: primary
   vars:
     projects:
@@ -10,4 +11,18 @@
       DEVSTACK_GATE_FLOATING_RANGE: 10.254.0.0/24
       DEVSTACK_GATE_PUBLIC_NETWORK_GATEWAY: "10.254.0.1"
   roles:
-    - run-devstack-gate
+    - role: run-devstack-gate
+      openstack_project_cherrypicks:
+        mitaka:
+          devstack:
+            - "$WORKSPACE/patches/devstack_mitaka_providernet_pub_vlan.patch"
+        newton:
+          devstack:
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/12/528512/1"
+        ocata:
+          devstack:
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/10/528510/1"
+        pike:
+          devstack:
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/10/528510/1"
+# yamllint enable
