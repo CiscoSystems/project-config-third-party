@@ -28,6 +28,30 @@ pipelines:
         from: zuul@cisco-openstack-ci.com
         subject: Upstream change {change} has a merge failure
 
+  - name: asr-check
+    description: >
+      Pipeline for ASR specific jobs because they are rate limited by the
+      amount of equipment. Newly uploaded patchsets enter this pipeline to
+      receive an initial +/-1 Verified vote from Jenkins.
+    failure-message: "Build failed.  To recheck use 'recheck'."
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: change-restored
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+    success:
+      gerrit:
+        verified: 1
+    failure:
+      gerrit:
+        verified: -1
+    merge-failure:
+      smtp:
+        to: rcresswe@cisco.com
+        from: zuul@cisco-openstack-ci.com
+        subject: Upstream change {change} has a merge failure
 
   - name: experimental
     description: >
@@ -70,6 +94,9 @@ jobs:
         - ^tools/.*$
         - ^tox.ini$
 
+  - name: gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
+    voting: false
+
 projects:
   - name: openstack/networking-cisco
     check:
@@ -81,6 +108,11 @@ projects:
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
       - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
+    asr-check:
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
+      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
     experimental:
       - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
       - gate-networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node
