@@ -56,6 +56,19 @@ jobs:
     tags:
       - "reusenode"
 
+  - name: ^.*-dvsm-.*$
+    skip-if:
+      - all-files-match-any:
+        - ^.*\.rst$
+        - ^api-ref/.*$
+        - ^doc/.*$
+        - ^install-guide/.*$
+        - ^ironic/locale/.*$
+        - ^ironic/tests/.*$
+        - ^networking-cisco/tests/.*$
+        - ^releasenotes/.*$
+        - ^tools/.*$
+        - ^tox.ini$
 
 projects:
   - name: openstack/networking-cisco
