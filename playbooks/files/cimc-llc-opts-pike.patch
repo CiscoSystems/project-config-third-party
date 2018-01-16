@@ -1,0 +1,30 @@
+From e664d3359901822c63d768ab6250bd7f32efebc3 Mon Sep 17 00:00:00 2001
+From: Sam Betts <sam@code-smash.net>
+Date: Thu, 8 Feb 2018 10:16:40 +0000
+Subject: [PATCH] Read LLC opts for CIMC hardware_info entries
+
+Change-Id: I7a43ee83d18338735b1bf119430982b7b791562e
+---
+ devstack/lib/ironic | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/devstack/lib/ironic b/devstack/lib/ironic
+index ed2319f55..8fbe18d58 100644
+--- a/devstack/lib/ironic
++++ b/devstack/lib/ironic
+@@ -1696,6 +1696,12 @@ function enroll_nodes {
+                 node_options+=" --driver-info cimc_address=$bmc_address \
+                     --driver-info cimc_password=$bmc_passwd \
+                     --driver-info cimc_username=$bmc_username"
++                switch_info=$(echo $hardware_info |awk '{print $5}')
++                switch_id=$(echo $hardware_info |awk '{print $6}')
++                port_id=$(echo $hardware_info |awk '{print $7}')
++                llc_opts="--local-link-connection switch_id=${switch_id} \
++                    --local-link-connection switch_info=${switch_info} \
++                    --local-link-connection port_id=${port_id}"
+             elif is_deployed_by_ucs; then
+                 local ucs_service_profile
+                 ucs_service_profile=$(echo $hardware_info |awk '{print $5}')
+-- 
+2.11.0
+

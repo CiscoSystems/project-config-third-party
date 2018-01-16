@@ -1,0 +1,45 @@
+---
+# FIXME(sambetts) this should become part of the image build process
+- hosts: all
+  tasks:
+    - file:
+        path: /home/jenkins
+        mode: 0755
+
+- hosts: all
+  vars:
+    additional_pip_libraries:
+      - "ImcSdk==0.7.2"
+      - "cryptography===2.1.4"
+  roles:
+    - install-openvswitch
+    - setup-l2-tunnels
+    - install-additional-pip-libraries
+
+- hosts: primary
+  vars:
+    nexus_interfaces: "{{ ci_node_interfaces }}"
+  roles:
+    - claim-a-vlan-range
+    - claim-a-cimc-baremetal
+    - clear-nexus-vlans
+    - clear-nexus-vlans-for-baremetal
+    - configure-vlan-for-hosts
+    - role: setup-vlan-subinterface
+      ip_cidr: 10.1.0.2/26
+      subintf_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
+      subintf_mtu: 1350
+    - needs-ubuntu-images
+  tasks:
+    - name: Copy tftpd template into a known location
+      copy:
+        src: tftpd-xinetd.template
+        dest: "/tmp/tftpd-xinetd.template"
+    - name: Copy ironic ocata/newton devstack patch into known location
+      copy:
+        src: cimc-llc-opts-ocata-newton.patch
+        dest: "/tmp/cimc-llc-opts-ocata-newton.patch"
+    - name: Copy ironic pike devstack patch into known location
+      copy:
+        src: cimc-llc-opts-pike.patch
+        dest: "/tmp/cimc-llc-opts-pike.patch"

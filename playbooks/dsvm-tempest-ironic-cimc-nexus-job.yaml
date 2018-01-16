@@ -1,0 +1,52 @@
+---
+# Collect information from all nodes so we can use it in the devstack
+# config file
+- hosts: all
+  tasks:
+    - ping:
+
+# Run devstack gate only on primary
+- hosts: primary
+  vars:
+    projects:
+      - openstack/ironic
+      - openstack/python-ironicclient
+      - openstack/ironic-python-agent
+      - openstack/ironic-lib
+      - openstack/ironic-tempest-plugin
+      - openstack/networking-cisco
+    # yamllint disable rule:line-length
+    devstack_local_conf:
+      "{{ lookup('template', 'templates/ironic_cimc_nexus_job_local_conf.j2') }}"
+    # yamllint enable
+    devstack_gate_env_override:
+      DEVSTACK_GATE_VIRT_DRIVER: "ironic"
+      DEVSTACK_GATE_CONFIG_DRIVE: "1"
+      DEVSTACK_GATE_TEMPEST_REGEX: "ironic(?!.*multitenancy)"
+      DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT: "1000"
+      DEVSTACK_GATE_OS_TEST_TIMEOUT: "2000"
+    openstack_project_cherrypicks:
+      all:
+        devstack:
+          - >
+            https://git.openstack.org/openstack-dev/devstack
+            refs/changes/91/525691/2
+      newton:
+        ironic:
+          - /tmp/cimc-llc-opts-ocata-newton.patch
+          - 3c54dd54c6d9b8de28a508fd8ebb38bd3162cdd5
+          - 13eff665f0ac1b43480ed06d8fad3ccbb9974e7a
+          - 1aaf219162929d4ed0131b258eeec2c9c33c24cf
+      ocata:
+        ironic:
+          - /tmp/cimc-llc-opts-ocata-newton.patch
+      pike:
+        ironic:
+          - /tmp/cimc-llc-opts-pike.patch
+    # yamllint disable rule:line-length
+    custom_pre_test_hook_script: |
+      cp /tmp/tftpd-xinetd.template /opt/stack/new/ironic/devstack/tools/ironic/templates/tftpd-xinetd.template
+    # yamllint enable
+  roles:
+    - populate-ironic-hardware-info
+    - run-devstack-gate

@@ -1,0 +1,11 @@
+---
+- name: Clear the claimed VLANs on the Nexus host interfaces
+  include_role:
+    name: static-nexus-programmer
+  vars:
+    nexus_interface: "{{ ansible_local.claimed_baremetal.nexus_port }}"
+    start_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
+    end_vlan: "{{ ansible_local.claimed_vlans.max_vlan }}"
+    native_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
+    remove: "yes"
+  when: ansible_local.claimed_vlans is defined

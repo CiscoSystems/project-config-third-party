@@ -7,9 +7,9 @@
         {{- "(cd /opt/stack/new/%s" % project }}
         {%- for patch in patches %}
           {%- if "http" in patch %}
-            {{- " && \\\n git fetch %s && git cherry-pick FETCH_HEAD" % (patch | trim) }}
+            {{- " && \\\n git fetch {0} && git cherry-pick FETCH_HEAD".format((patch | trim)) }}
           {%- else %}
-            {{- " && \\\n git apply %s" % (patch | trim) }}
+            {{- " && \\\n (git am {0} || git apply {0} || git cherry-pick --strategy recursive -Xtheirs {0})".format((patch | trim)) }}
           {%- endif %}
         {%- endfor %})
         {{- "\n" }}
@@ -19,6 +19,9 @@
 {%- endmacro -%}
 
 function pre_test_hook {
+  # Ensure that we fail this function at the first error
+  set -o errtrace && trap "set +o errtrace && return 1" ERR
+
 {% if ansible_distribution == "CentOS" %}
   # Hack the version of libvirt-python so its compatible with centos7
   $ANSIBLE all -i $WORKSPACE/inventory -m "replace" -a "path=/opt/stack/new/requirements/upper-constraints.txt regexp='libvirt-python.*' replace='libvirt-python===3.2.0'"
@@ -40,6 +43,9 @@ function pre_test_hook {
 export -f pre_test_hook
 
 function post_test_hook {
+  # Ensure that we fail this function at the first error
+  set -o errtrace && trap "set +o errtrace && return 1" ERR
+
   echo "Running post_test_hook"
 {% if custom_post_test_hook_script %}
 
