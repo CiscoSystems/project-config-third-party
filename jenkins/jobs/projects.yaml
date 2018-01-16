@@ -25,6 +25,13 @@
         - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
             job-name: ironic-cimc
             node: centos-7-cimc
+        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
+            job-name: ironic-cimc-nexus
+            node: centos-7-cimc
+            zuul-branch:
+              - pike
+              - ocata
+              - newton
 
 - project:
     name: networking-cisco

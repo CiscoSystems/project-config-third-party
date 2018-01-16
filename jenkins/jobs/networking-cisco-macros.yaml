@@ -1,4 +1,11 @@
 - builder:
+    name: check-experimental-regex
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          [[ $JOB_NAME =~ ^${CISCO_CI_EXPR_REGEX}$ ]] || echo "Job did not match Cisco experimental CI regex... failing job" && exit 1
+
+- builder:
     name: install-ansible
     builders:
       - shell: |
@@ -87,6 +94,7 @@
       - timestamps
 
     builders:
+      - check-experimental-regex
       - net-info
       - project-config-checkout-http
       - devstack-checkout-http
