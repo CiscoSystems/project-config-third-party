@@ -1,4 +1,15 @@
 
+
+{% if ansible_local.asr_region_id is defined %}
+[multi_region]
+enable_multi_region = True
+{% set asr_region_id = ansible_local.asr_region_id.region_id %}
+region_id = {{ asr_region_id }}
+other_region_ids = {% for id in ansible_local.asr_region_ids %}{% if id.region_id != asr_region_id %}{{ id.region_id }},{% endif %}{% endfor %}
+
+{% endif %}
+
+
 [hosting_devices_templates]
 [cisco_hosting_device_template:1]
 name=NetworkNode
@@ -101,3 +112,4 @@ internal_net_interface_1=*:{{ connections[router_name]['data'].localport }}
 
 {% endif -%}
 {% endfor -%}
+

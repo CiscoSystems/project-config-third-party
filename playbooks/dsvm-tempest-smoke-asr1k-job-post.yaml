@@ -8,6 +8,7 @@
     - role: clear-nexus-vlans
       ignore_errors: true
     - release-claimed-vlans
+    - release-claimed-region-id
 
 - hosts: all
   roles:
