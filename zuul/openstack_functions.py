@@ -75,11 +75,10 @@ def set_node_options(item, job, params):
             params['CISCO_CI_EXPR_BRANCH'] = "master"
 
     cisco_ci_experimental_re = r'^Cisco-CI-Experimental-Regex: (.*)\s*$'
+    params['CISCO_CI_EXPR_REGEX'] = ".*"
     if (item.pipeline.name == "experimental"):
         commitMessageSearch = re.search(cisco_ci_experimental_re,
                                         item.change._data['commitMessage'],
                                         re.MULTILINE | re.IGNORECASE)
         if commitMessageSearch:
             params['CISCO_CI_EXPR_REGEX'] = commitMessageSearch.group(1)
-        else:
-            params['CISCO_CI_EXPR_REGEX'] = ".*"
