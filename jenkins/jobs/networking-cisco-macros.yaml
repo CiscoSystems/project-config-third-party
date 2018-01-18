@@ -4,7 +4,7 @@
       - shell: |
           #!/bin/bash -xe
           CISCO_CI_EXPR_REGEX=${CISCO_CI_EXPR_REGEX:-".*"}
-          [[ $JOB_NAME =~ ^${CISCO_CI_EXPR_REGEX}$ ]] || echo "Job did not match Cisco experimental CI regex... failing job" && exit 1
+          [[ $JOB_NAME =~ ^${CISCO_CI_EXPR_REGEX}$ ]] || (echo "Job did not match Cisco experimental CI regex... failing job" && exit 1)
 
 - builder:
     name: install-ansible
