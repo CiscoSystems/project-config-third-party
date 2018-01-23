@@ -6,6 +6,7 @@ ENABLE_TENANT_VLANS=True
 OVS_BRIDGE_MAPPINGS=public:br-ex,ucsmnet:br-ucsmnet
 Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge,cisco_ucsm
 Q_ML2_TENANT_NETWORK_TYPE=vlan
+TEMPEST_PLUGINS+=" /opt/stack/new/networking-cisco"
 
 [[post-config|/$Q_PLUGIN_CONF_FILE]]
 [ml2_cisco_ucsm]
@@ -14,3 +15,10 @@ ucsm_username=admin
 ucsm_password=Cisc0123
 ucsm_host_list={{ ansible_hostname }}:devstack-{{ ansible_hostname[-6:] }}
 ucsm_https_verify=False
+
+[[test-config|$TEMPEST_CONFIG]]
+[ucsm]
+service_profile=devstack-{{ ansible_hostname[-6:] }}
+ucsm_ip=192.133.149.20
+ucsm_username=admin
+ucsm_password=Cisc0123
