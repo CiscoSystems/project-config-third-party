@@ -140,5 +140,7 @@ projects:
       - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc
 
   - name: openstack/cinder
+    check:
+      - gate-cinder-dsvm-tempest-smoke-zm-cinder-current-cinder-zonemanager-node
     experimental:
       - gate-cinder-dsvm-tempest-smoke-zm-cinder-current-cinder-zonemanager-node
