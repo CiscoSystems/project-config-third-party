@@ -39,3 +39,4 @@ default_openstack_project_cherrypicks:
 run_devstack_gate_unstack: false
 
 custom_pre_test_hook_script: ""
+custom_post_test_hook_script: ""
