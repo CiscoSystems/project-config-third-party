@@ -8,7 +8,8 @@ pipelines:
     description: >
       Newly uploaded patchsets enter this pipeline to receive an initial +/-1
       Verified vote from Jenkins.
-    failure-message: "Build failed.  To recheck use 'recheck'."
+    success-message: "Build succeeded (check pipeline)."
+    failure-message: "Build failed (check pipeline).  To recheck use 'recheck'."
     manager: IndependentPipelineManager
     trigger:
       gerrit:
@@ -33,7 +34,8 @@ pipelines:
       Pipeline for ASR specific jobs because they are rate limited by the
       amount of equipment. Newly uploaded patchsets enter this pipeline to
       receive an initial +/-1 Verified vote from Jenkins.
-    failure-message: "Build failed.  To recheck use 'recheck'."
+    success-message: "Build succeeded (asr-check pipeline)."
+    failure-message: "Build failed (asr-check pipeline).  To recheck use 'recheck'."
     manager: IndependentPipelineManager
     trigger:
       gerrit:
