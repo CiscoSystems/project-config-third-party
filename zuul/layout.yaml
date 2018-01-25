@@ -96,8 +96,13 @@ jobs:
         - ^tools/.*$
         - ^tox.ini$
 
-  - name: gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
-    voting: false
+  - name: ^.*-asr1k-.*$
+    skip-if:
+      - all-files-match-any:
+        - ^.*/plugins/ml2/.*$
+        - ^.*networking_cisco/apps/.*$
+        - ^.*networking_cisco/services/.*$
+        - ^.*networking_cisco/tests/.*$
 
   - name: ^.*ironic-cimc-nexus.*$
     voting: false
