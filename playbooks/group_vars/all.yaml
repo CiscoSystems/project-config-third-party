@@ -11,6 +11,10 @@ vlan_physnet: nexusnet
 physnet_mtu: 1350
 pub_net_vlan: 1001
 
+ucsm_ip: 192.133.149.20
+ucsm_user: admin
+ucsm_password: Cisc0123
+
 routers:
   - ASR_1
   - ASR_2

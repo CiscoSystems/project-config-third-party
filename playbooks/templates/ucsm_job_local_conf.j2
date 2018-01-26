@@ -10,15 +10,15 @@ TEMPEST_PLUGINS+=" /opt/stack/new/networking-cisco"
 
 [[post-config|/$Q_PLUGIN_CONF_FILE]]
 [ml2_cisco_ucsm]
-ucsm_ip=192.133.149.20
-ucsm_username=admin
-ucsm_password=Cisc0123
+ucsm_ip={{ ucsm_ip }}
+ucsm_username={{ ucsm_user }}
+ucsm_password={{ ucsm_password }}
 ucsm_host_list={{ ansible_hostname }}:devstack-{{ ansible_hostname[-6:] }}
 ucsm_https_verify=False
 
 [[test-config|$TEMPEST_CONFIG]]
 [ucsm]
 service_profile=devstack-{{ ansible_hostname[-6:] }}
-ucsm_ip=192.133.149.20
-ucsm_username=admin
-ucsm_password=Cisc0123
+ucsm_ip={{ ucsm_ip }}
+ucsm_username={{ ucsm_user }}
+ucsm_password={{ ucsm_password }}
