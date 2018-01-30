@@ -22,3 +22,10 @@ service_profile=devstack-{{ ansible_hostname[-6:] }}
 ucsm_ip={{ ucsm_ip }}
 ucsm_username={{ ucsm_user }}
 ucsm_password={{ ucsm_password }}
+
+[[post-extra|$TEMPEST_CONFIG]]
+[ucsm]
+service_profile=devstack-{{ ansible_hostname[-6:] }}
+ucsm_ip={{ ucsm_ip }}
+ucsm_username={{ ucsm_user }}
+ucsm_password={{ ucsm_password }}
