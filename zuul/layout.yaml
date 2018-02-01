@@ -110,44 +110,44 @@ jobs:
 projects:
   - name: openstack/networking-cisco
     check:
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
+      - networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
+      - networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node
+      - networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node
+      - networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
+      - networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
+      - networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
+      - networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
+      - networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
     asr-check:
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
+      - networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
+      - networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr
+      - networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
+      - networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
     experimental:
-      - gate-networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node:
-        - gate-networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node
-        - gate-networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
-        - gate-networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
-      - gate-networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7:
-        - gate-networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
-        - gate-networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
-        - gate-networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
-      - gate-networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr:
-        - gate-networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
-        - gate-networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
-        - gate-networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
-      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-nexus-ocata-centos-7-cimc:
-        - gate-ironic-dsvm-tempest-smoke-ironic-cimc-nexus-pike-centos-7-cimc
-        - gate-ironic-dsvm-tempest-smoke-ironic-cimc-nexus-newton-centos-7-cimc
+      - networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node:
+        - networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node
+        - networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
+        - networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
+      - networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7:
+        - networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
+        - networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
+        - networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
+      - networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr:
+        - networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
+        - networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
+        - networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
+      - ironic-dsvm-tempest-ironic-cimc-nexus-ocata-centos-7-cimc:
+        - ironic-dsvm-tempest-ironic-cimc-nexus-pike-centos-7-cimc
+        - ironic-dsvm-tempest-ironic-cimc-nexus-newton-centos-7-cimc
 
   - name: openstack/ironic
     check:
-      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc
+      - ironic-dsvm-tempest-ironic-cimc-current-centos-7-cimc
     experimental:
-      - gate-ironic-dsvm-tempest-smoke-ironic-cimc-current-centos-7-cimc
+      - ironic-dsvm-tempest-ironic-cimc-current-centos-7-cimc
 
   - name: openstack/cinder
     check:
-      - gate-cinder-dsvm-tempest-smoke-zm-cinder-current-cinder-zonemanager-node
+      - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm
     experimental:
-      - gate-cinder-dsvm-tempest-smoke-zm-cinder-current-cinder-zonemanager-node
+      - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm

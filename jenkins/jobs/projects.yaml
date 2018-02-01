@@ -8,9 +8,9 @@
     vendor: cisco
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: zm-cinder
-            node: cinder-zonemanager-node
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-cisco-zonemanager
+            node: ubuntu-czm
 
 - project:
     name: ironic
@@ -22,11 +22,11 @@
     vendor: cisco
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: ironic-cimc
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-ironic-cimc
             node: centos-7-cimc
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: ironic-cimc-nexus
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-ironic-cimc-nexus
             node: centos-7-cimc
             zuul-branch:
               - pike
@@ -47,12 +47,12 @@
     vendor: cisco
 
     jobs:
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: nexus
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-smoke-nexus
             node: centos-7-2-node
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: ucsm
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-smoke-ucsm
             node: centos-7
-        - 'gate-{name}-dsvm-tempest-smoke-{job-name}-{zuul-branch}-{node}':
-            job-name: asr1k
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-smoke-asr1k
             node: centos-7-asr
