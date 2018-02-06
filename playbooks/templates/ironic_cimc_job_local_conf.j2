@@ -33,6 +33,6 @@ DEFAULT_INSTANCE_USER=ubuntu
 
 TEMPEST_PLUGINS+=" /opt/stack/new/ironic-tempest-plugin"
 
-[[post-config|$IRONIC_CONF]]
+[[post-config|$IRONIC_CONF_FILE]]
 [conductor]
 api_url=http://10.1.0.2:6385
