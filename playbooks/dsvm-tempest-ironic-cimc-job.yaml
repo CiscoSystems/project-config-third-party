@@ -21,7 +21,7 @@
       DEVSTACK_GATE_CONFIG_DRIVE: "1"
       DEVSTACK_GATE_TEMPEST_REGEX: "ironic"
       DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT: "1000"
-      DEVSTACK_GATE_OS_TEST_TIMEOUT: "1600"
+      DEVSTACK_GATE_OS_TEST_TIMEOUT: "2000"
     openstack_project_cherrypicks:
       all:
         devstack:
