@@ -1,0 +1,38 @@
+enable_plugin ironic https://git.openstack.org/openstack/ironic
+enable_plugin neutron https://git.openstack.org/openstack/neutron
+
+ML2_VLAN_RANGES=nexusnet:{{(ansible_local.claimed_vlans.min_vlan|int)+1}}:{{ansible_local.claimed_vlans.max_vlan}}
+OVS_VLAN_RANGES=nexusnet:{{(ansible_local.claimed_vlans.min_vlan|int)+1}}:{{ansible_local.claimed_vlans.max_vlan}}
+
+ENABLE_TENANT_VLANS=True
+OVS_BRIDGE_MAPPINGS=public:br-ex,nexusnet:br-nexusnet
+Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge
+Q_ML2_TENANT_NETWORK_TYPE=vlan
+
+# Use this to setup the initial network as a vlan provider network
+Q_USE_PROVIDER_NETWORKING=True
+PROVIDER_NETWORK_TYPE=vlan
+PHYSICAL_NETWORK=nexusnet
+PRIVATE_NETWORK_NAME=nexusnet
+SEGMENTATION_ID={{ansible_local.claimed_vlans.min_vlan}}
+ALLOCATION_POOL=start=10.1.0.3,end=10.1.0.62
+fixed_range_v4=10.1.0.0/26
+IP_VERSION=4
+
+IRONIC_IS_HARDWARE=True
+IRONIC_DEPLOY_DRIVER=pxe_ucs
+IRONIC_HWINFO_FILE={{workspace}}/hardware_info
+IRONIC_ENABLED_DRIVERS=fake,pxe_ucs
+IRONIC_TFTPSERVER_IP=10.1.0.2
+IRONIC_CLEAN_NET_NAME=nexusnet
+
+IMAGE_URLS="file:///tmp/images/ci-test-ubuntu-image-wholedisk.qcow2"
+DEFAULT_IMAGE_NAME=ci-test-ubuntu-image-wholedisk
+IRONIC_IMAGE_NAME=ci-test-ubuntu-image-wholedisk
+DEFAULT_INSTANCE_USER=ubuntu
+
+TEMPEST_PLUGINS+=" /opt/stack/new/ironic-tempest-plugin"
+
+[[post-config|$IRONIC_CONF_FILE]]
+[conductor]
+api_url=http://10.1.0.2:6385

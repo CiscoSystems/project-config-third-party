@@ -1,0 +1,11 @@
+---
+- name: copy script to host
+  copy:
+    src: configure_vlan_on_ucsm_bm.py
+    dest: "{{ workspace }}/configure_vlan_on_ucsm_bm.py"
+
+- name: configure_vlan_on_ucsm
+  command: >
+    python {{workspace}}/configure_vlan_on_ucsm_bm.py 192.133.149.19 admin
+    cisco123 {{ ansible_local.claimed_baremetal.service_profile }}
+    {{ ansible_local.claimed_vlans.min_vlan }}

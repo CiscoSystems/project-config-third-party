@@ -25,8 +25,15 @@ fields = {
         'max_vlan'
     ],
     'cimc_baremetal': [
+        'id',
         'bmc_address',
         'nexus_port',
+        'mac_address'
+    ],
+    'ucsm_baremetal': [
+        'id',
+        'bmc_address',
+        'service_profile',
         'mac_address'
     ],
     'region_id': [
@@ -45,6 +52,7 @@ cur = db.cursor()
 
 def generate_where_clause(data):
     equals = []
+    data.pop("type", None)
     for k, v in data.items():
         equals.append("%s=\"%s\"" % (k, v))
     return " AND ".join(equals)
@@ -97,6 +105,8 @@ else:
                              'timestamp': datetime.now().strftime(f)})
     else:
         raise Exception("No free VLANs found!")
+
+    data['type'] = ci_resource_name
 
     print(json.dumps(data))
 

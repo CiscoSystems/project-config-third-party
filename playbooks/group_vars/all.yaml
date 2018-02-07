@@ -51,6 +51,20 @@ devices:
       ipaddr: 192.133.149.11
       <<: *common_credentials
 
+  Ironic_UCSM:
+    type: UCSM
+    location:
+      rack: AA25
+      ru: 8
+    ssh:
+      ipaddr: 192.133.149.19
+      user: admin
+      password: cisco123
+
+ucsm_nexus_interfaces:
+  - 1/19
+  - 1/20
+
 connections:
   ASR_1:
     data:

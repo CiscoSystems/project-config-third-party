@@ -1,0 +1,37 @@
+---
+# Collect information from all nodes so we can use it in the devstack
+# config file
+- hosts: all
+  tasks:
+    - ping:
+
+# Run devstack gate only on primary
+- hosts: primary
+  vars:
+    projects:
+      - openstack/ironic
+      - openstack/python-ironicclient
+      - openstack/ironic-python-agent
+      - openstack/ironic-lib
+      - openstack/ironic-tempest-plugin
+    devstack_local_conf:
+      "{{ lookup('template', 'templates/ironic_ucsm_job_local_conf.j2') }}"
+    devstack_gate_env_override:
+      DEVSTACK_GATE_VIRT_DRIVER: "ironic"
+      DEVSTACK_GATE_CONFIG_DRIVE: "1"
+      DEVSTACK_GATE_TEMPEST_REGEX: "ironic"
+      DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT: "1000"
+      DEVSTACK_GATE_OS_TEST_TIMEOUT: "2000"
+    openstack_project_cherrypicks:
+      all:
+        devstack:
+          - >
+            https://git.openstack.org/openstack-dev/devstack
+            refs/changes/91/525691/2
+    # yamllint disable rule:line-length
+    custom_pre_test_hook_script: |
+      cp /tmp/tftpd-xinetd.template /opt/stack/new/ironic/devstack/tools/ironic/templates/tftpd-xinetd.template
+    # yamllint enable
+  roles:
+    - populate-ironic-hardware-info
+    - run-devstack-gate

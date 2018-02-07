@@ -1,6 +1,7 @@
 ---
 - name: Release the claimed baremetal resource
   command: >
-    python {{workspace}}/claim_ciresource.py cimc_baremetal
+    python {{workspace}}/claim_ciresource.py
+    {{ ansible_local.claimed_baremetal.type }}
     --release /etc/ansible/facts.d/claimed_baremetal.fact
   when: ansible_local.claimed_baremetal is defined

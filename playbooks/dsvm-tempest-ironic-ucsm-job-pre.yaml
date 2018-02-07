@@ -1,0 +1,59 @@
+---
+- hosts: all
+  tasks:
+    - name: "Add CI FI to /etc/hosts"
+      lineinfile:
+        path: "/etc/hosts"
+        regexp: '^192\.133\.149\.19'
+        line: "192.133.149.19 ironic-ci-fi"
+      become: true
+    # yamllint disable rule:line-length
+    - name: "Add UCSM Cert as trusted TLS certificate"
+      shell: |
+        openssl s_client -showcerts -connect 192.133.149.19:443 </dev/null 2>/dev/null > ucsmcert.junk
+        openssl x509 -outform PEM -in ucsmcert.junk -out ucsmcert.pem
+        ln -s `pwd`/ucsmcert.pem /etc/pki/tls/certs/`openssl x509 -noout -hash -in ucsmcert.junk`.0
+      become: true
+    # yamllint enable
+    - name: "Try to talk to the UCSM"
+      shell: >
+        python -c "import urllib2; urllib2.urlopen('https://ironic-ci-fi')"
+      register: ucsm_test_2
+
+# FIXME(sambetts) this should become part of the image build process
+- hosts: all
+  tasks:
+    - file:
+        path: /home/jenkins
+        mode: 0755
+
+- hosts: all
+  vars:
+    additional_pip_libraries:
+      - "UcsSdk==0.8.2.2"
+      - "ucsmsdk"
+      - "cryptography===2.1.4"
+  roles:
+    - install-openvswitch
+    - setup-l2-tunnels
+    - install-additional-pip-libraries
+
+- hosts: primary
+  vars:
+    nexus_interfaces: "{{ ci_node_interfaces }}"
+  roles:
+    - claim-a-vlan-range
+    - clear-nexus-vlans
+    - claim-a-ucsm-baremetal
+    - configure-vlan-for-ucsm-baremetal
+    - configure-vlan-for-hosts
+    - role: setup-vlan-subinterface
+      ip_cidr: 10.1.0.2/26
+      subintf_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
+      subintf_mtu: 1350
+    - needs-ubuntu-images
+  tasks:
+    - name: Copy tftpd template into a known location
+      copy:
+        src: tftpd-xinetd.template
+        dest: "/tmp/tftpd-xinetd.template"
