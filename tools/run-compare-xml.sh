@@ -23,6 +23,7 @@ mkdir .test
 cd .test
 /usr/zuul-env/bin/zuul-cloner -m ../tools/run-compare-clonemap.yaml --cache-dir /opt/git git://git.openstack.org openstack-infra/jenkins-job-builder
 cd jenkins-job-builder
+git checkout 1.6.2
 # These are $WORKSPACE/.test/jenkins-job-builder/.test/...
 mkdir -p .test/old/config
 mkdir -p .test/old/out
