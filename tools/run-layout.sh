@@ -19,7 +19,7 @@ config=$(readlink -f tools/jenkins.ini)
 mkdir -p .test
 cd .test
 [ -d zuul ] || git clone https://git.openstack.org/openstack-infra/zuul --depth 1 -b 2.6.0
-[ -d jenkins-job-builder ] || git clone https://git.openstack.org/openstack-infra/jenkins-job-builder --depth 1
+[ -d jenkins-job-builder ] || git clone https://git.openstack.org/openstack-infra/jenkins-job-builder --depth 1 -b 1.6.2
 cd jenkins-job-builder
 # These are $WORKSPACE/.test/jenkins-job-builder/.test/...
 mkdir -p .test/new/config
