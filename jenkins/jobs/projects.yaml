@@ -31,7 +31,6 @@
             zuul-branch:
               - pike
               - ocata
-              - newton
 
 - project:
     name: networking-cisco

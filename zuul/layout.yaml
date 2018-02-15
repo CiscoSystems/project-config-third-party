@@ -138,7 +138,6 @@ projects:
         - networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
       - ironic-dsvm-tempest-ironic-cimc-nexus-ocata-centos-7-cimc:
         - ironic-dsvm-tempest-ironic-cimc-nexus-pike-centos-7-cimc
-        - ironic-dsvm-tempest-ironic-cimc-nexus-newton-centos-7-cimc
 
   - name: openstack/ironic
     check:
