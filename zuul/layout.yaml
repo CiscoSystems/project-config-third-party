@@ -104,8 +104,12 @@ jobs:
         - ^.*networking_cisco/services/.*$
         - ^.*networking_cisco/tests/.*$
 
-  - name: ^.*ironic-cimc-nexus.*$
-    voting: false
+  - name: ^.*-ironic-cimc-nexus-.*$
+    skip-if:
+      - all-files-match-any:
+        - ^.*/plugins/cisco.*$
+        - ^.*networking_cisco/apps/.*$
+        - ^.*networking_cisco/tests/.*$
 
 projects:
   - name: openstack/networking-cisco
@@ -118,6 +122,8 @@ projects:
       - networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
       - networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
       - networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
+      - ironic-dsvm-tempest-ironic-cimc-nexus-ocata-centos-7-cimc
+      - ironic-dsvm-tempest-ironic-cimc-nexus-pike-centos-7-cimc
     asr-check:
       - networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
       - networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr
