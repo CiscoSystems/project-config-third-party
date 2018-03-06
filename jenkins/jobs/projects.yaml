@@ -29,6 +29,7 @@
             job-name: dsvm-tempest-ironic-cimc-nexus
             node: centos-7-cimc
             zuul-branch:
+              - queens
               - pike
               - ocata
 
@@ -36,6 +37,7 @@
     name: networking-cisco
     github-org: openstack
     zuul-branch:
+      - queens
       - pike
       - ocata
       - newton
