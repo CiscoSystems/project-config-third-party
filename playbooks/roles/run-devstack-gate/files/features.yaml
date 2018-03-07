@@ -3,6 +3,7 @@
 config:
   default:
     master: [default, glance, nova, placement, keystone]
+    queens: [default, glance, nova, placement, keystone]
     pike: [default, glance, nova, placement, keystone]
     ocata: [default, glance, nova, placement, keystone]
     newton: [default, glance, nova, keystone]
@@ -68,7 +69,7 @@ branches:
   # The value of ""default" is the name of the "trunk" branch
   default: master
   # Normalized branch names only here, e.g. stable/ocata => ocata
-  allowed: [master, pike, ocata, newton, mitaka, liberty, kilo]
+  allowed: [master, queens, pike, ocata, newton, mitaka, liberty, kilo]
 
 primary:
   default:
