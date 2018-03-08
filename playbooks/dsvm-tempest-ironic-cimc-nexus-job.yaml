@@ -43,6 +43,9 @@
       pike:
         ironic:
           - /tmp/cimc-llc-opts-pike.patch
+      queens:
+        ironic:
+          - /tmp/cimc-llc-opts-pike.patch
     # yamllint disable rule:line-length
     custom_pre_test_hook_script: |
       cp /tmp/tftpd-xinetd.template /opt/stack/new/ironic/devstack/tools/ironic/templates/tftpd-xinetd.template
