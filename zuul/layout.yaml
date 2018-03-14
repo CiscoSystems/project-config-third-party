@@ -134,24 +134,24 @@ projects:
       - networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
       - networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
     experimental:
-      - networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node:
-        - networking-cisco-dsvm-tempest-smoke-nexus-queens-centos-7-2-node
+      - networking-cisco-dsvm-tempest-smoke-nexus-queens-centos-7-2-node:
         - networking-cisco-dsvm-tempest-smoke-nexus-pike-centos-7-2-node
+        - networking-cisco-dsvm-tempest-smoke-nexus-ocata-centos-7-2-node
         - networking-cisco-dsvm-tempest-smoke-nexus-newton-centos-7-2-node
         - networking-cisco-dsvm-tempest-smoke-nexus-mitaka-centos-7-2-node
-      - networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7:
-        - networking-cisco-dsvm-tempest-smoke-ucsm-queens-centos-7
+      - networking-cisco-dsvm-tempest-smoke-ucsm-queens-centos-7:
         - networking-cisco-dsvm-tempest-smoke-ucsm-pike-centos-7
+        - networking-cisco-dsvm-tempest-smoke-ucsm-ocata-centos-7
         - networking-cisco-dsvm-tempest-smoke-ucsm-newton-centos-7
         - networking-cisco-dsvm-tempest-smoke-ucsm-mitaka-centos-7
-      - networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr:
-        - networking-cisco-dsvm-tempest-smoke-asr1k-queens-centos-7-asr
+      - networking-cisco-dsvm-tempest-smoke-asr1k-queens-centos-7-asr:
         - networking-cisco-dsvm-tempest-smoke-asr1k-pike-centos-7-asr
+        - networking-cisco-dsvm-tempest-smoke-asr1k-ocata-centos-7-asr
         - networking-cisco-dsvm-tempest-smoke-asr1k-newton-centos-7-asr
         - networking-cisco-dsvm-tempest-smoke-asr1k-mitaka-centos-7-asr
-      - ironic-dsvm-tempest-ironic-cimc-nexus-ocata-centos-7-cimc:
-        - ironic-dsvm-tempest-ironic-cimc-nexus-queens-centos-7-cimc
+      - ironic-dsvm-tempest-ironic-cimc-nexus-queens-centos-7-cimc:
         - ironic-dsvm-tempest-ironic-cimc-nexus-pike-centos-7-cimc
+        - ironic-dsvm-tempest-ironic-cimc-nexus-ocata-centos-7-cimc
 
   - name: openstack/ironic
     check:
