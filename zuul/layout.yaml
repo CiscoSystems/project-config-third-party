@@ -82,7 +82,7 @@ jobs:
     tags:
       - "reusenode"
 
-  - name: ^.*-dvsm-.*$
+  - name: ^.*-dsvm-.*$
     skip-if:
       - all-files-match-any:
         - ^.*\.rst$
