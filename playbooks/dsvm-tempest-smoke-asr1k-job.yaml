@@ -25,4 +25,7 @@
         pike:
           devstack:
             - "https://git.openstack.org/openstack-dev/devstack refs/changes/10/528510/1"
+        queens:
+          devstack:
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/88/554988/1"
 # yamllint enable
