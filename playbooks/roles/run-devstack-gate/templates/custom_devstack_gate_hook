@@ -25,7 +25,7 @@ function pre_test_hook {
 {% if ansible_distribution == "CentOS" %}
   # Hack the version of libvirt-python so its compatible with centos7
   $ANSIBLE all -i $WORKSPACE/inventory -m "replace" -a "path=/opt/stack/new/requirements/upper-constraints.txt regexp='libvirt-python.*' replace='libvirt-python===3.2.0'"
-
+  ( cd /opt/stack/new/requirements && git commit -m "pin libvirt-python version 3.2.0" )
 {% endif %}
   #########################################
   # Default cherrypicks applied to all jobs
