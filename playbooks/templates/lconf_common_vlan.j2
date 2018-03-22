@@ -1,8 +1,8 @@
 Q_ML2_PLUGIN_MECHANISM_DRIVERS=openvswitch,linuxbridge
 # expect cisco ML2 drivers' sections to append to this
 
-ML2_VLAN_RANGES={{ vlan_physnet }}:{{ansible_local.claimed_vlans.min_vlan}}:{{ansible_local.claimed_vlans.max_vlan}}
-OVS_VLAN_RANGES={{ vlan_physnet }}:{{ansible_local.claimed_vlans.min_vlan}}:{{ansible_local.claimed_vlans.max_vlan}}
+ML2_VLAN_RANGES={{ vlan_physnet }}:{{ml2_vlan_min | default(ansible_local.claimed_vlans.min_vlan)}}:{{ansible_local.claimed_vlans.max_vlan}}
+OVS_VLAN_RANGES={{ vlan_physnet }}:{{ml2_vlan_min | default(ansible_local.claimed_vlans.min_vlan)}}:{{ansible_local.claimed_vlans.max_vlan}}
 
 ENABLE_TENANT_VLANS=True
 Q_ML2_TENANT_NETWORK_TYPE=vlan

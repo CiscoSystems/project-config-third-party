@@ -5,6 +5,8 @@
   vars:
     projects:
       - openstack/networking-cisco
+    externalnet_vlan: "{{ansible_local.claimed_vlans.min_vlan}}"
+    ml2_vlan_min: "{{ansible_local.claimed_vlans.min_vlan + 1}}"
     devstack_local_conf:
       "{{ lookup('template', 'templates/asr1k_job_local_conf.j2') }}"
     devstack_gate_env_override:
