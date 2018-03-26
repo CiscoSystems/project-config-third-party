@@ -95,6 +95,7 @@ jobs:
         - ^releasenotes/.*$
         - ^tools/.*$
         - ^tox.ini$
+        - ^.*networking_cisco/tests/unit/.*$
 
   - name: ^.*-asr1k-.*$
     skip-if:
@@ -103,6 +104,7 @@ jobs:
         - ^.*networking_cisco/apps/.*$
         - ^.*networking_cisco/services/.*$
         - ^.*networking_cisco/tests/.*$
+        - ^.*networking_cisco/ml2_drivers/.*$
 
   - name: ^.*-ironic-cimc-nexus-.*$
     skip-if:
