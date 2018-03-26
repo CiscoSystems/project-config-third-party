@@ -1,0 +1,32 @@
+From 9aa7b4054c04db397d3b6a30b7be924d2d7f5011 Mon Sep 17 00:00:00 2001
+From: Sam Betts <sam@code-smash.net>
+Date: Thu, 22 Mar 2018 11:45:35 +0000
+Subject: [PATCH] Add upper constraint for setuptool >=39 on stable/newton
+
+OpenStack stable/newton and older is now incompatible with the latest
+version of setuptools so we need to add an upper constraint to prevent
+us installing a version that is too new. Setuptools version 39.0.0
+removes the ability to index the result of parse_version which is used
+by oslo_utils.versionutils and therefore breaks anyone using those
+utility functions.
+
+Change-Id: I93e940538a943fba2d426a714a187e7f6390ceab
+---
+ upper-constraints.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/upper-constraints.txt b/upper-constraints.txt
+index 0cdcd134..7e94762a 100644
+--- a/upper-constraints.txt
++++ b/upper-constraints.txt
+@@ -331,6 +331,7 @@ selenium===2.52.0
+ semantic-version===2.5.0
+ seqdiag===0.9.5
+ service-identity===16.0.0
++setuptools==38.7.0
+ simplegeneric===0.8.1
+ simplejson===3.8.2
+ singledispatch===3.4.0.3
+-- 
+2.11.0
+
