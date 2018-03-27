@@ -10,10 +10,12 @@
       {{ ci_node_interfaces }} +
       {{ routers|map('extract', connections, ['data', 'port'])|list }}
   roles:
+    - claim-a-region-id
     - claim-a-vlan-range
     - configure-vlan-for-hosts
     - role: setup-vlan-subinterface
-      ip_cidr: 10.254.0.1/24
+      region_id: "{{ansible_local.asr_region_id.region_id}}"
+      regid_num: "{{region_id|regex_replace('L3FR0*', '')}}"
+      ip_cidr: "10.254.{{regid_num}}.1/24"
       subintf_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
       subintf_mtu: "{{ physnet_mtu }}"
-    - claim-a-region-id
