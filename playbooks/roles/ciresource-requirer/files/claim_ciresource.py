@@ -2,10 +2,14 @@ import MySQLdb
 from datetime import datetime, timedelta
 import argparse
 import json
+import sys
+
 
 parser = argparse.ArgumentParser(description="Claim a specific CI resource")
 parser.add_argument('resource_type', help="The type of resource to claim")
 parser.add_argument('--release', help="claimed resource to release json file")
+parser.add_argument('--list', help="list all resources of the type",
+                    action="store_true")
 args = parser.parse_args()
 
 ci_resource_name = args.resource_type
@@ -24,6 +28,9 @@ fields = {
         'bmc_address',
         'nexus_port',
         'mac_address'
+    ],
+    'region_id': [
+        'region_id'
     ]
 }
 
@@ -42,6 +49,20 @@ def generate_where_clause(data):
         equals.append("%s=\"%s\"" % (k, v))
     return " AND ".join(equals)
 
+if args.list:
+    select_fields = ", ".join(ci_resource_fields)
+    cur.execute("SELECT %s FROM %ss" %
+                (select_fields, ci_resource_name))
+    data = []
+    for row in cur:
+        row_data = {}
+        for i in range(len(ci_resource_fields)):
+            row_data[ci_resource_fields[i]] = row[i]
+        data.append(row_data)
+
+    print(json.dumps(data))
+    db.close()
+    sys.exit()
 
 if args.release:
 

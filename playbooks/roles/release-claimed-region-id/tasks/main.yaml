@@ -1,0 +1,6 @@
+---
+- name: Release the claimed region ID resource
+  command: >
+    python {{workspace}}/claim_ciresource.py region_id
+    --release /etc/ansible/facts.d/asr_region_id.fact
+  when: ansible_local.asr_region_id is defined

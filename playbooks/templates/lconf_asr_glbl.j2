@@ -3,7 +3,7 @@ NEUTRON_CREATE_INITIAL_NETWORKS=True
 Q_USE_PROVIDERNET_FOR_PUBLIC=True
 PUBLIC_PHYSICAL_NETWORK={{ vlan_physnet }}
 PUBLIC_PROVIDERNET_TYPE=vlan
-PUBLIC_PROVIDERNET_SEGMENTATION_ID={{ ansible_local.claimed_vlans.min_vlan }}
+PUBLIC_PROVIDERNET_SEGMENTATION_ID={{ externalnet_vlan }}
 
 IP_VERSION=4
 
@@ -42,3 +42,12 @@ NETWORK_API_EXTENSIONS+=",tag-ext"
 {% if 'pike' in override_zuul_branch %}
 NETWORK_API_EXTENSIONS+="quota_details,revision-if-match,standard-attr-tag"
 {% endif %}
+
+{% if ansible_local.asr_region_id is defined %}
+CISCO_ROUTER_MULTI_REGION=True
+{% set asr_region_id = ansible_local.asr_region_id.region_id %}
+CISCO_ROUTER_REGION_ID={{ asr_region_id }}
+CISCO_ROUTER_OTHER_REGION_IDS="{% for id in ansible_local.asr_region_ids %}{% if id.region_id != asr_region_id %}{{ id.region_id }},{% endif %}{% endfor %}"
+
+{% endif %}
+

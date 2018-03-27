@@ -16,3 +16,4 @@
       ip_cidr: 10.254.0.1/24
       subintf_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
       subintf_mtu: "{{ physnet_mtu }}"
+    - claim-a-region-id
