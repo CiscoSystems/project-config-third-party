@@ -9,9 +9,10 @@
     ml2_vlan_min: "{{ansible_local.claimed_vlans.min_vlan + 1}}"
     devstack_local_conf:
       "{{ lookup('template', 'templates/asr1k_job_local_conf.j2') }}"
+    pubip_cidr_var: "{{ansible_local.asr_region_id.region_id|regex_replace('L3FR0*', '')}}"
     devstack_gate_env_override:
-      DEVSTACK_GATE_FLOATING_RANGE: 10.254.0.0/24
-      DEVSTACK_GATE_PUBLIC_NETWORK_GATEWAY: "10.254.0.1"
+      DEVSTACK_GATE_FLOATING_RANGE: "10.254.{{pubip_cidr_var}}.0/24"
+      DEVSTACK_GATE_PUBLIC_NETWORK_GATEWAY: "10.254.{{pubip_cidr_var}}.1"
   roles:
     - role: run-devstack-gate
       openstack_project_cherrypicks:
