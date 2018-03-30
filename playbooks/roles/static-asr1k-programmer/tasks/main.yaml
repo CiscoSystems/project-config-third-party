@@ -1,0 +1,28 @@
+---
+- name: Copy script to workspace
+  copy:
+    src: "asr_clear_cfg.py"
+    dest: "{{ workspace }}/asr_clear_cfg.py"
+
+- name: Copy script device access config to workspace
+  copy:
+    src: "all.yaml"
+    dest: "{{ workspace }}/all.yaml"
+
+- name: ssh-keyscan the nexus switch
+  command: "ssh-keyscan -t rsa {{ devices[item].ssh.ipaddr }}"
+  register: asr_keyscan_result
+  with_items: "{{ routers }}"
+
+- name: Ensure nexus switch is in known_hosts
+  known_hosts:
+    name: "{{ devices[item.item].ssh.ipaddr }}"
+    key: "{{ item.stdout }}"
+  with_items: "{{ asr_keyscan_result.results }}"
+
+- name: Execute command to program the nexus switch
+  command: >
+    python {{ workspace }}/asr_clear_cfg.py
+    --config_file {{ workspace }}/all.yaml --regionID {{ region_id }}
+  when: remove == "yes"
+  ignore_errors: "yes"

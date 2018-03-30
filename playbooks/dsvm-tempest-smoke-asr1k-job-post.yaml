@@ -7,6 +7,8 @@
   roles:
     - role: clear-nexus-vlans
       ignore_errors: true
+    - role: clear-asr1k-cfg
+      ignore_errors: true
     - release-claimed-vlans
     - release-claimed-region-id
 
