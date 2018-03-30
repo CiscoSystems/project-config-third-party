@@ -1,4 +1,10 @@
 ---
+- name: install networking-cisco if not already present
+  pip:
+    name: networking-cisco
+  become: true
+  register: net_cisco_installed
+
 - name: Copy script to workspace
   copy:
     src: "asr_clear_cfg.py"
@@ -26,3 +32,10 @@
     --config_file {{ workspace }}/all.yaml --regionID {{ region_id }}
   when: remove == "yes"
   ignore_errors: "yes"
+
+- name: uninstall networking-cisco if it wasn't installed prior
+  pip:
+    name: networking-cisco
+    state: absent
+  become: true
+  when: net_cisco_installed|changed
