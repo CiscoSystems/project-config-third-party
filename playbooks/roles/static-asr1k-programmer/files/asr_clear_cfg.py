@@ -390,6 +390,9 @@ def main():
     devs = cfgdata_to_iosxe_driver_cfg(cfgfile_data)
 
     for dev in devs:
+        print "--------------------------------------------"
+        print dev._host_ip
+        print "--------------------------------------------"
         intfs = dev._get_interfaces()
         print "Interfaces:"
         print intfs

@@ -15,18 +15,18 @@
     src: "all.yaml"
     dest: "{{ workspace }}/all.yaml"
 
-- name: ssh-keyscan the nexus switch
+- name: ssh-keyscan the ASR1Ks
   command: "ssh-keyscan -t rsa {{ devices[item].ssh.ipaddr }}"
   register: asr_keyscan_result
   with_items: "{{ routers }}"
 
-- name: Ensure nexus switch is in known_hosts
+- name: Ensure ASR1Ks are in known_hosts
   known_hosts:
     name: "{{ devices[item.item].ssh.ipaddr }}"
     key: "{{ item.stdout }}"
   with_items: "{{ asr_keyscan_result.results }}"
 
-- name: Execute command to program the nexus switch
+- name: Execute command to program the ASR1K
   command: >
     python {{ workspace }}/asr_clear_cfg.py
     --config_file {{ workspace }}/all.yaml --regionID {{ region_id }}
