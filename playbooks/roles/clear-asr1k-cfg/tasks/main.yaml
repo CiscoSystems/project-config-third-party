@@ -1,0 +1,8 @@
+---
+- name: Clear the ASR1K configuration associated with the region ID
+  include_role:
+    name: static-asr1k-programmer
+  vars:
+    remove: "yes"
+    region_id: "{{ansible_local.asr_region_id.region_id}}"
+  when: ansible_local.claimed_vlans is defined

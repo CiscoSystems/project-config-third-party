@@ -19,3 +19,5 @@
       ip_cidr: "10.254.{{regid_num}}.1/24"
       subintf_vlan: "{{ ansible_local.claimed_vlans.min_vlan }}"
       subintf_mtu: "{{ physnet_mtu }}"
+    - role: clear-asr1k-cfg
+      ignore_errors: true

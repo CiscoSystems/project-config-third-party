@@ -21,14 +21,11 @@
             - "$WORKSPACE/patches/devstack_mitaka_providernet_pub_vlan.patch"
         newton:
           devstack:
-            - "https://git.openstack.org/openstack-dev/devstack refs/changes/12/528512/1"
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/12/528512/2"
         ocata:
           devstack:
-            - "https://git.openstack.org/openstack-dev/devstack refs/changes/10/528510/1"
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/54/558054/1"
         pike:
           devstack:
-            - "https://git.openstack.org/openstack-dev/devstack refs/changes/10/528510/1"
-        queens:
-          devstack:
-            - "https://git.openstack.org/openstack-dev/devstack refs/changes/88/554988/1"
+            - "https://git.openstack.org/openstack-dev/devstack refs/changes/53/558053/1"
 # yamllint enable
