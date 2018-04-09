@@ -26,6 +26,9 @@
             job-name: dsvm-tempest-ironic-cimc
             node: centos-7-cimc
         - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-ironic-ucsm
+            node: centos-7-ucsm
+        - '{name}-{job-name}-{zuul-branch}-{node}':
             job-name: dsvm-tempest-ironic-cimc-nexus
             node: centos-7-cimc
             zuul-branch:

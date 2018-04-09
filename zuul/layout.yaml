@@ -113,6 +113,9 @@ jobs:
         - ^.*networking_cisco/apps/.*$
         - ^.*networking_cisco/tests/.*$
 
+  - name: ^.*dsvm-tempest-ironic-ucsm.*$
+    voting: false
+
 projects:
   - name: openstack/networking-cisco
     check:
@@ -160,6 +163,7 @@ projects:
       - ironic-dsvm-tempest-ironic-cimc-current-centos-7-cimc
     experimental:
       - ironic-dsvm-tempest-ironic-cimc-current-centos-7-cimc
+      - ironic-dsvm-tempest-ironic-ucsm-current-centos-7-ucsm
 
   - name: openstack/cinder
     check:
