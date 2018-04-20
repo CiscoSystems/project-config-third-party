@@ -10,7 +10,6 @@ enable_service q-dhcp
 enable_service q-l3
 
 disable_service q-fwaas
-enable_service q-meta
 enable_service neutron
 enable_service c-api
 enable_service c-sch
@@ -29,6 +28,12 @@ PUBLIC_BRIDGE=br-int
 DATABASE_TYPE=mysql
 
 CINDER_ENABLED_BACKENDS=dell:EMC-HighPerformance
+
+[[post-config|$NOVA_CONF]]
+[DEFAULT]
+vif_plugging_is_fatal = false
+vif_plugging_timeout = 0
+
 [[post-config|$CINDER_CONF]]
 [DEFAULT]
 zoning_mode = fabric
