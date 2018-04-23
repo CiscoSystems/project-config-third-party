@@ -35,9 +35,15 @@ default_openstack_project_cherrypicks:
     devstack-gate:
       - "https://git.openstack.org/openstack-infra/devstack-gate refs/changes/26/530726/4"
   mitaka:
+    devstack:
+      - "https://git.openstack.org/openstack-dev/devstack refs/changes/94/561594/1"
+      - "https://git.openstack.org/openstack-dev/devstack refs/changes/16/561416/3"
     requirements:
       - "{{workspace}}/patches/0001-Add-upper-constraint-for-setuptool-39-on-stable-newt.patch"
   newton:
+    devstack:
+      - "https://git.openstack.org/openstack-dev/devstack refs/changes/94/561594/1"
+      - "https://git.openstack.org/openstack-dev/devstack refs/changes/16/561416/3"
     requirements:
       - "https://git.openstack.org/openstack/requirements refs/changes/69/555269/1"
 # yamllint enable
