@@ -2,3 +2,8 @@
 - hosts: all
   roles:
     - install-openvswitch
+  tasks:
+    - name: Clean the Logs from Previous Run
+      file:
+        state: absent
+        path: /home/localadmin/.ara
