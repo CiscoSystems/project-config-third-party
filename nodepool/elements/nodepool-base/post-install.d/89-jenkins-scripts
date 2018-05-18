@@ -25,6 +25,9 @@ set -o pipefail
 # NOTE(pabelanger): Until zuulv3 lands, manually copy scripts / data into
 # /usr/local/jenkins.
 mkdir -p /usr/local/jenkins
+
+(cd /opt/git/openstack-infra/project-config && git checkout before-jenkins-config-removed)
+
 cp -a /opt/git/openstack-infra/project-config/jenkins/data \
     /usr/local/jenkins/common_data
 cp -a /opt/git/openstack-infra/project-config/jenkins/scripts \
