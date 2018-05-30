@@ -164,7 +164,7 @@ projects:
       - ironic-dsvm-tempest-ironic-ucsm-current-centos-7-ucsm
 
   - name: openstack/cinder
-    #check:
-    #  - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm
+    check:
+      - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm
     experimental:
       - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm
