@@ -1,10 +1,14 @@
 ---
 - hosts: ci_log_servers
-  template:
-    src: templates/puppet_manifests/log_server_common.yaml.j2
-    dest: /etc/puppet/environments/common.yaml
+  tasks:
+    - name: "Render out puppet environment"
+      template:
+        src: templates/puppet_manifests/log_server_common.yaml.j2
+        dest: /etc/puppet/environments/common.yaml
 
 - hosts: ci_jenkins_servers
-  template:
-    src: templates/puppet_manifests/ci_server_common.yaml.j2
-    dest: /etc/puppet/environments/common.yaml
+  tasks:
+    - name: "Render out puppet environment"
+      template:
+        src: templates/puppet_manifests/ci_server_common.yaml.j2
+        dest: /etc/puppet/environments/common.yaml
