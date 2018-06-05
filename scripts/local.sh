@@ -10,10 +10,16 @@ TOP_DIR=$(cd $(dirname "$0") && pwd)
 
 FULL_PROJECT_CONFIG_PATH=${FULL_PROJECT_CONFIG_PATH:-/home/rocket-man/project-config-third-party}
 
-if [ -d "$FULL_PROJECT_CONFIG_PATH" ]; then
+if [ ! -d "$FULL_PROJECT_CONFIG_PATH" ]; then
     echo "Could not run through local.sh because FULL_PROJECT_CONFIG_PATH is not set to a valid path"
     exit 0
 fi
+
+# Try to install requirements
+sudo pip install diskimage-builder
+sudo pip install ansible
+sudo apt-get install debootstrap
+
 
 # Get OpenStack admin authentication
 source $TOP_DIR/openrc admin admin
@@ -28,14 +34,14 @@ sudo ip link set dev br-ex up
 security_group_id=$(openstack security group list --project demo -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
-openstack security group rule create ${security_group_id} --proto tcp --port 22
-openstack security group rule create ${security_group_id} --proto icmp --port 0
+openstack security group rule create ${security_group_id} --proto tcp --dst-port 22
+openstack security group rule create ${security_group_id} --proto icmp --dst-port 0
 
 security_group_id=$(openstack security group list --project demo -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
-openstack security group rule create ${security_group_id} --proto tcp --port 22
-openstack security group rule create ${security_group_id} --proto icmp --port 0
+openstack security group rule create ${security_group_id} --proto tcp --dst-port 22
+openstack security group rule create ${security_group_id} --proto icmp --dst-port 0
 
 # Configure flavor for use by the testing system
 openstack flavor create Performance --ram 8192 --disk 30 --vcpus 4
@@ -78,7 +84,8 @@ export DIB_GRUB_TIMEOUT="0"
 export DIB_DISABLE_APT_CLEANUP="1"
 export DIB_APT_LOCAL_CACHE="0"
 export DIB_CHECKSUM="1"
-disk-image-create ubuntu-minimal vm simple-init nodepool-base initalize-urandom growroot infra-package-needs -o bridge-vm-image
+
+disk-image-create ubuntu-minimal vm simple-init nodepool-base initialize-urandom growroot infra-package-needs -o bridge-vm-image
 
 # Upload image to glance for use
 openstack image create --disk-format qcow2 --container-format bare --file bridge-vm-image.qcow2 bridge-vm-image
@@ -99,4 +106,4 @@ openstack server create --image bridge-vm-image --flavor Performance \
                         --config-drive=true nexus-bridge
 
 # Run the playbook to setup and configure the bridge VM ready for use by the tests
-ansible-playbook -i "$pub_ip," --private-key=bridge-vm-setup-key -u root -e $PATH_TO_PROJECT_CONFIG $PATH_TO_PROJECT_CONFIG/playbooks/bridge-vm-setup.yaml
+ansible-playbook -i "$pub_ip," --private-key=bridge-vm-setup-key -u root $FULL_PROJECT_CONFIG_PATH/playbooks/bridge-vm-setup.yaml
