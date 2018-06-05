@@ -42,7 +42,7 @@ openstack flavor create Performance --ram 8192 --disk 30 --vcpus 4
 
 # Setup next hop for external network for machine thats need to connect back to
 # the jenkins host using its IP from the other network
-openstack router set router1 --route destination=192.133.156.17/32,gateway=10.0.196.2
+openstack router set router1 --route destination=192.133.158.226/32,gateway=10.0.196.2
 
 ###########################################################################
 # Setup a bridge VM for tunnelling L2 packet through to VMs that need to be

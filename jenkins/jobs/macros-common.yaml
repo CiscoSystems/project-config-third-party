@@ -87,7 +87,7 @@
           echo "Triggered by: https://review.openstack.org/$ZUUL_CHANGE patchset $ZUUL_PATCHSET"
 
           # TODO: Update this link to point to your log server
-          echo "Detailed logs: http://192.133.156.18/$LOG_PATH/"
+          echo "Detailed logs: http://3ci-logs.ciscolabs.net/$LOG_PATH/"
 
 - publisher:
     name: console-log

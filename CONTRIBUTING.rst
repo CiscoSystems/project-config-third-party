@@ -276,4 +276,4 @@ Get your fix accepted into the master branch
 #. This pull request will then be reviewed and if there are no issues found
    with it, it'll be accepted and merged onto the master branch.
 
-.. _Zuul Dashboard: http://192.133.156.17
+.. _Zuul Dashboard: http://3ci-zuul.ciscolabs.net
