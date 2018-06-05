@@ -5,6 +5,7 @@
       template:
         src: templates/puppet_manifests/log_server_common.yaml.j2
         dest: /etc/puppet/environments/common.yaml
+      become: true
 
 - hosts: ci_jenkins_servers
   tasks:
@@ -12,3 +13,4 @@
       template:
         src: templates/puppet_manifests/ci_server_common.yaml.j2
         dest: /etc/puppet/environments/common.yaml
+      become: true
