@@ -17,7 +17,7 @@ jenkins_version: latest
 #jenkins_username: jenkins
 jenkins_password: {{ jenkins_password }}
 jenkins_ssh_private_key: |
-  {{ jenkins_ssh_private_key }}
+  {{ jenkins_ssh_private_key | indent(2) }}
 jenkins_ssh_public_key: {{ jenkins_ssh_public_key }}
 jjb_git_revision: 1.6.2
 java_args_override: "-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g -Dorg.kohsuke.stapler.compression.CompressionFilter.disabled=true -Djava.util.logging.config.file=/var/lib/jenkins/logger.conf -Dhudson.model.ParametersAction.keepUndefinedParameters=true"
@@ -27,7 +27,7 @@ java_args_override: "-Xloggc:/var/log/jenkins/gc.log -XX:+PrintGCDetails -Xmx12g
 gerrit_ssh_host_key: ""
 gerrit_user: cisco_ml2_ci
 gerrit_user_ssh_private_key: |
-  {{ gerrit_user_ssh_private_key }}
+  {{ gerrit_user_ssh_private_key | indent(2) }}
 gerrit_user_ssh_public_key: {{ gerrit_user_ssh_public_key }}
 git_email: ml2.ci@cisco.com
 git_name: Cisco CI
