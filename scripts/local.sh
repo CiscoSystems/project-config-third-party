@@ -17,7 +17,7 @@ fi
 
 # Try to install requirements
 sudo pip install diskimage-builder
-sudo pip install ansible
+sudo pip install "ansible==2.5.4"
 sudo apt-get install debootstrap
 
 

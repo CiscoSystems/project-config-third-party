@@ -29,7 +29,7 @@ mkdir -p /usr/local/jenkins
 # Get the project-config repo
 mkdir -p /opt/git/openstack-infra
 if [ ! -d "/opt/git/openstack-infra/project-config" ]; then
-  (cd /opt/git/openstack-infra && git clone https://git.openstack.org/openstack-infra/project-config)
+  git clone https://git.openstack.org/openstack-infra/project-config /opt/git/openstack-infra/project-config
 fi
 
 (cd /opt/git/openstack-infra/project-config && git checkout before-jenkins-config-removed)
