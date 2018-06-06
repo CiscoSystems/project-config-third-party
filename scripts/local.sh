@@ -37,7 +37,7 @@ openstack security group rule create ${security_group_id} --proto gre --egress
 openstack security group rule create ${security_group_id} --proto tcp --dst-port 22
 openstack security group rule create ${security_group_id} --proto icmp --dst-port 0
 
-security_group_id=$(openstack security group list --project demo -f value -c ID)
+security_group_id=$(openstack security group list --project admin -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
 openstack security group rule create ${security_group_id} --proto tcp --dst-port 22
@@ -106,4 +106,4 @@ openstack server create --image bridge-vm-image --flavor Performance \
                         --config-drive=true nexus-bridge
 
 # Run the playbook to setup and configure the bridge VM ready for use by the tests
-ansible-playbook -i "$pub_ip," --private-key=bridge-vm-setup-key -u root $FULL_PROJECT_CONFIG_PATH/playbooks/bridge-vm-setup.yaml
+ansible-playbook -i "$bridge_pub_ip," --private-key=bridge-vm-setup-key -u root -e project_config_repo="$FULL_PROJECT_CONFIG_PATH" $FULL_PROJECT_CONFIG_PATH/playbooks/bridge-vm-setup.yaml
