@@ -1,0 +1,8 @@
+---
+- hosts: all
+  vars:
+    additional_pip_libraries:
+      - "storops>=0.5.7"
+  roles:
+    - install-openvswitch
+    - install-additional-pip-libraries
