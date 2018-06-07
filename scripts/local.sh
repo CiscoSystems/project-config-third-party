@@ -65,6 +65,8 @@ sudo brctl addif nexusint1 enp9s0
 sudo brctl addif nexusint2 enp10s0
 sudo ip link set nexusint1 up
 sudo ip link set nexusint2 up
+sudo ip link set enp9s0 up
+sudo ip link set enp10s0 up
 
 # Create GRE tunnels and add them to the local bridges
 sudo ip link add nexustap1 type gretap local 10.0.196.3 remote $bridge_pub_ip key 1
