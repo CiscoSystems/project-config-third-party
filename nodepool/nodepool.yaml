@@ -72,10 +72,7 @@ labels:
 
 providers:
   - name: devstack-rocket-man
-    username: admin
-    password: secret
-    project-name: demo
-    auth-url: http://3ci-nodeprovider-1.ciscolabs.net/identity
+    cloud: devstack-rocket-man
     api-timeout: 60
     boot-timeout: 120
     max-servers: 20
@@ -102,10 +99,7 @@ providers:
   # Re-entering the same provider again so we can limit the max number of
   # servers to prevent us starting too many jobs for ironic
   - name: devstack-rocket-man-cimc
-    username: admin
-    password: secret
-    project-name: demo
-    auth-url: http://3ci-nodeprovider-1.ciscolabs.net/identity
+    cloud: devstack-rocket-man
     api-timeout: 60
     boot-timeout: 120
     max-servers: 4
@@ -132,10 +126,7 @@ providers:
   # Re-entering the same provider again so we can limit the max number of
   # servers to prevent us starting too many jobs for ironic
   - name: devstack-rocket-man-ucsm
-    username: admin
-    password: secret
-    project-name: demo
-    auth-url: http://3ci-nodeprovider-1.ciscolabs.net/identity
+    cloud: devstack-rocket-man
     api-timeout: 60
     boot-timeout: 120
     max-servers: 3
@@ -162,10 +153,7 @@ providers:
   # Re-entering the same provider again so we can limit the max number of
   # servers to prevent us starting too many jobs for ASR
   - name: devstack-rocket-man-asr
-    username: admin
-    password: secret
-    project-name: demo
-    auth-url: http://3ci-nodeprovider-1.ciscolabs.net/identity
+    cloud: devstack-rocket-man
     api-timeout: 60
     boot-timeout: 120
     max-servers: 5
@@ -191,10 +179,7 @@ providers:
         config-drive: true
   # Cinder Server
   - name: devstack-cinder-1
-    username: demo
-    password: secret
-    project-name: demo
-    auth-url: http://173.39.89.137/identity
+    cloud: devstack-cinder-1
     api-timeout: 60
     boot-timeout: 120
     max-servers: 1

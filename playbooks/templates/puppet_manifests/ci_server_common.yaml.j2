@@ -38,10 +38,23 @@ log_server: 192.133.158.227
 zuul_revision: 2.6.0
 #zuul_git_source_repo: https://git.openstack.org/openstack-infra/zuul
 oscc_file_contents: |
-  # Insert OSCC file contents here as explained in the
-  # documentation so that nodepool is able to
-  # authenticate to your cloud(s)
-  #
+  clouds:
+    devstack-rocket-man:
+      auth:
+        auth_url: http://3ci-nodeprovider-1.ciscolabs.net/identity
+        project_name: demo
+        username: admin
+        password: secret
+      region_name: RegionOne
+    devstack-cinder-1:
+      auth:
+        auth_url: http://173.39.89.137/identity
+        project_name: demo
+        username: demo
+        password: secret
+        user_domain_name: Default
+        project_domain_name: Default
+      region_name: RegionOne
 
 mysql_root_password: secret
 mysql_nodepool_password: secret
