@@ -1,0 +1,66 @@
+
+[[local|localrc]]
+
+enable_service n-sch
+disable_service n-net
+enable_service q-svc
+enable_service q-agt
+
+enable_service q-dhcp
+enable_service q-l3
+
+disable_service q-fwaas
+enable_service neutron
+enable_service c-api
+enable_service c-sch
+enable_service c-vol
+
+Q_PLUGIN=ml2
+Q_AGENT=openvswitch
+
+DATABASE_TYPE=mysql
+
+CINDER_ENABLED_BACKENDS=dell:EMC-HighPerformance
+
+[[post-config|$NOVA_CONF]]
+[DEFAULT]
+vif_plugging_is_fatal = false
+vif_plugging_timeout = 0
+
+[[post-config|$CINDER_CONF]]
+[DEFAULT]
+zoning_mode = fabric
+enabled_backends = EMC-HighPerformance
+zone_driver=cinder.zonemanager.drivers.cisco.cisco_fc_zone_driver.CiscoFCZoneDriver
+default_volume_type = EMC-HighPerformance
+
+[EMC-HighPerformance]
+unity_storage_pool_names = Pool_1
+san_ip = 173.39.89.142
+san_login = admin
+san_password = Nbv_12345
+volume_driver=cinder.volume.drivers.dell_emc.unity.Driver
+volume_backend_name = EMC-HighPerformance
+storage_protocol = fc
+
+[database]
+max_pool_size=20
+max_overflow=30
+
+[fc-zone-manager]
+cisco_sb_connector=cinder.zonemanager.drivers.cisco.cisco_fc_zone_client_cli.CiscoFCZoneClientCLI
+fc_fabric_names=CiscoOsFab2
+fc_san_lookup_service=cinder.zonemanager.drivers.cisco.cisco_fc_san_lookup_service.CiscoFCSanLookupService
+zone_driver=cinder.zonemanager.drivers.cisco.cisco_fc_zone_driver.CiscoFCZoneDriver
+zoning_policy=initiator-target
+cisco_zone_name_prefix=openstack
+
+[CiscoOsFab2]
+cisco_fc_fabric_address=173.39.89.130
+cisco_fc_fabric_user=admin
+cisco_fc_fabric_password=nbv_12345
+cisco_fc_fabric_port=22
+cisco_zoning_policy=initiator-target
+cisco_zone_activate=true
+cisco_zone_name_prefix=custom
+cisco_zoning_vsan=4

@@ -11,6 +11,9 @@
         - '{name}-{job-name}-{zuul-branch}-{node}':
             job-name: dsvm-tempest-cisco-zonemanager
             node: ubuntu-czm
+        - '{name}-{job-name}-{zuul-branch}-{node}':
+            job-name: dsvm-tempest-cisco-zonemanager-vm
+            node: ubuntu-xenial-cinder
 
 - project:
     name: ironic
