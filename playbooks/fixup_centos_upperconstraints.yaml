@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - name: Replace libvirt with version 3.10.0
+      replace:
+        path: "/opt/stack/new/requirements/upper-constraints.txt"
+        regexp: "libvirt-python.*"
+        replace: "libvirt-python===3.10.0"
+      register: replace_result
+    - name: Commit changes to the requirements repo
+      shell: >
+        cd /opt/stack/new/requirements &&
+        git commit -a -m "pin libvirt-python version 3.10.0"
+      when: replace_result.changed
