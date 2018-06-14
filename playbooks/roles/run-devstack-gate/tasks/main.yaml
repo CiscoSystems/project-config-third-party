@@ -18,22 +18,6 @@
     src: custom_devstack_gate_hook
     dest: "{{ workspace }}/custom_devstack_gate_hook"
 
-- name: Create EOL branch patch file dir
-  file:
-    path: "{{ workspace }}/patches"
-    state: directory
-    mode: 0755
-  when: "'mitaka' in override_zuul_branch"
-
-- name: Copy EOL branch patch files
-  copy:
-    src: "{{ item }}"
-    dest: "{{ workspace }}/patches/"
-  with_items:
-    - devstack_mitaka_providernet_pub_vlan.patch
-    - 0001-Add-upper-constraint-for-setuptool-39-on-stable-newt.patch
-  when: "'mitaka' in override_zuul_branch"
-
 - name: Copy devstack gate to devstack gate safe
   copy:
     src: "{{ workspace }}/devstack-gate/devstack-vm-gate-wrap.sh"

@@ -27,6 +27,8 @@ function pre_test_hook {
   $ANSIBLE-playbook -i $WORKSPACE/inventory $WORKSPACE/project-config-third-party/playbooks/fixup_centos_upperconstraints.yaml
 {% endif %}
 
+  $ANSIBLE-playbook -i $WORKSPACE/inventory -e workspace="{{workspace}}" -e override_zuul_branch="{{override_zuul_branch}}" $WORKSPACE/project-config-third-party/playbooks/copy-required-patch-files.yaml
+
   $ANSIBLE all -i $WORKSPACE/inventory -m "shell" -a '
   #########################################
   # Default cherrypicks applied to all jobs
