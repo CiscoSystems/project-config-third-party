@@ -25,6 +25,8 @@ IRONIC_HWINFO_FILE={{workspace}}/hardware_info
 IRONIC_TFTPSERVER_IP=10.1.0.2
 IRONIC_CLEAN_NET_NAME=nexusnet
 IRONIC_ENABLED_HARDWARE_TYPES=cisco-ucs-managed,fake-hardware
+IRONIC_ENABLED_POWER_INTERFACES=fake,ipmitool,ucsm
+IRONIC_ENABLED_MANAGEMENT_INTERFACES=fake,ipmitool,ucsm
 
 IMAGE_URLS="file:///tmp/images/ci-test-ubuntu-image-wholedisk.qcow2"
 DEFAULT_IMAGE_NAME=ci-test-ubuntu-image-wholedisk
@@ -35,4 +37,4 @@ TEMPEST_PLUGINS+=" /opt/stack/new/ironic-tempest-plugin"
 
 [[post-config|$IRONIC_CONF_FILE]]
 [conductor]
-api_url=http://10.1.0.2:80/baremetal
+api_url=http://10.1.0.2/baremetal

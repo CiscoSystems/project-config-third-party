@@ -57,3 +57,13 @@
       copy:
         src: tftpd-xinetd.template
         dest: "/tmp/tftpd-xinetd.template"
+
+    - name: Allow port 80 traffic on subinterface
+      iptables:
+        chain: INPUT
+        action: insert
+        destination: 10.1.0.2/32
+        destination_port: 80
+        protocol: tcp
+        jump: ACCEPT
+      become: true
