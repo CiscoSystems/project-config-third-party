@@ -20,11 +20,11 @@ fixed_range_v4=10.1.0.0/26
 IP_VERSION=4
 
 IRONIC_IS_HARDWARE=True
-IRONIC_DEPLOY_DRIVER=pxe_ucs
+IRONIC_DEPLOY_DRIVER=cisco-ucs-managed
 IRONIC_HWINFO_FILE={{workspace}}/hardware_info
-IRONIC_ENABLED_DRIVERS=fake,pxe_ucs
 IRONIC_TFTPSERVER_IP=10.1.0.2
 IRONIC_CLEAN_NET_NAME=nexusnet
+IRONIC_ENABLED_HARDWARE_TYPES=cisco-ucs-managed,fake-hardware
 
 IMAGE_URLS="file:///tmp/images/ci-test-ubuntu-image-wholedisk.qcow2"
 DEFAULT_IMAGE_NAME=ci-test-ubuntu-image-wholedisk

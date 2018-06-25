@@ -20,9 +20,10 @@ fixed_range_v4=10.1.0.0/26
 IP_VERSION=4
 
 IRONIC_IS_HARDWARE=True
-IRONIC_DEPLOY_DRIVER=pxe_iscsi_cimc
+IRONIC_DEPLOY_DRIVER=cisco-ucs-standalone
 IRONIC_HWINFO_FILE={{workspace}}/hardware_info
-IRONIC_ENABLED_DRIVERS=fake,pxe_iscsi_cimc
+IRONIC_ENABLED_HARDWARE_TYPES=cisco-ucs-standalone,fake-hardware
+
 IRONIC_TFTPSERVER_IP=10.1.0.2
 IRONIC_CLEAN_NET_NAME=nexusnet
 
