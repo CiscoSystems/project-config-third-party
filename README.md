@@ -4,4 +4,5 @@ Cisco Systems third party CI config for OpenStack
 [![Build
 Status](https://travis-ci.org/CiscoSystems/project-config-third-party.svg?branch=master)](https://travis-ci.org/CiscoSystems/project-config-third-party)
 
-[Contribution guidelines for this project](CONTRIBUTING.rst)
+[Contribution guidelines for this project](CONTRIBUTING.rst) - Read for
+detailed instruction on how to add new and modify existing jobs.

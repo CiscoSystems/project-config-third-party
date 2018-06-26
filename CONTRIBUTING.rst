@@ -143,7 +143,7 @@ Develop the job logic and test actions
 
 #. Wait for the results to be posted to the gerrit patch, and then check if all
    the jobs in the experimental queue have succeeded or failed.
-   
+
 #. If your job has failed you can view the logs by clicking the link posted by
    the CI system to gerrit.
 
@@ -158,7 +158,7 @@ Develop the job logic and test actions
    job. There may be other experimental jobs in the queue that are failing, but
    you can ignore those.
 
-.. note:: 
+.. note::
 
   Remember to rebase your changes on to master regularly by running ``git fetch
   && git rebase -i origin/master`` so that your branch remains up to date with
@@ -194,7 +194,7 @@ Get your new job accepted into the master branch
    with it, it'll be accepted and merged onto the master branch.
 
 .. note::
- 
+
   If a pull request is merged and results in consistent failures then that
   commit will be reverted to restore the CI to working order. The issue can
   then be fixed on your development branch and a new pull request made to
@@ -231,7 +231,8 @@ Develop the fix for the job logic and test it
 #. Make the required changes to the playbooks and roles for the job that needs
    fixing.
 
-#. Commit and push your changes 
+#. Commit and push the branch with your changes back to the
+   project-config-third-party repo.
 
 #. Leave a comment on your [DMN] patch with the text ``cisco-experimental`` and
    it should trigger your patch to enter the experimental queue, and you can
@@ -239,7 +240,7 @@ Develop the fix for the job logic and test it
 
 #. Wait for the results to be posted to the gerrit patch, and then check if all
    the jobs in the experimental queue have succeeded or failed.
-   
+
 #. If the job has failed you can view the logs by clicking the link posted by
    the CI system to gerrit.
 
@@ -253,6 +254,14 @@ Develop the fix for the job logic and test it
    that are already in the check queue are also passing along side with the job
    you are fixing There may be other experimental jobs in the queue that are
    failing, but you can ignore those.
+
+.. note::
+
+  If a patch set is already in the cisco-experimental queue leaving another
+  ``cisco-experimental`` comment will **NOT** cause that job to restart. If you
+  notice an intermittent error and want to restart the experimental queue run
+  the best option is to rebase and submit another patch set to your [DNM]
+  patch, as new patch sets will clear all previous jobs from the queue.
 
 Get your fix accepted into the master branch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -277,3 +286,27 @@ Get your fix accepted into the master branch
    with it, it'll be accepted and merged onto the master branch.
 
 .. _Zuul Dashboard: http://3ci-zuul.ciscolabs.net
+
+Only run a subset of tests in the experimental queue
+----------------------------------------------------
+
+While developing new jobs or modifying existing ones it is recommended to only
+run the tests you are creating/modifying in the experimental queue in order to
+speed up test run times and reduce load on the CI.
+
+To do this you can add a regex pattern to the commit message of your [DNM]
+patch on gerrit to tell the third party CI to only run certain jobs. In your
+commit message add the line ``Cisco-CI-Experimental-Regex: <regex-pattern>``
+(where <regex-pattern> matches the jobs you want to run). An example can be
+seen - https://review.openstack.org/#/c/542324/
+
+Common examples:
+
+- Only run ASR1K - ``Cisco-CI-Experimental-Regex: .*-asr1k-.*``
+- Only run UCSM - ``Cisco-CI-Experimental-Regex: .*-ucsm-.*``
+- Only run Nexus - ``Cisco-CI-Experimental-Regex: .*-nexus-.*``
+
+With the regex applied the "skipped" jobs will show up as "failed" in the
+results, and it is expected that at least one final run with all the jobs
+enabled is run before we merge the changes to project-config-third-party to
+ensure there are no regressions in the other jobs caused by the changes.
