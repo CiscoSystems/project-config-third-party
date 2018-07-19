@@ -8,3 +8,4 @@
     vars:
       workspace: "/home/ubuntu"
       override_zuul_branch: queens
+    branches: master
