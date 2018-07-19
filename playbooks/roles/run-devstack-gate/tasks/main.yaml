@@ -20,6 +20,7 @@
 
 - name: Copy devstack gate to devstack gate safe
   copy:
+    remote_src: true
     src: "{{ workspace }}/devstack-gate/devstack-vm-gate-wrap.sh"
     dest: "{{ workspace }}/safe-devstack-vm-gate-wrap.sh"
     mode: u=rwx,g=r,o=r
