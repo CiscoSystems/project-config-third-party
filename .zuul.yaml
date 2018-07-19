@@ -1,6 +1,12 @@
 - job:
-    name: ucsm-testjob
+    name: pctp-base
     parent: third-base
+    pre-run: playbooks/install-backwards-deps.yaml
+    branches: master
+
+- job:
+    name: ucsm-testjob
+    parent: pctp-base
     pre-run: playbooks/dsvm-tempest-smoke-ucsm-job-pre.yaml
     run: playbooks/dsvm-tempest-smoke-ucsm-job.yaml
     post-run:

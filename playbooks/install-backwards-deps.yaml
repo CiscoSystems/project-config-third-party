@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install mySQL deps
+      package:
+        name: "{{ item }}"
+      with_items:
+        - "python-dev"
+        - "libmysqlclient-dev"
+
+    - name: Install mySQL for python
+      pip:
+        name: mysqlclient
