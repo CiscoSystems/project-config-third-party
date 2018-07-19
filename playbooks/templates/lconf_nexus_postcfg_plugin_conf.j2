@@ -1,12 +1,17 @@
+{%- macro host_mapping(hosts, interface) -%}
+{%- for host in hosts -%}
+{{hostvars[host]["ansible_hostname"]}}:[{{interface}}]
+{%- if not loop.last -%},{%- endif -%}
+{%- endfor -%}
+{%- endmacro -%}
+
 [ml2_mech_cisco_nexus:{{ nexus_ip }}]
 username={{ nexus_user }}
 password={{ nexus_password }}
 physnet=nexusnet
-{% for host in groups['primary'] %}
-{{ hostvars[host]["ansible_hostname"] }}={{ nexus_interfaces[0] }}
-{% endfor %}
-{% if groups['subnodes'] is defined %}
-{% for host in groups['subnodes'] %}
-{{ hostvars[host]["ansible_hostname"] }}={{ nexus_interfaces[1] }}
-{% endfor %}
-{% endif %}
+https_verify=False
+host_ports_mapping=
+    {{- host_mapping(groups['primary'], nexus_interfaces[0]) -}}
+    {%- if groups['subnodes'] is defined -%}
+    ,{{host_mapping(groups['subnodes'], nexus_interfaces[1])}}
+    {%- endif %}
