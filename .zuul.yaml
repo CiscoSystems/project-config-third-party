@@ -1,0 +1,10 @@
+- job:
+    name: ucsm-testjob
+    parent: third-base
+    pre-run: playbooks/dsvm-tempest-smoke-ucsm-job-pre.yaml
+    run: playbooks/dsvm-tempest-smoke-ucsm-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
+    vars:
+      workspace: "/home/ubuntu"
+      override_zuul_branch: queens
