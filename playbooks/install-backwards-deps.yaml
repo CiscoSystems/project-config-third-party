@@ -12,3 +12,18 @@
     - name: Install mySQL for python
       pip:
         name: mysqlclient
+
+- hosts: primary
+  tasks:
+    - name: git clone devstack gate
+      git:
+        repo: http://git.openstack.org/openstack-infra/devstack-gate
+        dest: "{{ workspace }}/devstack-gate"
+
+    - name: check existance of scripts directory
+      stat:
+        path: "{{ workspace }}/devstack-gate"
+
+    - name: check existance of script
+      stat:
+        path: "{{ workspace }}/devstack-gate/devstack-vm-gate-wrap.sh"

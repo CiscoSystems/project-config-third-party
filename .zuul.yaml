@@ -3,6 +3,8 @@
     parent: third-base
     pre-run: playbooks/install-backwards-deps.yaml
     branches: master
+    vars:
+      workspace: "/home/ubuntu"
 
 - job:
     name: ucsm-testjob
@@ -12,6 +14,5 @@
     post-run:
       - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
     vars:
-      workspace: "/home/ubuntu"
       override_zuul_branch: queens
     branches: master
