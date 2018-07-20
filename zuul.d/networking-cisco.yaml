@@ -17,27 +17,27 @@
 - job:
     name: dsvm-tempest-smoke-ucsm-job-queens
     parent: dsvm-tempest-smoke-ucsm-job-base
-    override_checkout: stable/queens
+    override-checkout: stable/queens
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-pike
     parent: dsvm-tempest-smoke-ucsm-job-base
-    override_checkout: stable/pike
+    override-checkout: stable/pike
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-ocata
     parent: dsvm-tempest-smoke-ucsm-job-base
-    override_checkout: stable/ocata
+    override-checkout: stable/ocata
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-newton
     parent: dsvm-tempest-smoke-ucsm-job-base
-    override_checkout: stable/newton
+    override-checkout: stable/newton
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-mitaka
     parent: dsvm-tempest-smoke-ucsm-job-base
-    override_checkout: stable/mitaka
+    override-checkout: stable/mitaka
 
 - project:
     name: openstack/networking-cisco
