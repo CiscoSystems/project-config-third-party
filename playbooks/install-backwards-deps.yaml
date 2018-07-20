@@ -31,6 +31,8 @@
 - hosts: all
   roles:
     - role: fetch-zuul-cloner
+      destination: "/usr/zuul-env/bin/zuul-cloner"
+      repo_src_dir: "/home/ubuntu/src/git.openstack.org"
   tasks:
     - name: Create nodepool directory
       file:
