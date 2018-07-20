@@ -7,6 +7,7 @@
     branches: master
     vars:
       workspace: "/home/ubuntu"
+    timeout: 10800 #seconds
     required-projects:
       - openstack-dev/devstack
       - openstack-infra/devstack-gate
