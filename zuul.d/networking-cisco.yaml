@@ -13,6 +13,8 @@
       - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
     vars:
       override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    required-projects:
+      - openstack/networking-cisco
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-queens
@@ -38,9 +40,3 @@
     name: dsvm-tempest-smoke-ucsm-job-mitaka
     parent: dsvm-tempest-smoke-ucsm-job-base
     override-checkout: stable/mitaka
-
-- project:
-    name: openstack/networking-cisco
-    check:
-      jobs:
-        - dsvm-tempest-smoke-ucsm-job-queens

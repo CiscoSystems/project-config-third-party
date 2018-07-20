@@ -1,0 +1,5 @@
+- project:
+    name: CiscoSystems/project-config-third-party
+    check:
+      jobs:
+        - dsvm-tempest-smoke-ucsm-job-queens
