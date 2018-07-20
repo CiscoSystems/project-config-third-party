@@ -58,5 +58,5 @@
     post-run:
       - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
     vars:
-      override_zuul_branch: queens
+      override_zuul_branch: stable/queens
     branches: master
