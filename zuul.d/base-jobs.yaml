@@ -6,7 +6,6 @@
     pre-run: playbooks/install-backwards-deps.yaml
     post-run:
       - playbooks/backwards-collect-logs.yaml
-    branches: master
     vars:
       workspace: "/home/ubuntu"
     timeout: 10800 #seconds

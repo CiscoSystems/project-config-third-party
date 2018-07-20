@@ -1,7 +1,6 @@
 ---
 - pragma:
-    implied-branches:
-      - master
+    implied-branch-matchers: false
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-base
