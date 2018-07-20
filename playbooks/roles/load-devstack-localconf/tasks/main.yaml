@@ -1,0 +1,14 @@
+---
+- name: Render out ucsm local conf
+  template:
+    src: "{ devstack_local_conf_src }}"
+    dest: "/tmp/localconf_temp"
+
+- name: Slurp in rendered local conf
+  slurp:
+    src: "/tmp/localconf_temp"
+  register: localconf_temp
+
+- name: Set devstack_local_conf fact
+  set_fact:
+    devstack_local_conf: "{{ localconf_temp['content'] | b64decode }}"

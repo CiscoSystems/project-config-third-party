@@ -4,19 +4,7 @@
   vars:
     projects:
       - openstack/networking-cisco
-  pre_tasks:
-    - name: Render out ucsm local conf
-      template:
-        src: templates/ucsm_job_local_conf.j2
-        dest: "{{ workspace }}/localconf_temp"
-
-    - name: Slurp in rendered local conf
-      slurp:
-        src: "{{ workspace }}/localconf_temp"
-      register: localconf_temp
-
-    - name: Set devstack_local_conf fact
-      set_fact:
-        devstack_local_conf: "{{ localconf_temp['content'] | b64decode }}"
+    devstack_local_conf_src: templates/ucsm_job_local_conf.j2
   roles:
+    - load-devstack-localconf
     - run-devstack-gate
