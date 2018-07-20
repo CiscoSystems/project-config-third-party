@@ -1,7 +1,7 @@
 ---
 - name: Render out ucsm local conf
   template:
-    src: "{ devstack_local_conf_src }}"
+    src: "{{ devstack_local_conf_src }}"
     dest: "/tmp/localconf_temp"
 
 - name: Slurp in rendered local conf
