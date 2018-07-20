@@ -30,7 +30,7 @@
 
 - hosts: all
   roles:
-    fetch-zuul-cloner
+    - role: fetch-zuul-cloner
   tasks:
     - name: Create nodepool directory
       file:
