@@ -11,36 +11,33 @@
     run: playbooks/dsvm-tempest-smoke-ucsm-job.yaml
     post-run:
       - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
+    vars:
+      override_zuul_branch: "{{ zuul.override_checkout | default ("") }}"
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-queens
     parent: dsvm-tempest-smoke-ucsm-job-base
-    vars:
-      override_zuul_branch: stable/queen
+    override_checkout: stable/queens
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-pike
     parent: dsvm-tempest-smoke-ucsm-job-base
-    vars:
-      override_zuul_branch: stable/pike
+    override_checkout: stable/pike
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-ocata
     parent: dsvm-tempest-smoke-ucsm-job-base
-    vars:
-      override_zuul_branch: stable/ocata
+    override_checkout: stable/ocata
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-newton
     parent: dsvm-tempest-smoke-ucsm-job-base
-    vars:
-      override_zuul_branch: stable/newton
+    override_checkout: stable/newton
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-mitaka
     parent: dsvm-tempest-smoke-ucsm-job-base
-    vars:
-      override_zuul_branch: stable/mitaka
+    override_checkout: stable/mitaka
 
 - project:
     name: openstack/networking-cisco
