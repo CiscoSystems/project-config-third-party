@@ -1,6 +1,8 @@
+---
 - job:
-    name: pctp-base
-    parent: third-base
+    name: pctp-base-legacy
+    parent: pctp-base
+    abstract: true
     pre-run: playbooks/install-backwards-deps.yaml
     post-run:
       - playbooks/backwards-collect-logs.yaml
@@ -51,14 +53,3 @@
       - openstack/tripleo-heat-templates
       - openstack/tripleo-image-elements
       - openstack/zaqar
-
-- job:
-    name: ucsm-testjob
-    parent: pctp-base
-    pre-run: playbooks/dsvm-tempest-smoke-ucsm-job-pre.yaml
-    run: playbooks/dsvm-tempest-smoke-ucsm-job.yaml
-    post-run:
-      - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
-    vars:
-      override_zuul_branch: stable/queens
-    branches: master

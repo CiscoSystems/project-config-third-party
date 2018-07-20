@@ -1,0 +1,43 @@
+---
+- pragma:
+    implied-branches:
+      - master
+
+- job:
+    name: ucsm-testjob-base
+    parent: pctp-base-legacy
+    pre-run: playbooks/dsvm-tempest-smoke-ucsm-job-pre.yaml
+    run: playbooks/dsvm-tempest-smoke-ucsm-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
+
+- job:
+    name: ucsm-testjob-queens
+    vars:
+      override_zuul_branch: stable/queen
+
+- job:
+    name: ucsm-testjob-pike
+    vars:
+      override_zuul_branch: stable/pike
+
+- job:
+    name: ucsm-testjob-ocata
+    vars:
+      override_zuul_branch: stable/ocata
+
+- job:
+    name: ucsm-testjob-newton
+    vars:
+      override_zuul_branch: stable/newton
+
+- job:
+    name: ucsm-testjob-mitaka
+    vars:
+      override_zuul_branch: stable/mitaka
+
+- project:
+    name: openstack/networking-cisco
+    check:
+      jobs:
+        - ucsm-testjob-queens
