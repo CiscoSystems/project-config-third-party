@@ -12,7 +12,7 @@
     post-run:
       - playbooks/dsvm-tempest-smoke-ucsm-job-post.yaml
     vars:
-      override_zuul_branch: "{{ zuul.override_checkout | default ("") }}"
+      override_zuul_branch: "{% raw -%}{{ zuul.override_checkout | default ("") }}{%- endraw %}"
 
 - job:
     name: dsvm-tempest-smoke-ucsm-job-queens
