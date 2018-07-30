@@ -3,13 +3,13 @@
     name: multinode-legacy
     nodes:
       - name: primary
-	label: ubuntu
+        label: ubuntu
       - name: secondary
-	label: ubuntu
+        label: ubuntu
     groups:
       - name: primary
-	nodes:
-	  - primary
+        nodes:
+          - primary
       - name: subnodes
-	nodes:
-	  - secondary
+        nodes:
+          - secondary
