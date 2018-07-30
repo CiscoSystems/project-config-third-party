@@ -89,10 +89,6 @@
 
 # ASR Jobs
 
-- semaphore:
-    name: asr-resource-limit
-    max: 5
-
 - job:
     name: dsvm-tempest-smoke-asr1k-job-base
     parent: pctp-base-legacy
@@ -133,3 +129,37 @@
     override-checkout: stable/mitaka
 
 # End ASR Jobs
+
+# Nexus Ironic Jobs
+
+- job:
+    name: dsvm-tempest-ironic-cimc-nexus-job-base
+    parent: pctp-base-legacy
+    abstract: true
+    pre-run: playbooks/dsvm-tempest-ironic-cimc-nexus-job-pre.yaml
+    run: playbooks/dsvm-tempest-ironic-cimc-nexus-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-ironic-cimc-nexus-job-post.yaml
+    vars:
+      override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    semaphore: ironic-cimc-node-limit
+    required-projects:
+      - openstack/networking-cisco
+      - openstack/ironic
+
+- job:
+    name: dsvm-tempest-ironic-cimc-nexus-job-queens
+    parent: dsvm-tempest-ironic-cimc-nexus-job-base
+    override-checkout: stable/queens
+
+- job:
+    name: dsvm-tempest-ironic-cimc-nexus-job-pike
+    parent: dsvm-tempest-ironic-cimc-nexus-job-base
+    override-checkout: stable/pike
+
+- job:
+    name: dsvm-tempest-ironic-cimc-nexus-job-ocata
+    parent: dsvm-tempest-ironic-cimc-nexus-job-base
+    override-checkout: stable/ocata
+
+# End Nexus Ironic Jobs

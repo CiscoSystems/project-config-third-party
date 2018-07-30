@@ -5,3 +5,4 @@
         - dsvm-tempest-smoke-ucsm-job-queens
         - dsvm-tempest-smoke-nexus-job-queens
         - dsvm-tempest-smoke-asr1k-job-queens
+        - dsvm-tempest-ironic-cimc-nexus-job-queens

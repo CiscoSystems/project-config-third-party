@@ -1,0 +1,8 @@
+---
+- semaphore:
+    name: ironic-cimc-node-limit
+    max: 4
+
+- semaphore:
+    name: asr-resource-limit
+    max: 5
