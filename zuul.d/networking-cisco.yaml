@@ -39,3 +39,51 @@
     name: dsvm-tempest-smoke-ucsm-job-mitaka
     parent: dsvm-tempest-smoke-ucsm-job-base
     override-checkout: stable/mitaka
+
+- job:
+    name: dsvm-tempest-smoke-nexus-job-base
+    parent: pctp-base-legacy
+    abstract: true
+    pre-run: playbooks/dsvm-tempest-smoke-nexus-job-pre.yaml
+    run: playbooks/dsvm-tempest-smoke-nexus-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-smoke-nexus-job-post.yaml
+    vars:
+      override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    required-projects:
+      - openstack/networking-cisco
+    nodeset:
+      nodes:
+        - name: primary
+          label: ubuntu
+        - name: secondary
+          label: ubuntu
+      groups:
+        - name: subnodes
+          nodes:
+            - secondary
+
+- job:
+    name: dsvm-tempest-smoke-nexus-job-queens
+    parent: dsvm-tempest-smoke-nexus-job-base
+    override-checkout: stable/queens
+
+- job:
+    name: dsvm-tempest-smoke-nexus-job-pike
+    parent: dsvm-tempest-smoke-nexus-job-base
+    override-checkout: stable/pike
+
+- job:
+    name: dsvm-tempest-smoke-nexus-job-ocata
+    parent: dsvm-tempest-smoke-nexus-job-base
+    override-checkout: stable/ocata
+
+- job:
+    name: dsvm-tempest-smoke-nexus-job-newton
+    parent: dsvm-tempest-smoke-nexus-job-base
+    override-checkout: stable/newton
+
+- job:
+    name: dsvm-tempest-smoke-nexus-job-mitaka
+    parent: dsvm-tempest-smoke-nexus-job-base
+    override-checkout: stable/mitaka

@@ -3,3 +3,4 @@
     check:
       jobs:
         - dsvm-tempest-smoke-ucsm-job-queens
+        - dsvm-tempest-smoke-nexus-job-queens
