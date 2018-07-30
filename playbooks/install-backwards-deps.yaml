@@ -40,6 +40,13 @@
         state: directory
       become: true
 
+    - name: Create nodepool uuid file
+      copy:
+        dest: /etc/nodepool/uuid
+        content: |
+          {{ ansible_hostname | to_uuid }}
+      become: true
+
     - name: Create nodepool sub_nodes file
       copy:
         dest: /etc/nodepool/sub_nodes

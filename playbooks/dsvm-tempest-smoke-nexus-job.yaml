@@ -11,7 +11,7 @@
     projects:
       - openstack/networking-cisco
     nexus_interfaces: "{{ ci_node_interfaces }}"
-    devstack_local_conf:
-      "{{ lookup('template', 'templates/nexus_job_local_conf.j2') }}"
+    devstack_local_conf_src: templates/nexus_job_local_conf.j2
   roles:
+    - load-devstack-localconf
     - run-devstack-gate
