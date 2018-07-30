@@ -86,3 +86,50 @@
     override-checkout: stable/mitaka
 
 # End Nexus jobs
+
+# ASR Jobs
+
+- semaphore:
+    name: asr-resource-limit
+    max: 5
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-base
+    parent: pctp-base-legacy
+    abstract: true
+    pre-run: playbooks/dsvm-tempest-smoke-asr1k-job-pre.yaml
+    run: playbooks/dsvm-tempest-smoke-asr1k-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-smoke-asr1k-job-post.yaml
+    vars:
+      override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    semaphore: asr-resource-limit
+    required-projects:
+      - openstack/networking-cisco
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-queens
+    parent: dsvm-tempest-smoke-asr1k-job-base
+    override-checkout: stable/queens
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-pike
+    parent: dsvm-tempest-smoke-asr1k-job-base
+    override-checkout: stable/pike
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-ocata
+    parent: dsvm-tempest-smoke-asr1k-job-base
+    override-checkout: stable/ocata
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-newton
+    parent: dsvm-tempest-smoke-asr1k-job-base
+    override-checkout: stable/newton
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-mitaka
+    parent: dsvm-tempest-smoke-asr1k-job-base
+    override-checkout: stable/mitaka
+
+# End ASR Jobs
