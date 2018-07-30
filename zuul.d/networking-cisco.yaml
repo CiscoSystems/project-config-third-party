@@ -146,6 +146,10 @@
     required-projects:
       - openstack/networking-cisco
       - openstack/ironic
+      - openstack/python-ironicclient
+      - openstack/ironic-python-agent
+      - openstack/pyghmi
+      - openstack/virtualbmc
 
 - job:
     name: dsvm-tempest-ironic-cimc-nexus-job-queens

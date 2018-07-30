@@ -11,6 +11,10 @@
     semaphore: ironic-cimc-node-limit
     required-projects:
       - openstack/ironic
+      - openstack/python-ironicclient
+      - openstack/ironic-python-agent
+      - openstack/pyghmi
+      - openstack/virtualbmc
 
 - job:
     name: dsvm-tempest-ironic-ucsm-job
@@ -24,3 +28,7 @@
     semaphore: ironic-ucsm-node-limit
     required-projects:
       - openstack/ironic
+      - openstack/python-ironicclient
+      - openstack/ironic-python-agent
+      - openstack/pyghmi
+      - openstack/virtualbmc
