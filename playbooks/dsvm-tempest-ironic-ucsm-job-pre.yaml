@@ -20,13 +20,6 @@
         python -c "import urllib2; urllib2.urlopen('https://ironic-ci-fi')"
       register: ucsm_test_2
 
-# FIXME(sambetts) this should become part of the image build process
-- hosts: all
-  tasks:
-    - file:
-        path: /home/jenkins
-        mode: 0755
-
 - hosts: all
   vars:
     additional_pip_libraries:

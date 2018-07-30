@@ -2,20 +2,21 @@
 - name: Fetch ubuntu image from the bridge VM
   fetch:
     src: "/home/tapuser/{{item}}"
-    dest: "/tmp/images/{{item}}"
+    dest: "{{ zuul.executor.work_root }}/{{item}}"
     flat: "yes"
   with_items:
     - ci-test-ubuntu-image-netboot.tar.gz
     - ci-test-ubuntu-image-localboot.tar.gz
     - ci-test-ubuntu-image-wholedisk.qcow2
-  delegate_to: 10.0.0.24
+  delegate_to: 10.0.196.33
   vars:
-    ansible_private_key_file: /opt/nodepool-scripts/vm-bridge-key
+    ansible_private_key_file: "{{ zuul.executor.work_root }}/vm-bridge-key"
     ansible_user: tapuser
+    ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
 
 - name: Ensure the image downloaded correctly
   copy:
-    src: "/tmp/images/{{item}}"
+    src: "{{ zuul.executor.work_root }}/{{item}}"
     dest: "/tmp/images/{{item}}"
   with_items:
     - ci-test-ubuntu-image-netboot.tar.gz
