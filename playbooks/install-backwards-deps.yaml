@@ -13,6 +13,10 @@
       pip:
         name: mysqlclient
 
+    - name: Install paramiko for python
+      pip:
+        name: paramiko
+
 - hosts: primary
   tasks:
     - name: git clone devstack gate
