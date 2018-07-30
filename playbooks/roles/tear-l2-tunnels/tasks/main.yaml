@@ -9,12 +9,19 @@
     private_nodepool_ip:
       "{{ nodepool_private_ip_file['content'] | b64decode | trim }}"
 
+- name: Copy and set permissions for bridge-vm key
+  copy:
+    src: "{{ playbook_dir }}/../nodepool/scripts/vm-bridge-key"
+    dest: "{{ zuul.executor.work_root }}/vm-bridge-key"
+    mode: 0600
+  delegate_to: localhost
+
 - name: Tear down l2 tunnel from bridge vm
   raw: >
     sudo ip -o -d link | grep "remote {{ private_nodepool_ip }} local" |
     cut -d ' ' -f2 | cut -d '@' -f 1 | xargs -r -L 1 sudo ip link del
   delegate_to: 10.0.196.33
   vars:
-    ansible_private_key_file: "{{ playbook_dir }}/../nodepool/scripts/vm-bridge-key"
+    ansible_private_key_file: "{{ zuul.executor.work_root }}/vm-bridge-key"
     ansible_user: tapuser
     ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
