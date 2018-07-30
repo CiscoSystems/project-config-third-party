@@ -59,6 +59,9 @@
         - name: secondary
           label: ubuntu
       groups:
+        - name: primary
+          nodes:
+            - primary
         - name: subnodes
           nodes:
             - secondary
