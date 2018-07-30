@@ -60,4 +60,5 @@
   vars:
     ansible_private_key_file: "{{ playbook_dir }}/../nodepool/scripts/vm-bridge-key"
     ansible_user: tapuser
+    ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
 # yamllint enable
