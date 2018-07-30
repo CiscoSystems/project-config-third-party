@@ -4,5 +4,9 @@
     max: 4
 
 - semaphore:
+    name: ironic-ucsm-node-limit
+    max: 3
+
+- semaphore:
     name: asr-resource-limit
     max: 5

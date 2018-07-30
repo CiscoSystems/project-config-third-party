@@ -1,0 +1,26 @@
+---
+- job:
+    name: dsvm-tempest-ironic-cimc-job
+    parent: pctp-base-legacy
+    pre-run: playbooks/dsvm-tempest-ironic-cimc-job-pre.yaml
+    run: playbooks/dsvm-tempest-ironic-cimc-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-ironic-cimc-job-post.yaml
+    vars:
+      override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    semaphore: ironic-cimc-node-limit
+    required-projects:
+      - openstack/ironic
+
+- job:
+    name: dsvm-tempest-ironic-ucsm-job
+    parent: pctp-base-legacy
+    pre-run: playbooks/dsvm-tempest-ironic-ucsm-job-pre.yaml
+    run: playbooks/dsvm-tempest-ironic-ucsm-job.yaml
+    post-run:
+      - playbooks/dsvm-tempest-ironic-ucsm-job-post.yaml
+    vars:
+      override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    semaphore: ironic-ucsm-node-limit
+    required-projects:
+      - openstack/ironic
