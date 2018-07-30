@@ -1,0 +1,15 @@
+---
+- nodeset:
+    name: multinode-legacy
+    nodes:
+      - name: primary
+	label: ubuntu
+      - name: secondary
+	label: ubuntu
+    groups:
+      - name: primary
+	nodes:
+	  - primary
+      - name: subnodes
+	nodes:
+	  - secondary

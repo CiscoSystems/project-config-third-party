@@ -2,6 +2,8 @@
 - pragma:
     implied-branch-matchers: false
 
+# UCSM Jobs
+
 - job:
     name: dsvm-tempest-smoke-ucsm-job-base
     parent: pctp-base-legacy
@@ -40,6 +42,10 @@
     parent: dsvm-tempest-smoke-ucsm-job-base
     override-checkout: stable/mitaka
 
+# End UCSM Jobs
+
+# Nexus Jobs
+
 - job:
     name: dsvm-tempest-smoke-nexus-job-base
     parent: pctp-base-legacy
@@ -52,19 +58,7 @@
       override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
     required-projects:
       - openstack/networking-cisco
-    nodeset:
-      nodes:
-        - name: primary
-          label: ubuntu
-        - name: secondary
-          label: ubuntu
-      groups:
-        - name: primary
-          nodes:
-            - primary
-        - name: subnodes
-          nodes:
-            - secondary
+    nodeset: multinode-legacy
 
 - job:
     name: dsvm-tempest-smoke-nexus-job-queens
@@ -90,3 +84,5 @@
     name: dsvm-tempest-smoke-nexus-job-mitaka
     parent: dsvm-tempest-smoke-nexus-job-base
     override-checkout: stable/mitaka
+
+# End Nexus jobs
