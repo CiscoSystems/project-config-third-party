@@ -8,6 +8,7 @@
       - playbooks/dsvm-tempest-ironic-cimc-job-post.yaml
     vars:
       override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    override-checkout: master
     semaphore: ironic-cimc-node-limit
     required-projects:
       - openstack/ironic
@@ -27,6 +28,7 @@
       - playbooks/dsvm-tempest-ironic-ucsm-job-post.yaml
     vars:
       override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    override-checkout: master
     semaphore: ironic-ucsm-node-limit
     required-projects:
       - openstack/ironic
