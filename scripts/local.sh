@@ -35,12 +35,14 @@ security_group_id=$(openstack security group list --project demo -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
 openstack security group rule create ${security_group_id} --proto tcp --dst-port 22
+openstack security group rule create ${security_group_id} --proto tcp --dst-port 19885
 openstack security group rule create ${security_group_id} --proto icmp --dst-port 0
 
 security_group_id=$(openstack security group list --project admin -f value -c ID)
 openstack security group rule create ${security_group_id} --proto gre
 openstack security group rule create ${security_group_id} --proto gre --egress
 openstack security group rule create ${security_group_id} --proto tcp --dst-port 22
+openstack security group rule create ${security_group_id} --proto tcp --dst-port 19885
 openstack security group rule create ${security_group_id} --proto icmp --dst-port 0
 
 # Configure flavor for use by the testing system
