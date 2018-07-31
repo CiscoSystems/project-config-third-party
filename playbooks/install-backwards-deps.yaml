@@ -9,6 +9,15 @@
         - "python-dev"
         - "libmysqlclient-dev"
 
+    - name: Install qemu service
+      package:
+        name: "{{ item }}"
+      with_items:
+        - "qemu-system"
+        - "libvirt-bin"
+        - "libvirt-dev"
+        - "libvirt-python"
+
     - name: Install mySQL for python
       pip:
         name: mysqlclient
