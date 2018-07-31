@@ -12,7 +12,8 @@
       shell: |
         openssl s_client -showcerts -connect 192.133.149.19:443 </dev/null 2>/dev/null > ucsmcert.junk
         openssl x509 -outform PEM -in ucsmcert.junk -out ucsmcert.pem
-        ln -s `pwd`/ucsmcert.pem /etc/pki/tls/certs/`openssl x509 -noout -hash -in ucsmcert.junk`.0
+        ln -s `pwd`/ucsmcert.pem /etc/pki/tls/certs/`openssl x509 -noout -hash -in ucsmcert.junk`.0 || \
+        ln -s `pwd`/ucsmcert.pem /etc/ssl/certs/`openssl x509 -noout -hash -in ucsmcert.junk`.0
       become: true
     # yamllint enable
     - name: "Try to talk to the UCSM"
