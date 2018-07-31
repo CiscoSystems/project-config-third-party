@@ -150,6 +150,8 @@
       - openstack/ironic-python-agent
       - openstack/pyghmi
       - openstack/virtualbmc
+      - openstack/ironic-lib
+      - openstack/ironic-tempest-plugin
 
 - job:
     name: dsvm-tempest-ironic-cimc-nexus-job-queens
