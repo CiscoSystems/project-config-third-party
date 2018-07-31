@@ -16,7 +16,6 @@
         - "qemu-system"
         - "libvirt-bin"
         - "libvirt-dev"
-        - "libvirt-python"
 
     - name: Install mySQL for python
       pip:
