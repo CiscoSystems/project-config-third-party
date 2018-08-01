@@ -39,6 +39,31 @@
     path: "/opt/stack/logs/"
   become: true
 
+- name: Create EOL branch patch file dir
+  file:
+    path: "{{ workspace }}/patches"
+    state: directory
+    mode: 0755
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups.all }}"
+  when: "'mitaka' in override_zuul_branch"
+
+- name: Copy EOL branch patch files
+  copy:
+    src: "{{ item[1] }}"
+    dest: "{{ workspace }}/patches/"
+  delegate_to: "{{ item[0] }}"
+  with_nested:
+    - "{{ groups.all }}"
+    - [ "devstack_mitaka_providernet_pub_vlan.patch", "0001-Add-upper-constraint-for-setuptool-39-on-stable-newt.patch" ]
+  when: "'mitaka' in override_zuul_branch"
+
+- name: Copy playbook for patching centos
+  copy:
+    src: "fixup_centos_upperconstraints.yaml"
+    dest: "{{ workspace }}/fixup_centos_upperconstraints.yaml"
+
 - name: Run devstack gate
   environment: "{{ devstack_gate_env | combine(devstack_gate_env_override) }}"
   register: devstack-gate
