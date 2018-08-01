@@ -62,13 +62,6 @@ labels:
     min-ready: 1
     providers:
       - name: devstack-rocket-man-asr
-  #Labels for Cisco Cinder MDS so they are limited
-  - name: ubuntu-xenial-cinder
-    image: ubuntu-xenial
-    ready-script: configure_mirror.sh 
-    min-ready: 1
-    providers:
-      - name: devstack-cinder-1
 
 providers:
   - name: devstack-rocket-man
@@ -176,24 +169,6 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         name-filter: 'Performance'
-        config-drive: true
-  # Cinder Server
-  - name: devstack-cinder-1
-    cloud: devstack-cinder-1
-    api-timeout: 60
-    boot-timeout: 120
-    max-servers: 1
-    rate: 1
-    ipv6-preferred: false
-    image-type: qcow2
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-xenial
-        min-ram: 8192
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'm1.large'
         config-drive: true
 
 targets:

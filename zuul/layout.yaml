@@ -168,4 +168,3 @@ projects:
       - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm
     experimental:
       - cinder-dsvm-tempest-cisco-zonemanager-current-ubuntu-czm
-      - cinder-dsvm-tempest-cisco-zonemanager-vm-current-ubuntu-xenial-cinder
