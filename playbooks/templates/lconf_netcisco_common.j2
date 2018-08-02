@@ -1,3 +1,6 @@
 enable_plugin networking-cisco https://git.openstack.org/openstack/networking-cisco
 enable_service net-cisco
 
+{% if 'mitaka' in override_zuul_branch %}
+FORCE=yes
+{% endif %}
