@@ -2,9 +2,9 @@
     name: CiscoSystems/project-config-third-party
     jobtest:
       jobs:
-        #- dsvm-tempest-smoke-ucsm-job-queens
-        #- dsvm-tempest-smoke-nexus-job-queens
-        #- dsvm-tempest-smoke-asr1k-job-queens
-        #- dsvm-tempest-ironic-cimc-nexus-job-queens
+        - dsvm-tempest-smoke-ucsm-job-queens
+        - dsvm-tempest-smoke-nexus-job-queens
+        - dsvm-tempest-smoke-asr1k-job-queens
+        - dsvm-tempest-ironic-cimc-nexus-job-queens
         - dsvm-tempest-ironic-cimc-job
-        #- dsvm-tempest-ironic-ucsm-job
+        - dsvm-tempest-ironic-ucsm-job
