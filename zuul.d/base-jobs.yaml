@@ -9,6 +9,14 @@
     vars:
       workspace: "/home/ubuntu"
     timeout: 10800 #seconds
+    nodeset:
+      nodes:
+        - name: primary
+          label: ubuntu
+      groups:
+        - name: primary
+          nodes:
+            - primary
     required-projects:
       - openstack-dev/devstack
       - openstack-infra/devstack-gate
