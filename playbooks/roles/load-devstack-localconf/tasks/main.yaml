@@ -1,5 +1,5 @@
 ---
-- name: Render out ucsm local conf
+- name: Render out devstack local conf
   template:
     src: "{{ devstack_local_conf_src }}"
     dest: "/tmp/localconf_temp"
