@@ -7,7 +7,7 @@ parser.add_argument('max_vlan', help="the max vlan of the range")
 
 args = parser.parse_args()
 
-db = MySQLdb.connect(host="10.0.196.2",
+db = MySQLdb.connect(host="10.0.196.4",
                      user="ciuser",
                      passwd="secret",
                      db="ciresources")

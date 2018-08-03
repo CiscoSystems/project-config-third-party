@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 ci_resource_name = args.resource_type
 
-db = MySQLdb.connect(host="10.0.196.2",
+db = MySQLdb.connect(host="10.0.196.4",
                      user="ciuser",
                      passwd="secret",
                      db="ciresources")
