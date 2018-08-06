@@ -56,7 +56,8 @@
   delegate_to: "{{ item[0] }}"
   with_nested:
     - "{{ groups.all }}"
-    - [ "devstack_mitaka_providernet_pub_vlan.patch", "0001-Add-upper-constraint-for-setuptool-39-on-stable-newt.patch" ]
+    - - "devstack_mitaka_providernet_pub_vlan.patch"
+      - "0001-Add-upper-constraint-for-setuptool-39-on-stable-newt.patch"
   when: "'mitaka' in override_zuul_branch"
 
 - name: Copy playbook for patching centos

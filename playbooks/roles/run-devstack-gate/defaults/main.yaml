@@ -12,6 +12,7 @@ default_enabled_projects:
 
 devstack_gate_env_override: {}
 
+# yamllint disable rule:line-length
 devstack_gate_env_base:
   DEVSTACK_LOCAL_CONFIG: "{{ devstack_local_conf }}"
   DEVSTACK_GATE_PROJECTS_OVERRIDE:
@@ -36,7 +37,6 @@ devstack_gate_env: "{{ devstack_gate_env_base | combine(zuulv3_devstack_gate_env
 
 openstack_project_cherrypicks: {}
 
-# yamllint disable rule:line-length
 default_openstack_project_cherrypicks:
   all:
     devstack-gate:
