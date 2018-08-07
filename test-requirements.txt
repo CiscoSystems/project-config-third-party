@@ -2,3 +2,4 @@ hacking
 bashate
 yamllint
 ansible
+zuul

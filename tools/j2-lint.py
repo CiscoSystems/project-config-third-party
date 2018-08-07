@@ -9,6 +9,7 @@ import os.path
 from functools import reduce
 
 from ansible.plugins.loader import filter_loader
+from zuul.ansible.filter import zuul_filters
 
 
 class AbsolutePathLoader(jinja2.BaseLoader):
@@ -26,6 +27,8 @@ def check(template, out, err):
 
     for fp in filter_loader.all():
         env.filters.update(fp.filters())
+
+    env.filters.update(zuul_filters.FilterModule().filters())
 
     try:
         env.get_template(template)
