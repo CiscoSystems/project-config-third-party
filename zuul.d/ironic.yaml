@@ -1,4 +1,7 @@
 ---
+- pragma:
+    implied-branch-matchers: False
+
 - job:
     name: dsvm-tempest-ironic-cimc-job
     parent: pctp-base-legacy

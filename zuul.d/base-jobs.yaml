@@ -1,4 +1,7 @@
 ---
+- pragma:
+    implied-branch-matchers: False
+
 - job:
     name: pctp-base-legacy
     parent: pctp-base
