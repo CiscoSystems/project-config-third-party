@@ -1,4 +1,7 @@
 ---
+- pragma:
+    implied-branch-matchers: False
+
 - job:
     name: dsvm-tempest-ironic-cimc-job
     parent: pctp-base-legacy
@@ -8,8 +11,11 @@
       - playbooks/dsvm-tempest-ironic-cimc-job-post.yaml
     vars:
       override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    override-checkout: master
     semaphore: ironic-cimc-node-limit
     required-projects:
+      - name: CiscoSystems/project-config-third-party
+        override-checkout: zuulv3
       - openstack/ironic
       - openstack/python-ironicclient
       - openstack/ironic-python-agent
@@ -27,8 +33,11 @@
       - playbooks/dsvm-tempest-ironic-ucsm-job-post.yaml
     vars:
       override_zuul_branch: "{{ zuul.override_checkout | default ('') }}"
+    override-checkout: master
     semaphore: ironic-ucsm-node-limit
     required-projects:
+      - name: CiscoSystems/project-config-third-party
+        override-checkout: zuulv3
       - openstack/ironic
       - openstack/python-ironicclient
       - openstack/ironic-python-agent
