@@ -10,8 +10,7 @@
         user: tapuser
         state: present
         key: >-
-          {{ lookup('file', '%s/nodepool/scripts/vm-bridge-key.pub'
-          % project_config_repo) }}
+          {{ lookup('file', 'vm-bridge-key.pub') }}
 
     - name: Add sudo rules for the tapuser
       blockinfile:

@@ -11,7 +11,7 @@
 
 - name: Copy and set permissions for bridge-vm key
   copy:
-    src: "{{ playbook_dir }}/../nodepool/scripts/vm-bridge-key"
+    src: "{{ playbook_dir }}/files/vm-bridge-key"
     dest: "{{ zuul.executor.work_root }}/vm-bridge-key"
     mode: 0600
   delegate_to: localhost

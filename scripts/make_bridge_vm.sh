@@ -3,7 +3,7 @@ useradd tapuser
 mkdir -p /home/tapuser/.ssh
 chown -R tapuser:tapuser /home/tapuser
 chmod 700 /home/tapuser/.ssh
-cat project-config-third-party/nodepool/scripts/vm-bridge-key.pub > authorized_keys
+cat project-config-third-party/playbooks/files/vm-bridge-key.pub > authorized_keys
 chmod 600 /home/tapuser/.ssh/authorized_keys
 
 # Install bridge utils
