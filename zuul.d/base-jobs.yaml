@@ -63,3 +63,4 @@
       - openstack/tripleo-heat-templates
       - openstack/tripleo-image-elements
       - openstack/zaqar
+      - CiscoSystems/project-config-third-party
