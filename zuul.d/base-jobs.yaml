@@ -12,6 +12,7 @@
     vars:
       workspace: "/home/ubuntu"
     timeout: 10800 #seconds
+    attempts: 1
     nodeset:
       nodes:
         - name: primary
