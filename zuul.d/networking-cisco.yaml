@@ -18,6 +18,11 @@
       - openstack/networking-cisco
 
 - job:
+    name: dsvm-tempest-smoke-ucsm-job-rocky
+    parent: dsvm-tempest-smoke-ucsm-job-base
+    override-checkout: stable/rocky
+
+- job:
     name: dsvm-tempest-smoke-ucsm-job-queens
     parent: dsvm-tempest-smoke-ucsm-job-base
     override-checkout: stable/queens
@@ -61,6 +66,11 @@
     nodeset: multinode-legacy
 
 - job:
+    name: dsvm-tempest-smoke-nexus-job-rocky
+    parent: dsvm-tempest-smoke-nexus-job-base
+    override-checkout: stable/rocky
+
+- job:
     name: dsvm-tempest-smoke-nexus-job-queens
     parent: dsvm-tempest-smoke-nexus-job-base
     override-checkout: stable/queens
@@ -102,6 +112,11 @@
     semaphore: asr-resource-limit
     required-projects:
       - openstack/networking-cisco
+
+- job:
+    name: dsvm-tempest-smoke-asr1k-job-rocky
+    parent: dsvm-tempest-smoke-asr1k-job-base
+    override-checkout: stable/rocky
 
 - job:
     name: dsvm-tempest-smoke-asr1k-job-queens
@@ -152,6 +167,11 @@
       - openstack/virtualbmc
       - openstack/ironic-lib
       - openstack/ironic-tempest-plugin
+
+- job:
+    name: dsvm-tempest-ironic-cimc-nexus-job-rocky
+    parent: dsvm-tempest-ironic-cimc-nexus-job-base
+    override-checkout: stable/rocky
 
 - job:
     name: dsvm-tempest-ironic-cimc-nexus-job-queens
