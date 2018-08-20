@@ -14,9 +14,18 @@ PHYSICAL_NETWORK=nexusnet
 IP_VERSION=4
 
 IRONIC_IS_HARDWARE=True
-IRONIC_DEPLOY_DRIVER=pxe_iscsi_cimc
 IRONIC_HWINFO_FILE={{workspace}}/hardware_info
+
+{% if ['mitaka', 'newton', 'ocata', 'pike', 'queens'] | select('in', override_zuul_branch) | list %}
+IRONIC_DEPLOY_DRIVER=pxe_iscsi_cimc
 IRONIC_ENABLED_DRIVERS=fake,pxe_iscsi_cimc
+{% else %}
+IRONIC_DEPLOY_DRIVER=cisco-ucs-standalone
+IRONIC_ENABLED_HARDWARE_TYPES=cisco-ucs-standalone,fake-hardware
+IRONIC_ENABLED_POWER_INTERFACES=fake,ipmitool,cimc
+IRONIC_ENABLED_MANAGEMENT_INTERFACES=fake,ipmitool,cimc
+{% endif %}
+
 IRONIC_TFTPSERVER_IP=10.1.0.2
 
 IMAGE_URLS="file:///tmp/images/ci-test-ubuntu-image-wholedisk.qcow2"
