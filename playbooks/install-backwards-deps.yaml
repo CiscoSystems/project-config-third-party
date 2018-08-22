@@ -25,6 +25,10 @@
       pip:
         name: paramiko
 
+    - name: Install requests
+      pip:
+        name: requests
+
 - hosts: primary
   tasks:
     - name: git clone devstack gate

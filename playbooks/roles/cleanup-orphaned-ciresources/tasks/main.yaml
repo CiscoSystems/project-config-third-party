@@ -1,0 +1,4 @@
+---
+- name: Cleanup all orphaned CI resources
+  command: >
+    python {{workspace}}/claim_ciresource.py cleanup

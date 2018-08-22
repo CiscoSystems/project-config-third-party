@@ -1,13 +1,6 @@
 ---
-- name: Copy script to workspace
-  copy:
-    src: "free_vlan.py"
-    dest: "{{ workspace }}/free_vlan.py"
-
-- name: Release the claimed VLANs
+- name: Release the claimed region ID resource
   command: >
-    python {{ workspace }}/free_vlan.py
-    {{ ansible_local.claimed_vlans.min_vlan }}
-    {{ ansible_local.claimed_vlans.max_vlan }}
-  register: command_output
+    python {{workspace}}/claim_ciresource.py release vlan
+    /etc/ansible/facts.d/claimed_vlans.fact
   when: ansible_local.claimed_vlans is defined

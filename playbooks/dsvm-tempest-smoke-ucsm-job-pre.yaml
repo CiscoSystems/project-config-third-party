@@ -16,6 +16,7 @@
     additional_pip_libraries:
       - "ucsmsdk==0.9.3.1"
   roles:
+    - cleanup-orphaned-ciresources
     - claim-a-vlan-range
     - install-additional-pip-libraries
     - create-service-profile

@@ -10,6 +10,7 @@
       {{ ci_node_interfaces }} +
       {{ routers|map('extract', connections, ['data', 'port'])|list }}
   roles:
+    - cleanup-orphaned-ciresources
     - claim-a-region-id
     - claim-a-vlan-range
     - configure-vlan-for-hosts
