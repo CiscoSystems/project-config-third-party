@@ -13,6 +13,7 @@
   vars:
     nexus_interfaces: "{{ ci_node_interfaces }}"
   roles:
+    - cleanup-orphaned-ciresources
     - claim-a-vlan-range
     - clear-nexus-vlans
     - claim-a-cimc-baremetal

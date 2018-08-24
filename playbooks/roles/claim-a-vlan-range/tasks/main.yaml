@@ -1,6 +1,6 @@
 ---
 - name: Claim some VLANs for use in the tests
-  command: "python {{workspace}}/claim_ciresource.py vlan"
+  command: "python {{workspace}}/claim_ciresource.py claim vlan {{ zuul.build }}"
   register: claimed_vlans_result
 
 - name: create directory for ansible custom facts
