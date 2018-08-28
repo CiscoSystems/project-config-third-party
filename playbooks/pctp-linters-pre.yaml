@@ -1,0 +1,7 @@
+---
+- hosts: primary
+  tasks:
+    - name: Install libre2-dev
+      apt:
+        name: libre2-dev
+      become: true
