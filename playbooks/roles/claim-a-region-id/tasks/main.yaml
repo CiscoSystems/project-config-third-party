@@ -1,10 +1,14 @@
 ---
 - name: Claim a region ID for use in the tests
-  command: "python {{workspace}}/claim_ciresource.py claim region_id {{ zuul.build }}"
+  command: >
+    python {{workspace}}/claim_ciresource.py
+    claim region_id {{ zuul.build }}
   register: claimed_region_id_result
 
 - name: List all region IDs for use in the tests
-  command: "python {{workspace}}/claim_ciresource.py list region_id"
+  command: >
+    python {{workspace}}/claim_ciresource.py
+    list region_id
   register: list_region_id_result
 
 - name: create directory for ansible custom facts

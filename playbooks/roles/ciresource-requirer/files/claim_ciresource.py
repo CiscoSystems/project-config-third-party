@@ -92,7 +92,10 @@ def cleanup(args):
 
     with ci_resource_db() as cur:
         for ci_resource in fields:
-            cur.execute("UPDATE %(ci_resource)ss SET locked=false, buildid=null WHERE buildid NOT IN (%(buildids)s)" % {'ci_resource': ci_resource, 'buildids': joinedbuildids})
+            cur.execute("UPDATE %(ci_resource)ss SET locked=false, "
+                        "buildid=null WHERE buildid NOT IN (%(buildids)s)"
+                        % {'ci_resource': ci_resource,
+                           'buildids': joinedbuildids})
 
 
 def release(args):
@@ -107,8 +110,8 @@ def release(args):
 
     where = generate_where_clause(d)
     with ci_resource_db() as cur:
-        cur.execute("UPDATE %ss SET locked=false, buildid=null where %s" % (ci_resource_name,
-                                                                            where))
+        cur.execute("UPDATE %ss SET locked=false, "
+                    "buildid=null where %s" % (ci_resource_name, where))
 
 
 def claim(args):
@@ -129,7 +132,8 @@ def claim(args):
                 data[ci_resource_fields[i]] = row[i]
 
             query = ("UPDATE %(resource)ss SET locked=true, "
-                     "timestamp='%(timestamp)s', buildid='%(buildid)s' where %(where)s")
+                     "timestamp='%(timestamp)s', buildid='%(buildid)s' "
+                     "where %(where)s")
 
             where = generate_where_clause(data)
             cur.execute(query % {'where': where, 'resource': ci_resource_name,
@@ -146,21 +150,30 @@ def claim(args):
 parser = argparse.ArgumentParser(description="Tool for managing CI resources")
 subparsers = parser.add_subparsers()
 
-claim_parser = subparsers.add_parser('claim', help='Claim a specific CI resource')
-claim_parser.add_argument('resource_type', help="The type of resource to claim")
-claim_parser.add_argument('buildid', help="The build id to claim the resource with")
+claim_parser = subparsers.add_parser(
+    'claim', help='Claim a specific CI resource')
+claim_parser.add_argument(
+    'resource_type', help="The type of resource to claim")
+claim_parser.add_argument(
+    'buildid', help="The build id to claim the resource with")
 claim_parser.set_defaults(func=claim)
 
-release_parser = subparsers.add_parser('release', help='Release a specific CI resource')
-release_parser.add_argument('resource_type', help="The type of resource to release")
-release_parser.add_argument('resource_json_file', help="Claimed resource to release json file")
+release_parser = subparsers.add_parser(
+    'release', help='Release a specific CI resource')
+release_parser.add_argument(
+    'resource_type', help="The type of resource to release")
+release_parser.add_argument(
+    'resource_json_file', help="Claimed resource to release json file")
 release_parser.set_defaults(func=release)
 
-list_parser = subparsers.add_parser('list', help='List all of a CI resource')
-list_parser.add_argument('resource_type', help="The type of resource to list")
+list_parser = subparsers.add_parser(
+    'list', help='List all of a CI resource')
+list_parser.add_argument(
+    'resource_type', help="The type of resource to list")
 list_parser.set_defaults(func=list_resource)
 
-cleanup_parser = subparsers.add_parser('cleanup', help='Cleanup all orphaned CI resources')
+cleanup_parser = subparsers.add_parser(
+    'cleanup', help='Cleanup all orphaned CI resources')
 cleanup_parser.set_defaults(func=cleanup)
 
 args = parser.parse_args()
