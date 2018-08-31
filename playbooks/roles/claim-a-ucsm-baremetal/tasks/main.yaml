@@ -1,6 +1,8 @@
 ---
 - name: Claim a baremetal resource
-  command: "python {{workspace}}/claim_ciresource.py claim ucsm_baremetal {{ zuul.build }}"
+  command: >
+    python {{workspace}}/claim_ciresource.py
+    claim ucsm_baremetal {{ zuul.build }}
   register: claimed_baremetal_result
 
 - name: create directory for ansible custom facts

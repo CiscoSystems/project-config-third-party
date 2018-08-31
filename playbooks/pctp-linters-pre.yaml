@@ -1,0 +1,19 @@
+---
+- hosts: primary
+  tasks:
+    - name: Install libre2-dev
+      apt:
+        name: libre2-dev
+      become: true
+    - name: Install python dev
+      apt:
+        name: python-dev
+      become: true
+    - name: Install python3 dev
+      apt:
+        name: python3-dev
+      become: true
+    - name: Install g++
+      apt:
+        name: g++
+      become: true

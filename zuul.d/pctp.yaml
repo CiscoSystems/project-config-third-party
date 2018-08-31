@@ -1,7 +1,15 @@
+- job:
+    name: pctp-linters
+    pre-run: playbooks/pctp-linters-pre.yaml
+    run: playbooks/pctp-linters.yaml
+    required-projects:
+      - CiscoSystems/project-config-third-party
+
 - project:
     name: CiscoSystems/project-config-third-party
     check:
       jobs:
+        - pctp-linters
         - dsvm-tempest-smoke-ucsm-job-rocky:
             voting: false
         - dsvm-tempest-smoke-ucsm-job-queens

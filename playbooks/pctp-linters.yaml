@@ -1,0 +1,9 @@
+---
+- hosts: primary
+  roles:
+    - ensure-tox
+    - tox
+  vars:
+    tox_envlist: linters
+    tox_environment:
+      PATH: "{{ ansible_env.PATH }}:/home/ubuntu/.local/bin"
