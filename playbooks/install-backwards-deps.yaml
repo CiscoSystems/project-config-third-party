@@ -29,6 +29,10 @@
       pip:
         name: requests
 
+    - name: Install dulwich
+      pip:
+        name: dulwich
+
 - hosts: primary
   tasks:
     - name: git clone devstack gate
