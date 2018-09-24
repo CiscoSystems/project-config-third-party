@@ -3,7 +3,7 @@
     name: multinode-legacy
     nodes:
       - name: primary
-        label: ubuntu
+        label: ubuntu-vlans
       - name: secondary
         label: ubuntu
     groups:
