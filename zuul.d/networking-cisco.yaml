@@ -71,6 +71,8 @@
     name: dsvm-tempest-smoke-nexus-job-rocky
     parent: dsvm-tempest-smoke-nexus-job-base
     override-checkout: stable/rocky
+    branches:
+      - ^(?!release-[0-6]{1}).*$
 
 - job:
     name: dsvm-tempest-smoke-nexus-job-queens
@@ -119,6 +121,8 @@
     name: dsvm-tempest-smoke-asr1k-job-rocky
     parent: dsvm-tempest-smoke-asr1k-job-base
     override-checkout: stable/rocky
+    branches:
+      - ^(?!release-[0-6]{1}).*$
 
 - job:
     name: dsvm-tempest-smoke-asr1k-job-queens
@@ -174,6 +178,8 @@
     name: dsvm-tempest-ironic-cimc-nexus-job-rocky
     parent: dsvm-tempest-ironic-cimc-nexus-job-base
     override-checkout: stable/rocky
+    branches:
+      - ^(?!release-[0-6]{1}).*$
 
 - job:
     name: dsvm-tempest-ironic-cimc-nexus-job-queens
