@@ -14,6 +14,7 @@
       - openstack/ironic-python-agent
       - openstack/ironic-lib
       - openstack/ironic-tempest-plugin
+      - openstack/placement
     devstack_local_conf_src: templates/ironic_ucsm_job_local_conf.j2
     devstack_gate_env_override:
       DEVSTACK_GATE_VIRT_DRIVER: "ironic"

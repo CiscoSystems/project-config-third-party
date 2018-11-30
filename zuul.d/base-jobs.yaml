@@ -56,6 +56,7 @@
       - openstack/os-net-config
       - openstack/os-refresh-config
       - openstack/osc-lib
+      - openstack/placement
       - openstack-infra/project-config
       - openstack/requirements
       - openstack/swift
